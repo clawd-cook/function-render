@@ -1,0 +1,151 @@
+:root {
+  color-scheme: light dark;
+}
+
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+}
+
+.app header h1 {
+  margin: 0;
+  font-size: 1.9rem;
+  background: linear-gradient(90deg, #646cff, #22c55e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  margin: 0.25rem 0 1.5rem;
+  color: #8b8b9a;
+}
+
+.controls {
+  margin-bottom: 1rem;
+}
+
+.controls label {
+  display: inline-flex;
+  flex-direction: column;
+  font-weight: 600;
+  gap: 0.35rem;
+}
+
+.controls select {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #3a3a45;
+  background: #1b1b20;
+  color: inherit;
+  font-size: 1rem;
+}
+
+.desc {
+  color: #8b8b9a;
+  margin: 0.5rem 0 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.field textarea {
+  min-height: 220px;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #3a3a45;
+  background: #141418;
+  color: #e6e6ef;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.run {
+  margin: 1.25rem 0;
+  padding: 0.7rem 1.6rem;
+  border: none;
+  border-radius: 10px;
+  background: #646cff;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.run:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.output {
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  border: 1px solid #2c2c35;
+  background: #101014;
+}
+
+.output.ok {
+  border-color: #22c55e55;
+}
+
+.output.err {
+  border-color: #ef444455;
+}
+
+.output h2 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8b8b9a;
+  margin: 0.75rem 0 0.35rem;
+}
+
+.output pre {
+  margin: 0;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #05050a;
+  color: #a5f3c0;
+  overflow-x: auto;
+  font-size: 0.85rem;
+}
+
+.output.err pre {
+  color: #fca5a5;
+}
+
+footer {
+  margin-top: 2rem;
+  color: #6b6b78;
+  font-size: 0.8rem;
+}
+
+footer span {
+  font-weight: 700;
+  color: #8b8b9a;
+}
