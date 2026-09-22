@@ -28,6 +28,8 @@ function checkCalls(node: Node, path: string, names: Set<string>): void {
     if (node.default) checkCalls(node.default, `${path}/switch/default`, names);
   } else if ("for" in node) {
     checkCalls(node.body, `${path}/for/body`, names);
+  } else if ("set" in node) {
+    // leaf node: assignment has no nested calls
   } else {
     checkCalls(node.then, `${path}/then`, names);
     if (node.else) checkCalls(node.else, `${path}/else`, names);
