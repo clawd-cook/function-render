@@ -7,10 +7,10 @@
 1. [x] `prd.md` 收敛（Q1/Q2/Q3 已折进 Goal / Requirements / Resolved）。
 2. [x] `design.md`（Interface、三表、清单、执行、结算 demo、硬切）。
 3. [x] 本文件：后续实现清单，本任务不写代码。
-4. [ ] 用户评审三份 artifact。
-5. [ ] **不要**对本任务 `task.py start`。评审通过后 `/trellis:finish-work` 或 `task.py archive`，实现用新任务。
+4. [x] **AC10** 用户确认审查修订（放置规则、preview 安全、tryCatch、硬切清单、v1≠视界）。
+5. [ ] **不要**对本任务 `task.py start`。AC10 已通过：归档本任务；实现另开 `fr-operator-runtime`。
 
-验证（本任务）：通读 `prd.md` → `design.md` → 本文，确认无未决 Open Question，无「旧方言适配」残留。
+验证（本任务）：通读 `prd.md` → `design.md` → `research/hard-cut-inventory.md` → 本文。AC1–AC9 = 文档已写；只有 AC10 = 人审通过。
 
 回滚：只需改 markdown；工作树里本任务不应出现 `packages/**` 的实现 diff。
 
@@ -34,14 +34,14 @@ ExprAtom：`$mul` `$add` `$gt`。
 单测穿过 `run` / `validate`：
 
 - 结算 demo：`orderAmount=2000` → tax 120、total 2120、调用 `deductBalance`。
-- `preview: true`：同样 Slot，不调 `run`。
+- `preview: true`：同样 Slot；**任何** `Func.run`（含未标 sideEffect 的）都不得被调用；`sleep` 跳过。
 - `deductBalance.run` 抛错：调用 `rollback` 一次。
 - 未知 `type` / 未知 `$atom` / 未注册 `funcKey` → `phase: "validate"`。
 - 中缀字符串不当成计算。
 
-### 批次 2 — 补全 R3
+### 批次 2 — 视界 Catalog（不挡 v1 验收）
 
-Control 其余、Data、Utility。`while`/`for` 强制 `maxIter`。`arrayMap`/`arrayReduce` 嵌套。
+其余 Control、`get`、`arrayMap`/`arrayFilter`/`arrayReduce`、Utility。`while`/`for` 强制 `maxIter`。`tryCatch`：validate 拒绝 body 内副作用 `callFunc`。一阶 `$len`/`$at`/… 按放置规则另开版本，不塞进 v1。
 
 ### 验证命令（后续任务用）
 
@@ -58,7 +58,7 @@ vp run -r test && vp run -r build
 ### 风险 / 回滚点
 
 - 破坏所有现有 spec 与 `engine.test.ts`。后续任务应 **重写测试**，不要包一层翻译。
-- `tryCatch` 与全局 rollback 栈的交互（见 design §7）必须有单测，否则补偿会 silently 错误。
+- `tryCatch`（批次 2）：单测「body 含 sideEffect callFunc → validate 失败」。不要测「吞了还不 rollback」。
 - `packages/catalog` 的 `add` 删除会破 `examples.test.ts`：示例改为 `set` + `$add`。
 
 ### jsonl
