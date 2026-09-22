@@ -30,6 +30,13 @@
 - **True external**：真实业务函数（DB/RPC）经 FuncRegistry 注入；测试给 mock adapter。
 - **不该开的 seam**：不要为每个算子开 port。一个 adapter 是假想 seam；Operator Catalog 只有一个生产 adapter（内置表）时，不要做成可插拔插件总线。
 
+## Q1 / Q2 已定
+
+- Q1：旧方言不适配、不编译、不双栈。判别式节点与 JSON Pointer 不进本 Module。
+- Q2=C：算术/比较/逻辑是封闭 ExprAtom（`{ "$mul": [...] }`），不是 NodeType，不是 Func。禁止中缀。`standardCatalog.add` 删除。
+- Q3：本任务只出设计，不写代码、不 `task.py start`。
+- 新方言：`{ type, params, outputTo? }` + Slot `$.path` + ExprAtom。
+
 ## 删除测试
 
 若删掉「算子模块」，复杂度应回到每个 FlowSpec 调用方（控制流、求值、rollback、dry-run 各自重写）。若删掉后复杂度消失，说明只是对 `call` 的浅包装。
