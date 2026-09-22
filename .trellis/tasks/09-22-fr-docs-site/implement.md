@@ -8,7 +8,7 @@
 
 ## Step 2 — VitePress 站点
 - [ ] `apps/docs` devDeps 加 `vue`+`esbuild`(已加)。
-- [ ] `.vitepress/config.ts`:base `/function-render/`、nav、sidebar(数据驱动)。
+- [ ] `.vitepress/config.ts`:base `/logic-render/`、nav、sidebar(数据驱动)。
 - [ ] 介绍页:`index.md`(hero)、`guide/overview.md`、`guide/operators.md`、`guide/api.md`。
 - [ ] `leetcode/index.md`(分类目录)、`leetcode/[slug].md` + `[slug].paths.js`(从 problems 生成)。
 - [ ] `.vitepress/theme/index.ts` 注册全局 `OnlineRunner`;`OnlineRunner.vue`。
@@ -28,6 +28,6 @@
 ```bash
 . "$HOME/.config/vite-plus/env"
 vp install && vp run -r build
-vp run --filter @function-renderer/leetcode test
+vp run --filter @logic-renderer/leetcode test
 cd apps/docs && pnpm exec vitepress build
 ```

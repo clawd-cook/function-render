@@ -1,9 +1,9 @@
 # API
 
-## `@function-renderer/runner`
+## `@logic-renderer/runner`
 
 ```ts
-import { run } from "@function-renderer/runner";
+import { run } from "@logic-renderer/runner";
 
 const { state, result } = await run(spec, { catalog, initialState });
 ```
@@ -11,7 +11,7 @@ const { state, result } = await run(spec, { catalog, initialState });
 - `run(spec, { catalog, initialState? }) => Promise<{ state, result }>`:先用 core 校验 spec(含未知函数检查),再执行。
 - `catalog`:`Record<string, Fn | { params?, run }>`。裸函数不校验参数;带 `params`(zod)则调用前校验。
 
-## `@function-renderer/catalog`
+## `@logic-renderer/catalog`
 
 ```ts
 import {
@@ -19,14 +19,14 @@ import {
   defineCatalog,
   standardCatalog,
   examples,
-} from "@function-renderer/catalog";
+} from "@logic-renderer/catalog";
 ```
 
 - `defineFunction({ params, run })`:`run` 的 `args` 类型由 zod schema 推导。
 - `standardCatalog`:`add/sub/mul/div`、`concat/upper/lower/length`、`delay`、`now`。
 - `examples`:`math-pipeline` / `greeting` / `conditional` / `parallel-demo` / `switch-demo` / `for-demo`。
 
-## `@function-renderer/core`
+## `@logic-renderer/core`
 
 ```ts
 import {
@@ -36,7 +36,7 @@ import {
   getByPath,
   setByPath,
   FunctionRenderError,
-} from "@function-renderer/core";
+} from "@logic-renderer/core";
 ```
 
 - `validate(specJson, fnNames?) => Node`:结构校验 + 未知函数检查,失败抛 `FunctionRenderError`。
@@ -59,4 +59,4 @@ import {
 
 ## LeetCode 协议
 
-LeetCode 题解不再单独成包,而是作为**协议**直接放在文档站(`apps/docs/data/problems.ts`),在浏览器用 `@function-renderer/runner` + `@function-renderer/catalog` 在线运行。见 [LeetCode](/leetcode/)。
+LeetCode 题解不再单独成包,而是作为**协议**直接放在文档站(`apps/docs/data/problems.ts`),在浏览器用 `@logic-renderer/runner` + `@logic-renderer/catalog` 在线运行。见 [LeetCode](/leetcode/)。

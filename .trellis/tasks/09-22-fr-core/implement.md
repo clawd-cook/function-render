@@ -3,7 +3,7 @@
 基线:`. "$HOME/.config/vite-plus/env"`(交互 shell 已自动 source)。
 
 ## Step 0 — 脚手架 + 依赖
-- [ ] 建 `packages/core`,照 `packages/utils` 拷 `package.json`/`tsconfig.json`/`vite.config.ts`;`name` 改 `@function-renderer/core`。
+- [ ] 建 `packages/core`,照 `packages/utils` 拷 `package.json`/`tsconfig.json`/`vite.config.ts`;`name` 改 `@logic-renderer/core`。
 - [ ] `pnpm-workspace.yaml` 的 `catalog:` 加 `zod: ^4.3.6`;`packages/core/package.json` 的 `dependencies` 写 `"zod": "catalog:"`。
 - [ ] `vp install`;`src/index.ts` 空导出;`vp run -r build` 能识别新包。
 
@@ -36,7 +36,7 @@
 vp install
 vp run -r test        # 至少 core 测试绿
 vp check              # 关注 packages/core 源码结果(全仓 check 会带出既有历史 md/json 问题)
-vp run --filter @function-renderer/core build   # 或 vp run -r build
+vp run --filter @logic-renderer/core build   # 或 vp run -r build
 ```
 
 ## Rollback

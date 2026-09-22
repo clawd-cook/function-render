@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { examples, standardCatalog } from "@function-renderer/catalog";
-import { FunctionRenderError, run } from "@function-renderer/runner";
+import { examples, standardCatalog } from "@logic-renderer/catalog";
+import { FunctionRenderError, run } from "@logic-renderer/runner";
 import { computed, ref } from "vue";
 
 type ExampleName = keyof typeof examples;
@@ -66,7 +66,7 @@ async function handleRun(): Promise<void> {
   <main class="app">
     <header>
       <h1>Function Renderer</h1>
-      <p class="subtitle">Vue demo — runs a JSON spec via @function-renderer/runner</p>
+      <p class="subtitle">Vue demo — runs a JSON spec via @logic-renderer/runner</p>
     </header>
 
     <section class="controls">

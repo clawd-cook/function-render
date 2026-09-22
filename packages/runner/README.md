@@ -1,13 +1,13 @@
-# @function-renderer/runner
+# @logic-renderer/runner
 
 Execution layer for the function renderer. Validates a JSON orchestration spec
-(via `@function-renderer/core`) and runs it against a catalog of functions,
+(via `@logic-renderer/core`) and runs it against a catalog of functions,
 maintaining a single shared state addressed by JSON Pointer.
 
 ## Usage
 
 ```ts
-import { run } from "@function-renderer/runner";
+import { run } from "@logic-renderer/runner";
 import { z } from "zod";
 
 const catalog = {

@@ -1,8 +1,8 @@
 # Implement — fr-runner (`packages/runner`)
 
 ## Step 0 — 脚手架
-- [ ] 建 `packages/runner`,照 core 拷配置;`name` = `@function-renderer/runner`。
-- [ ] `package.json`:`dependencies` = `{ "@function-renderer/core": "workspace:*" }`;`devDependencies` 加 `"zod": "catalog:"`(测试定义 params 用)。
+- [ ] 建 `packages/runner`,照 core 拷配置;`name` = `@logic-renderer/runner`。
+- [ ] `package.json`:`dependencies` = `{ "@logic-renderer/core": "workspace:*" }`;`devDependencies` 加 `"zod": "catalog:"`(测试定义 params 用)。
 - [ ] `vp install`。
 
 ## Step 1 — engine
@@ -17,7 +17,7 @@
   - params:`z.object({a:z.number()})` 收到非法 → `FunctionRenderError(kind="validation")`(AC4)。
 
 ## Step 3 — 校验
-- [ ] `vp run -r build`(先建 core 再建 runner);`vp run --filter @function-renderer/runner test` 绿;`vp check packages/runner` 干净(必要时 `vp check --fix`)(AC5)。
+- [ ] `vp run -r build`(先建 core 再建 runner);`vp run --filter @logic-renderer/runner test` 绿;`vp check packages/runner` 干净(必要时 `vp check --fix`)(AC5)。
 
 ## Step 4 — 提交
 - [ ] 提交 `packages/runner` + lockfile;push;更新 PR #1。
@@ -27,7 +27,7 @@
 . "$HOME/.config/vite-plus/env"
 vp install
 vp run -r build
-vp run --filter @function-renderer/runner test
+vp run --filter @logic-renderer/runner test
 vp check packages/runner
 ```
 

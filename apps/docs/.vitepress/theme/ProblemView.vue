@@ -24,7 +24,7 @@ const problem = computed(() => getProblem(props.slug));
     <h2>协议(可编辑,点击运行)</h2>
     <p>
       下面直接展示解题<strong>协议</strong>本身,并用
-      <code>@function-renderer/runner</code> 在浏览器执行。可改协议或输入后点“运行”。
+      <code>@logic-renderer/runner</code> 在浏览器执行。可改协议或输入后点“运行”。
     </p>
     <OnlineRunner :slug="slug" />
 

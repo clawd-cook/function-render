@@ -11,9 +11,9 @@
 
 | 包                           | 职责                                                                  |
 | ---------------------------- | --------------------------------------------------------------------- |
-| `@function-renderer/core`    | 解析层:zod schema/类型、JSON Pointer 共享状态、表达式、校验、错误。   |
-| `@function-renderer/runner`  | 执行层:`run(spec, { catalog, initialState })` → `{ state, result }`。 |
-| `@function-renderer/catalog` | 函数目录工具 + 标准函数(含 `sort` 等复杂算子)+ 共享示例。             |
+| `@logic-renderer/core`    | 解析层:zod schema/类型、JSON Pointer 共享状态、表达式、校验、错误。   |
+| `@logic-renderer/runner`  | 执行层:`run(spec, { catalog, initialState })` → `{ state, result }`。 |
+| `@logic-renderer/catalog` | 函数目录工具 + 标准函数(含 `sort` 等复杂算子)+ 共享示例。             |
 
 > LeetCode 题解不再单独成包:每题的**协议(spec)**直接放在文档站里、在浏览器在线运行(见 [LeetCode](/leetcode/))。
 

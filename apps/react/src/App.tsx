@@ -1,5 +1,5 @@
-import { examples, standardCatalog } from "@function-renderer/catalog";
-import { FunctionRenderError, run } from "@function-renderer/runner";
+import { examples, standardCatalog } from "@logic-renderer/catalog";
+import { FunctionRenderError, run } from "@logic-renderer/runner";
 import { useMemo, useState } from "react";
 
 import "./App.css";
@@ -73,7 +73,7 @@ function App() {
     <main className="app">
       <header>
         <h1>Function Renderer</h1>
-        <p className="subtitle">React demo — runs a JSON spec via @function-renderer/runner</p>
+        <p className="subtitle">React demo — runs a JSON spec via @logic-renderer/runner</p>
       </header>
 
       <section className="controls">

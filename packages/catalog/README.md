@@ -1,4 +1,4 @@
-# @function-renderer/catalog
+# @logic-renderer/catalog
 
 Catalog helpers, a standard function library, and shared example specs for the
 function renderer. The demo apps (`node-service`, `react`, `vue`) all import the
@@ -19,8 +19,8 @@ same `standardCatalog` and `examples` so they behave identically.
 ## Examples
 
 ```ts
-import { standardCatalog, examples } from "@function-renderer/catalog";
-import { run } from "@function-renderer/runner";
+import { standardCatalog, examples } from "@logic-renderer/catalog";
+import { run } from "@logic-renderer/runner";
 
 const { spec, initialState } = examples["math-pipeline"];
 const { state, result } = await run(spec, { catalog: standardCatalog, initialState });

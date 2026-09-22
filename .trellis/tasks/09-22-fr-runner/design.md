@@ -3,7 +3,7 @@
 ## Layout
 ```
 packages/runner/
-  package.json   # name @function-renderer/runner; deps { "@function-renderer/core": "workspace:*" }; devDeps 含 zod(catalog,仅测试用)
+  package.json   # name @logic-renderer/runner; deps { "@logic-renderer/core": "workspace:*" }; devDeps 含 zod(catalog,仅测试用)
   tsconfig.json  # 照 core
   vite.config.ts # pack dts+exports,照 core
   README.md
@@ -19,7 +19,7 @@ packages/runner/
 import {
   validate, resolveArgs, evaluateCondition, getByPath, setByPath, FunctionRenderError,
   type Catalog, type FunctionDef, type Node, type RunContext, type RunResult, type StateModel,
-} from "@function-renderer/core";
+} from "@logic-renderer/core";
 
 export interface RunOptions { catalog: Catalog; initialState?: StateModel; }
 export function run(spec: unknown, options: RunOptions): Promise<RunResult>;
@@ -48,5 +48,5 @@ export function run(spec: unknown, options: RunOptions): Promise<RunResult>;
 - runner 不直接依赖 zod(`params` 由 catalog 提供其 `safeParse`);zod 仅测试用。
 
 ## 依赖 / 注意
-- 消费 `@function-renderer/core` 的 `dist`(exports 指向 dist),需 core 已 `vp pack`。全仓 `vp run -r build` 会先建 core 再建 runner。
+- 消费 `@logic-renderer/core` 的 `dist`(exports 指向 dist),需 core 已 `vp pack`。全仓 `vp run -r build` 会先建 core 再建 runner。
 - 遵循 `.trellis/spec/guides/viteplus-ts-package-conventions.md`(`.ts` 扩展名、`export type`、回调显式类型等)。

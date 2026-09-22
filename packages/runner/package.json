@@ -1,5 +1,5 @@
 {
-  "name": "@function-renderer/runner",
+  "name": "@logic-renderer/runner",
   "version": "0.0.0",
   "description": "Execution layer for the function renderer: runs a validated spec against a catalog.",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "check": "vp check"
   },
   "dependencies": {
-    "@function-renderer/core": "workspace:*"
+    "@logic-renderer/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",

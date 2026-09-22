@@ -1,5 +1,5 @@
 // oxlint-disable unicorn/no-thenable -- `then` is an `if`-node spec field name in these fixtures
-import type { Node } from "@function-renderer/core";
+import type { Node } from "@logic-renderer/core";
 
 export interface ExampleSpec {
   description: string;

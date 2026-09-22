@@ -38,7 +38,7 @@
 - `ProblemView.vue`:展示题面 + **协议 JSON(可编辑)** + 运行按钮(复用 runner);展示默认输入。运行 catalog = `standardCatalog`(含 sort 等复杂算子)。
 - `OnlineRunner.vue`:输入(JSON)+ 协议(可编辑)→ `run(protocol,{catalog:standardCatalog, initialState:input})` → 结果/状态/错误。
 - config sidebar / leetcode index / [slug].paths.ts 改为读取 `apps/docs/data/problems.ts`。
-- docs 依赖改为 `@function-renderer/runner` + `@function-renderer/catalog`(不再依赖 leetcode 包)。
+- docs 依赖改为 `@logic-renderer/runner` + `@logic-renderer/catalog`(不再依赖 leetcode 包)。
 
 ## F. 首批「纯协议」题(用原子算子)
 - **two-sum**:`seq`[ 初始化 result=null; `for` i over range(len(nums)): `for` j: `if` (i<j 且 nums[i]+nums[j]==target 且 result 未定) then set result=[i,j] ]。用 `$at`/`$add`/`$eq`/`$lt`/`$and`/`$state`。

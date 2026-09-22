@@ -1,4 +1,4 @@
-import { run } from "@function-renderer/runner";
+import { run } from "@logic-renderer/runner";
 import { expect, test } from "vite-plus/test";
 
 import { examples, standardCatalog } from "../src/index.ts";

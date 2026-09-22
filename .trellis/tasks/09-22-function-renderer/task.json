@@ -1,6 +1,6 @@
 {
-  "id": "function-renderer",
-  "name": "function-renderer",
+  "id": "logic-renderer",
+  "name": "logic-renderer",
   "title": "函数渲染器 (function renderer execution engine)",
   "description": "",
   "status": "planning",

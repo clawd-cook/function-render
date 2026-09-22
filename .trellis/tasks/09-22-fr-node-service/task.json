@@ -1,7 +1,7 @@
 {
   "id": "fr-node-service",
   "name": "fr-node-service",
-  "title": "function-renderer: node-service",
+  "title": "logic-renderer: node-service",
   "description": "",
   "status": "in_progress",
   "dev_type": null,
@@ -19,7 +19,7 @@
   "pr_url": null,
   "subtasks": [],
   "children": [],
-  "parent": "09-22-function-renderer",
+  "parent": "09-22-logic-renderer",
   "relatedFiles": [],
   "notes": "",
   "meta": {}

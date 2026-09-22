@@ -1,4 +1,4 @@
-import type { Catalog, FunctionDef, RunContext } from "@function-renderer/core";
+import type { Catalog, FunctionDef, RunContext } from "@logic-renderer/core";
 import type { z } from "zod";
 
 /**

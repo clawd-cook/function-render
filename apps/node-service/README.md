@@ -1,7 +1,7 @@
 # node-service
 
 A minimal Node HTTP service demonstrating the function renderer. It reuses the
-same `@function-renderer/runner` and `@function-renderer/catalog` as the React
+same `@logic-renderer/runner` and `@logic-renderer/catalog` as the React
 and Vue apps, so all three behave identically.
 
 ## Run

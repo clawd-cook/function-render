@@ -1,7 +1,7 @@
 # Implement — fr-node-service (`apps/node-service`)
 
 ## Step 0 — 脚手架
-- [ ] 建 `apps/node-service`:`package.json`(name `node-service`,`private`,scripts `dev`/`start` = `node --experimental-strip-types src/server.ts`,`check` = `vp check`;deps `@function-renderer/runner`/`@function-renderer/catalog` `workspace:*`;devDeps `@types/node`/`typescript`/`vite-plus`)、`tsconfig.json`(types node)、`README.md`。
+- [ ] 建 `apps/node-service`:`package.json`(name `node-service`,`private`,scripts `dev`/`start` = `node --experimental-strip-types src/server.ts`,`check` = `vp check`;deps `@logic-renderer/runner`/`@logic-renderer/catalog` `workspace:*`;devDeps `@types/node`/`typescript`/`vite-plus`)、`tsconfig.json`(types node)、`README.md`。
 - [ ] `vp install`。
 
 ## Step 1 — server

@@ -5,7 +5,7 @@
 - [ ] `packages/core/src/schema.ts`:`ValueSchema`(宽松);`Node` 的 args/if/switch/for 用 `ValueSchema`;导出 `Value`。
 - [ ] `packages/core/src/index.ts`:导出 `evaluate`、`Value`。
 - [ ] `packages/core/tests/expr.test.ts`:补原子算子(算术/比较/逻辑/集合/$if 惰性/错误)+ 旧条件兼容。
-- [ ] `vp run --filter @function-renderer/core test` 绿;`vp check packages/core` 干净。
+- [ ] `vp run --filter @logic-renderer/core test` 绿;`vp check packages/core` 干净。
 
 ## 阶段 2 — runner + catalog
 - [ ] `packages/runner/src/engine.ts`:if/switch/for 用 `evaluate`;call 用 `resolveArgs`(已含算子)。
@@ -16,7 +16,7 @@
 ## 阶段 3 — 文档协议化(移除 leetcode 包)
 - [ ] 删除 `packages/leetcode`。
 - [ ] `apps/docs/data/problems.ts`:首批题(two-sum/move-zeroes/maximum-subarray 纯协议 + 一个用 sort 的示例),含 spec/input/expected/metadata。
-- [ ] `apps/docs` 依赖:去掉 leetcode,加 `@function-renderer/catalog`。
+- [ ] `apps/docs` 依赖:去掉 leetcode,加 `@logic-renderer/catalog`。
 - [ ] `ProblemView.vue`/`OnlineRunner.vue`:展示可编辑协议 JSON + 输入 + 运行(catalog=standardCatalog)。
 - [ ] `.vitepress/config.ts` / `leetcode/index` / `[slug].paths.ts` / `LeetcodeIndex.vue`:改读 `data/problems.ts`。
 - [ ] `vitepress build` 通过;`vp check apps/docs` 干净。

@@ -9,5 +9,5 @@ export type {
   RunResult,
   StateModel,
   Node,
-} from "@function-renderer/core";
-export { FunctionRenderError } from "@function-renderer/core";
+} from "@logic-renderer/core";
+export { FunctionRenderError } from "@logic-renderer/core";

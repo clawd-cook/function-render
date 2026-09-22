@@ -1,10 +1,10 @@
-# fr-runner — `@function-renderer/runner`(执行层)
+# fr-runner — `@logic-renderer/runner`(执行层)
 
-> 父任务:`../09-22-function-renderer`。依赖 `fr-core`(已完成)。
+> 父任务:`../09-22-logic-renderer`。依赖 `fr-core`(已完成)。
 
 ## Goal
 
-实现 `packages/runner`:接收 JSON spec + catalog + 初始 state,按 `core` 的语义执行编排并产出结果。依赖 `@function-renderer/core` 的类型/校验/表达式/state。
+实现 `packages/runner`:接收 JSON spec + catalog + 初始 state,按 `core` 的语义执行编排并产出结果。依赖 `@logic-renderer/core` 的类型/校验/表达式/state。
 
 ## Requirements
 
@@ -20,7 +20,7 @@
 - [ ] AC2 四节点语义 + 嵌套组合正确(`seq` 末项 / `parallel` 数组 / `if` 命中与否)。
 - [ ] AC3 fail-fast:函数抛错 → `FunctionRenderError(kind="call")` 含 path/fnName/cause 且中止;`parallel` 一分支失败即整体失败。
 - [ ] AC4 有 `params` 的函数收到非法参数 → `FunctionRenderError(kind="validation")`。
-- [ ] AC5 `vp run --filter @function-renderer/runner test` 绿;`vp check packages/runner` 干净;`vp pack` 出 dist。
+- [ ] AC5 `vp run --filter @logic-renderer/runner test` 绿;`vp check packages/runner` 干净;`vp pack` 出 dist。
 
 ## Out of Scope
 
@@ -29,4 +29,4 @@
 
 ## Notes
 
-- 依赖 `@function-renderer/core`(`workspace:*`)。消费其 `dist`,故需先 `vp run -r build` 构建 core(已构建)。
+- 依赖 `@logic-renderer/core`(`workspace:*`)。消费其 `dist`,故需先 `vp run -r build` 构建 core(已构建)。

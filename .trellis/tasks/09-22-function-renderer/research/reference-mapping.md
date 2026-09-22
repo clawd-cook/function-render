@@ -1,4 +1,4 @@
-# Research — 参考 API 映射(json-render / liteflow → function-renderer)
+# Research — 参考 API 映射(json-render / liteflow → logic-renderer)
 
 实现时可直接查阅以下子模块源文件(已本地检出)。本引擎**仅借鉴语义、自实现最小子集**,不作为 npm 依赖。
 

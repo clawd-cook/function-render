@@ -3,7 +3,7 @@
 ## Layout
 ```
 packages/catalog/
-  package.json   # name @function-renderer/catalog; deps { core: workspace:*, zod: catalog: }; devDeps { runner: workspace:* , ... }
+  package.json   # name @logic-renderer/catalog; deps { core: workspace:*, zod: catalog: }; devDeps { runner: workspace:* , ... }
   tsconfig.json / vite.config.ts / README.md  # 照 core
   src/
     index.ts     # 汇出
@@ -18,7 +18,7 @@ packages/catalog/
 ## define.ts
 ```ts
 import type { z } from "zod";
-import type { Catalog, FunctionDef, RunContext } from "@function-renderer/core";
+import type { Catalog, FunctionDef, RunContext } from "@logic-renderer/core";
 
 export function defineFunction<S extends z.ZodType>(def: {
   params: S;
@@ -39,7 +39,7 @@ export function defineCatalog<C extends Catalog>(catalog: C): C {
 ## examples.ts
 ```ts
 // oxlint-disable unicorn/no-thenable -- `then` 是 if 节点字段名
-import type { Node } from "@function-renderer/core";
+import type { Node } from "@logic-renderer/core";
 export interface ExampleSpec { description: string; spec: Node; initialState?: Record<string, unknown>; }
 export const examples = { "math-pipeline": {...}, "greeting": {...}, "conditional": {...} } satisfies Record<string, ExampleSpec>;
 ```

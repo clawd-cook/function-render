@@ -1,5 +1,5 @@
 {
-  "name": "@function-renderer/core",
+  "name": "@logic-renderer/core",
   "version": "0.0.0",
   "description": "Parsing layer for the function renderer: schema, JSON Pointer state, expressions and validation.",
   "license": "MIT",

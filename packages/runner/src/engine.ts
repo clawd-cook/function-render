@@ -12,7 +12,7 @@ import {
   type RunContext,
   type RunResult,
   type StateModel,
-} from "@function-renderer/core";
+} from "@logic-renderer/core";
 
 export interface RunOptions {
   catalog: Catalog;

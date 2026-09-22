@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { standardCatalog } from "@function-renderer/catalog";
-import { FunctionRenderError, run } from "@function-renderer/runner";
+import { standardCatalog } from "@logic-renderer/catalog";
+import { FunctionRenderError, run } from "@logic-renderer/runner";
 import { computed, ref } from "vue";
 
 import { getProblem } from "../../data/problems.ts";

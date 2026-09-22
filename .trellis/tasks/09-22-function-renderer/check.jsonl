@@ -1,3 +1,3 @@
 {"file": ".trellis/spec/utils/backend/index.md", "reason": "对新库做质量检查时的编码规范/质量清单入口"}
-{"file": ".trellis/tasks/09-22-function-renderer/research/reference-mapping.md", "reason": "核对实现是否符合所借鉴的参考语义与验收面"}
+{"file": ".trellis/tasks/09-22-logic-renderer/research/reference-mapping.md", "reason": "核对实现是否符合所借鉴的参考语义与验收面"}
 {"file": ".trellis/spec/guides/index.md", "reason": "跨层/复用一致性检查指南"}

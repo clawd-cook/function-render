@@ -9,8 +9,8 @@
     "check": "vp check"
   },
   "dependencies": {
-    "@function-renderer/catalog": "workspace:*",
-    "@function-renderer/runner": "workspace:*"
+    "@logic-renderer/catalog": "workspace:*",
+    "@logic-renderer/runner": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",

@@ -1,8 +1,8 @@
-# @function-renderer/core
+# @logic-renderer/core
 
 Parsing layer for the function renderer. Framework-agnostic, pure logic — no
 execution engine and no UI. It provides the shared building blocks consumed by
-`@function-renderer/runner`, `@function-renderer/catalog`, and the demo apps.
+`@logic-renderer/runner`, `@logic-renderer/catalog`, and the demo apps.
 
 ## What's inside
 
@@ -40,7 +40,7 @@ execution engine and no UI. It provides the shared building blocks consumed by
 ## Example
 
 ```ts
-import { validate, resolveArgs, getByPath, setByPath } from "@function-renderer/core";
+import { validate, resolveArgs, getByPath, setByPath } from "@logic-renderer/core";
 
 const node = validate({ call: "add", args: { a: { $state: "/x" }, b: 2 } }, ["add"]);
 
@@ -50,4 +50,4 @@ resolveArgs((node as { args: any }).args, ctx); // { a: 40, b: 2 }
 ```
 
 Execution (running a validated `Node` against a catalog) lives in
-`@function-renderer/runner`.
+`@logic-renderer/runner`.

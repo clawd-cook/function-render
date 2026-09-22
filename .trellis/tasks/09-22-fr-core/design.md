@@ -3,7 +3,7 @@
 ## Layout
 ```
 packages/core/
-  package.json      # name "@function-renderer/core", type module; deps: { zod: "catalog:" }; scripts 照 packages/utils
+  package.json      # name "@logic-renderer/core", type module; deps: { zod: "catalog:" }; scripts 照 packages/utils
   tsconfig.json     # 照 utils
   vite.config.ts    # pack: dts(tsgo) + exports(照 utils)
   README.md

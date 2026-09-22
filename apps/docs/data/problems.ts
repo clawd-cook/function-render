@@ -1,10 +1,10 @@
 // oxlint-disable unicorn/no-thenable -- `then` is an `if`-node spec field name in these protocols
-import type { Node } from "@function-renderer/runner";
+import type { Node } from "@logic-renderer/runner";
 
 export type Difficulty = "简单" | "中等" | "困难";
 
 /**
- * A LeetCode problem expressed directly as a function-renderer **protocol**
+ * A LeetCode problem expressed directly as a logic-renderer **protocol**
  * (spec). The protocol is shown in the docs and executed in the browser — no
  * per-problem solution function. Most use only atomic operators + orchestration;
  * some `call` a registered complex operator (e.g. `sort`).
@@ -17,7 +17,7 @@ export interface Problem {
   difficulty: Difficulty;
   category: string;
   description: string;
-  /** function-renderer protocol that solves the problem. */
+  /** logic-renderer protocol that solves the problem. */
   spec: Node;
   /** Default input (initial shared state). */
   input: Record<string, unknown>;

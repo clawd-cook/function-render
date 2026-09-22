@@ -1,5 +1,5 @@
 {
-  "name": "@function-renderer/catalog",
+  "name": "@logic-renderer/catalog",
   "version": "0.0.0",
   "description": "Catalog helpers, a standard function library, and shared example specs for the function renderer.",
   "license": "MIT",
@@ -21,11 +21,11 @@
     "check": "vp check"
   },
   "dependencies": {
-    "@function-renderer/core": "workspace:*",
+    "@logic-renderer/core": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@function-renderer/runner": "workspace:*",
+    "@logic-renderer/runner": "workspace:*",
     "@types/node": "^26.1.1",
     "typescript": "^7.0.2",
     "vite": "catalog:",

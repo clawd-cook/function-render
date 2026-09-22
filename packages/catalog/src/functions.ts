@@ -1,4 +1,4 @@
-import type { Catalog } from "@function-renderer/core";
+import type { Catalog } from "@logic-renderer/core";
 import { z } from "zod";
 
 import { defineFunction } from "./define.ts";

@@ -18,9 +18,9 @@
 ## Architecture / Deliverables(本轮新增:模块化拆分 + 多端应用)
 
 ### Packages(库)
-- **`packages/core`** — `@function-renderer/core`,**解析层**:类型 + zod schema(`Node`/`Condition`/`DynamicValue`,`z.infer` 反推类型)+ spec 解析/校验(`parse`/`validate`)+ 表达式(`resolveArgs`/`evaluateCondition`)+ JSON Pointer state(`getByPath`/`setByPath`)+ `FunctionRenderError`。依赖 `zod`。**不含执行、不含 UI。**
-- **`packages/runner`** — `@function-renderer/runner`,**执行层**:`run(spec, { catalog, initialState })`、engine(`call`/`seq`/`parallel`/`if`、fail-fast)、`RunContext`。依赖 `core`。
-- **`packages/catalog`** — `@function-renderer/catalog`(拟定的「别的模块」,待确认):`defineCatalog` + `FunctionDef`(`params: zod`)+ 一组示例/标准函数,供三个 app 复用。依赖 `core`(类型)。
+- **`packages/core`** — `@logic-renderer/core`,**解析层**:类型 + zod schema(`Node`/`Condition`/`DynamicValue`,`z.infer` 反推类型)+ spec 解析/校验(`parse`/`validate`)+ 表达式(`resolveArgs`/`evaluateCondition`)+ JSON Pointer state(`getByPath`/`setByPath`)+ `FunctionRenderError`。依赖 `zod`。**不含执行、不含 UI。**
+- **`packages/runner`** — `@logic-renderer/runner`,**执行层**:`run(spec, { catalog, initialState })`、engine(`call`/`seq`/`parallel`/`if`、fail-fast)、`RunContext`。依赖 `core`。
+- **`packages/catalog`** — `@logic-renderer/catalog`(拟定的「别的模块」,待确认):`defineCatalog` + `FunctionDef`(`params: zod`)+ 一组示例/标准函数,供三个 app 复用。依赖 `core`(类型)。
 - 现有 `packages/utils`:保留不动(与本功能无关)。
 
 ### Apps(应用 —— 三者平级、互不依赖)
@@ -35,7 +35,7 @@
 
 ## Proposed Task Tree(父 + 子,待确认)
 
-- 父:`09-22-function-renderer`(持有本总纲、跨子验收、集成 review;不直接实现)。
+- 父:`09-22-logic-renderer`(持有本总纲、跨子验收、集成 review;不直接实现)。
 - 子(各自可独立规划/实现/验收/归档;依赖写进各自 artifacts):
   1. `core`(packages/core)——无前置
   2. `runner`(packages/runner)——依赖 core

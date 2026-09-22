@@ -1,10 +1,10 @@
 # fr-node-service — `apps/node-service`
 
-> 父任务:`../09-22-function-renderer`。依赖 `runner` + `catalog`。与 react/vue **平级**。
+> 父任务:`../09-22-logic-renderer`。依赖 `runner` + `catalog`。与 react/vue **平级**。
 
 ## Goal
 
-一个最小 Node HTTP 服务,演示函数渲染器:接收 JSON spec + 初始 state,用 `@function-renderer/runner` + `@function-renderer/catalog` 执行并返回结果。纯逻辑封装,证明「逻辑与框架无关」。
+一个最小 Node HTTP 服务,演示函数渲染器:接收 JSON spec + 初始 state,用 `@logic-renderer/runner` + `@logic-renderer/catalog` 执行并返回结果。纯逻辑封装,证明「逻辑与框架无关」。
 
 ## Requirements
 
@@ -28,5 +28,5 @@
 
 ## Notes
 
-- 依赖 `@function-renderer/runner`/`@function-renderer/catalog`(`workspace:*`,消费 dist,需先 `vp run -r build`)。
+- 依赖 `@logic-renderer/runner`/`@logic-renderer/catalog`(`workspace:*`,消费 dist,需先 `vp run -r build`)。
 - 单文件 `src/server.ts` 仅用 bare specifier 导入,避免相对 `.ts` + strip-types 的坑;类型导入用 `import type`。

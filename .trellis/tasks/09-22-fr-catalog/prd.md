@@ -1,6 +1,6 @@
-# fr-catalog — `@function-renderer/catalog`
+# fr-catalog — `@logic-renderer/catalog`
 
-> 父任务:`../09-22-function-renderer`。依赖 `fr-core`。测试依赖 `fr-runner`(devDep)。
+> 父任务:`../09-22-logic-renderer`。依赖 `fr-core`。测试依赖 `fr-runner`(devDep)。
 
 ## Goal
 
@@ -12,14 +12,14 @@
 - **R2 `defineCatalog(catalog)`**:恒等封装,保留字面量类型(键名自动补全),接受 `FnImpl` 或 `FunctionDef` 条目。
 - **R3 标准函数 `standardCatalog`**:数学(`add`/`sub`/`mul`/`div`)、字符串(`concat`/`upper`/`lower`/`length`)、异步(`delay`)、`now`;均带 zod `params`。`satisfies Catalog`。
 - **R4 示例 `examples`**:命名示例 `{ description, spec, initialState? }`,覆盖 `seq`/`parallel`/`if` 与 `$state`/`out`,均只用 `standardCatalog` 中的函数。
-- **R5 测试**:用 `@function-renderer/runner` 跑通每个示例并断言结果;校验 `standardCatalog` 各函数;`defineFunction` 的参数类型推导(编译期即验证)。
+- **R5 测试**:用 `@logic-renderer/runner` 跑通每个示例并断言结果;校验 `standardCatalog` 各函数;`defineFunction` 的参数类型推导(编译期即验证)。
 
 ## Acceptance Criteria
 
 - [ ] AC1 `defineFunction` 下 `run` 的 `args` 被正确推导(无需手动断言)。
 - [ ] AC2 `standardCatalog` 各函数行为正确(含 async `delay`)。
 - [ ] AC3 每个 `examples` 用 runner 跑通得到预期 `result`/`state`。
-- [ ] AC4 `vp run --filter @function-renderer/catalog test` 绿;`vp check packages/catalog` 干净;`vp pack` 出 dist。
+- [ ] AC4 `vp run --filter @logic-renderer/catalog test` 绿;`vp check packages/catalog` 干净;`vp pack` 出 dist。
 
 ## Out of Scope
 
@@ -27,4 +27,4 @@
 
 ## Notes
 
-- 运行时依赖:`@function-renderer/core`(类型)+ `zod`(params)。测试用 `@function-renderer/runner`(devDep)。
+- 运行时依赖:`@logic-renderer/core`(类型)+ `zod`(params)。测试用 `@logic-renderer/runner`(devDep)。

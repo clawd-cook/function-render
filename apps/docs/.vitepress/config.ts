@@ -14,13 +14,13 @@ const leetcodeGroups = categories.map((category) => ({
 export default defineConfig({
   title: "Function Renderer",
   description: "声明式函数执行引擎 — 用 JSON 编排已注册函数,浏览器在线运行 LeetCode",
-  base: "/function-render/",
+  base: "/logic-render/",
   lang: "zh-CN",
   themeConfig: {
     nav: [
       { text: "指南", link: "/guide/overview" },
       { text: "LeetCode", link: "/leetcode/" },
-      { text: "GitHub", link: "https://github.com/clawd-cook/function-render" },
+      { text: "GitHub", link: "https://github.com/clawd-cook/logic-render" },
     ],
     sidebar: {
       "/guide/": [
@@ -39,6 +39,6 @@ export default defineConfig({
       ],
     },
     outline: { level: "deep", label: "本页目录" },
-    socialLinks: [{ icon: "github", link: "https://github.com/clawd-cook/function-render" }],
+    socialLinks: [{ icon: "github", link: "https://github.com/clawd-cook/logic-render" }],
   },
 });

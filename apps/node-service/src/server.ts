@@ -1,7 +1,7 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 
-import { examples, standardCatalog } from "@function-renderer/catalog";
-import { FunctionRenderError, run } from "@function-renderer/runner";
+import { examples, standardCatalog } from "@logic-renderer/catalog";
+import { FunctionRenderError, run } from "@logic-renderer/runner";
 
 const PORT = Number(process.env.PORT ?? 8787);
 

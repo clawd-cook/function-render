@@ -10,8 +10,8 @@
     "preview": "vp preview"
   },
   "dependencies": {
-    "@function-renderer/catalog": "workspace:*",
-    "@function-renderer/runner": "workspace:*",
+    "@logic-renderer/catalog": "workspace:*",
+    "@logic-renderer/runner": "workspace:*",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },

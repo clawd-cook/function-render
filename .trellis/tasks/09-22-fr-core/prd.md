@@ -1,6 +1,6 @@
-# fr-core — `@function-renderer/core`(解析层)
+# fr-core — `@logic-renderer/core`(解析层)
 
-> 父任务:`../09-22-function-renderer`(总纲/共享契约见父 `prd.md`/`design.md`)。本子任务交付**解析层库**,无前置依赖。
+> 父任务:`../09-22-logic-renderer`(总纲/共享契约见父 `prd.md`/`design.md`)。本子任务交付**解析层库**,无前置依赖。
 
 ## Goal
 
@@ -10,7 +10,7 @@
 
 ## Confirmed Facts
 
-- 包名 `@function-renderer/core`,目录 `packages/core`,ESM,`vp pack` 打包 / `vp test` 测试(照 `packages/utils`)。
+- 包名 `@logic-renderer/core`,目录 `packages/core`,ESM,`vp pack` 打包 / `vp test` 测试(照 `packages/utils`)。
 - 运行时依赖:`zod`(经仓库 `catalog:` 加 `zod: ^4.3.6`)。
 - 输入 = JSON 编排树;数据模型 = 单一共享 state + JSON Pointer;表达式 MVP = `$state`(值)+ 条件(`$state`+比较/`$and`/`$or`/隐式 AND)。
 

@@ -1,4 +1,4 @@
-import type { RunContext } from "@function-renderer/core";
+import type { RunContext } from "@logic-renderer/core";
 import { expect, test } from "vite-plus/test";
 import { z } from "zod";
 
