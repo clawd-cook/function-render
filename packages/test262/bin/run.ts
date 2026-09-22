@@ -6,7 +6,7 @@
  * Run: node --experimental-strip-types packages/test262/bin/run.ts
  */
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -64,6 +64,27 @@ async function main(): Promise<void> {
   };
 
   writeReport(report, DATA_DIR);
+
+  // Browser-friendly corpus for the docs dashboard (no TS/node imports needed there).
+  writeFileSync(
+    join(DATA_DIR, "corpus.json"),
+    `${JSON.stringify(
+      corpus.map((e) => ({
+        id: e.id,
+        test262Path: e.test262Path,
+        esid: e.esid,
+        category: e.category,
+        description: e.description,
+        spec: e.spec,
+        input: e.input,
+        expectation: e.expectation,
+        notes: e.notes,
+      })),
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
 
   const c = report.conformance;
   process.stdout.write(
