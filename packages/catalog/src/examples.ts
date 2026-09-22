@@ -56,6 +56,27 @@ export const examples = {
       ],
     },
   },
+  "switch-demo": {
+    description: "Pick a branch by a state key (switch / cases / default).",
+    initialState: { op: "double", x: 7 },
+    spec: {
+      switch: { $state: "/op" },
+      cases: {
+        double: { call: "mul", args: { a: { $state: "/x" }, b: 2 } },
+        square: { call: "mul", args: { a: { $state: "/x" }, b: { $state: "/x" } } },
+      },
+      default: { call: "add", args: { a: { $state: "/x" }, b: 0 } },
+    },
+  },
+  "for-demo": {
+    description: "Iterate over an array and collect results (for / body).",
+    initialState: { items: [1, 2, 3] },
+    spec: {
+      for: { $state: "/items" },
+      as: "/n",
+      body: { call: "mul", args: { a: { $state: "/n" }, b: 10 } },
+    },
+  },
 } satisfies Record<string, ExampleSpec>;
 
 export type ExampleName = keyof typeof examples;

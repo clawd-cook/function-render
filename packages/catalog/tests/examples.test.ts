@@ -39,3 +39,15 @@ test("parallel-demo returns both results", async () => {
   const { result } = await run(spec, { catalog: standardCatalog, initialState });
   expect(result).toEqual([10, 15]);
 });
+
+test("switch-demo picks the double branch", async () => {
+  const { spec, initialState } = examples["switch-demo"];
+  const { result } = await run(spec, { catalog: standardCatalog, initialState });
+  expect(result).toBe(14);
+});
+
+test("for-demo maps each item", async () => {
+  const { spec, initialState } = examples["for-demo"];
+  const { result } = await run(spec, { catalog: standardCatalog, initialState });
+  expect(result).toEqual([10, 20, 30]);
+});

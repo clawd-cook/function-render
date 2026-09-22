@@ -43,3 +43,38 @@ test("validate rejects an invalid JSON Pointer in out", () => {
 test("validate rejects an if without then", () => {
   expect(() => validate({ if: true } as unknown, catalog)).toThrow(FunctionRenderError);
 });
+
+test("validate accepts switch and for nodes and checks nested calls", () => {
+  const switchSpec = {
+    switch: { $state: "/op" },
+    cases: { a: { call: "add", args: { a: 1, b: 2 } } },
+    default: { call: "fetchUser" },
+  };
+  expect(validate(switchSpec, catalog)).toEqual(switchSpec);
+
+  const forSpec = {
+    for: { $state: "/items" },
+    as: "/n",
+    body: { call: "add", args: { a: 1, b: 2 } },
+  };
+  expect(validate(forSpec, catalog)).toEqual(forSpec);
+});
+
+test("validate locates unknown functions inside switch cases and for body", () => {
+  try {
+    validate({ switch: { $state: "/op" }, cases: { x: { call: "nope" } } }, catalog);
+    throw new Error("expected throw");
+  } catch (err) {
+    expect((err as FunctionRenderError).path).toBe("/switch/cases/x");
+  }
+  try {
+    validate({ for: [1, 2], body: { call: "nope" } }, catalog);
+    throw new Error("expected throw");
+  } catch (err) {
+    expect((err as FunctionRenderError).path).toBe("/for/body");
+  }
+});
+
+test("validate rejects a for node without body", () => {
+  expect(() => validate({ for: [1, 2] } as unknown, catalog)).toThrow(FunctionRenderError);
+});

@@ -92,6 +92,30 @@ async function exec(
     );
   }
 
+  if ("switch" in node) {
+    const key = String(resolveArgs(node.switch, ctx));
+    if (Object.prototype.hasOwnProperty.call(node.cases, key)) {
+      return exec(node.cases[key]!, `${path}/switch/cases/${key}`, catalog, ctx);
+    }
+    return node.default ? exec(node.default, `${path}/switch/default`, catalog, ctx) : undefined;
+  }
+
+  if ("for" in node) {
+    const source = resolveArgs(node.for, ctx);
+    const items: unknown[] = Array.isArray(source)
+      ? source
+      : typeof source === "number"
+        ? Array.from({ length: Math.max(0, Math.floor(source)) }, (_unused, i) => i)
+        : [];
+    const results: unknown[] = [];
+    for (let i = 0; i < items.length; i++) {
+      if (node.as !== undefined) ctx.set(node.as, items[i]);
+      if (node.indexAs !== undefined) ctx.set(node.indexAs, i);
+      results.push(await exec(node.body, `${path}/for/body`, catalog, ctx));
+    }
+    return results;
+  }
+
   if (evaluateCondition(node.if, ctx)) {
     return exec(node.then, `${path}/then`, catalog, ctx);
   }
