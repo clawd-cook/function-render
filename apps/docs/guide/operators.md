@@ -1,63 +1,60 @@
 # 编排算子
 
-spec 是一棵 JSON 树,每个节点**有且仅有一个**判别键。
+spec 是一棵 JSON 树,每个节点形如 `{ "type", "params", "outputTo?" }`。
 
-## `call` — 调用函数
+v1 交付:`then` / `if` / `set` / `callFunc`。其余 NodeType(如 `when` / `for` / `tryCatch`)属视界,尚未实现。
+
+## `callFunc` — 调用业务 Func
 
 ```json
 {
-  "call": "twoSum",
-  "args": { "nums": { "$state": "/nums" }, "target": { "$state": "/target" } },
-  "out": "/result"
+  "type": "callFunc",
+  "params": {
+    "funcKey": "deductBalance",
+    "args": { "merchantId": "$.input.merchantId", "amount": "$.totalAmount" }
+  },
+  "outputTo": "$.receipt"
 }
 ```
 
-- `args`:参数对象,支持 `{ "$state": "/ptr" }` 从共享 state 读取;其余为字面量。
-- `out`(可选):把返回值写回该 JSON Pointer。
-- 若该函数在 catalog 里声明了 zod `params`,调用前会校验参数。
+- `args`:各值是 Expr(可含 Slot 读与 ExprAtom)。
+- `outputTo`(可选):把返回值写入 Slot。
+- `preview: true` 时求值并校验 schema,但**永不**调用 `Func.run`。
 
-## `seq` — 串行
-
-```json
-{ "seq": [ NodeA, NodeB ] }
-```
-
-顺序执行,`result` 为最后一个子节点的结果。
-
-## `parallel` — 并行
+## `then` — 串行
 
 ```json
-{ "parallel": [ NodeA, NodeB ] }
+{ "type": "then", "params": { "nodes": [NodeA, NodeB] } }
 ```
 
-`Promise.all` 语义,`result` 为各子节点结果数组。
+顺序执行,`result` 为最后一个子节点的结果;空数组 → `undefined`。
 
 ## `if` — 条件
 
 ```json
-{ "if": { "$state": "/flag" }, "then": NodeA, "else": NodeB }
+{
+  "type": "if",
+  "params": {
+    "condition": { "$gt": ["$.input.score", 59] },
+    "trueBranch": NodeA,
+    "falseBranch": NodeB
+  }
+}
 ```
 
-条件语法:`{ "$state": "/p" }`(真值)、比较 `eq/neq/gt/gte/lt/lte`、`not`、数组隐式 AND、`{ "$and": [...] }`、`{ "$or": [...] }`。
+`Boolean(evaluate(condition))` 选枝;无 `falseBranch` 且条件假 → `undefined`。
 
-## `switch` — 多路分支
+## `set` — 写 Slot
 
 ```json
-{ "switch": {"$state":"/op"},
-  "cases": { "double": NodeA, "square": NodeB },
-  "default": NodeC }
+{
+  "type": "set",
+  "params": { "path": "$.tax", "value": { "$mul": ["$.input.orderAmount", 0.06] } }
+}
 ```
 
-对 `switch` 求值 → 以 `String(值)` 命中 `cases[key]`,否则走 `default`。
+写入并返回求值后的 `value`。`$.input` 只读。
 
-## `for` — 遍历 / 循环
+## 错误
 
-```json
-{ "for": {"$state":"/items"}, "as": "/n", "indexAs": "/i", "body": Node }
-```
-
-`for` 求值为**数组**逐元素、或**数字 n** 作 `0..n-1`;每次把 item / index 写到 `as` / `indexAs`,顺序执行 `body` 并收集结果数组。
-
-## 错误(fail-fast)
-
-任一 `call` 抛错即中止,抛出 `FunctionRenderError`(含 `kind`、`path` 节点定位、`fnName`、`cause`);`parallel` 任一分支失败即整体失败;非法参数为 `kind: "validation"`。
+fail-fast。`FunctionRenderError.phase` 为 `validate` / `run` / `rollback`。副作用 Func 成功入栈后,后续失败会逆序调用 `rollback`。

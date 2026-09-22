@@ -1,7 +1,7 @@
 {
   "name": "@logic-renderer/catalog",
   "version": "0.0.0",
-  "description": "Catalog helpers, a standard function library, and shared example specs for the function renderer.",
+  "description": "Demo FuncRegistry helpers and shared FlowSpec examples.",
   "license": "MIT",
   "files": [
     "dist"

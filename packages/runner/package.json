@@ -1,7 +1,7 @@
 {
   "name": "@logic-renderer/runner",
   "version": "0.0.0",
-  "description": "Execution layer for the function renderer: runs a validated spec against a catalog.",
+  "description": "Execution layer: run(spec, { input, funcs, preview? }) with rollback.",
   "license": "MIT",
   "files": [
     "dist"

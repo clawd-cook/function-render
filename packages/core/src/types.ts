@@ -1,36 +1,69 @@
 import type { z } from "zod";
 
-/** The shared, mutable state model addressed by JSON Pointer. */
-export type StateModel = Record<string, unknown>;
+/** Shared Slot space: `{ input, …outputTo }`. */
+export type SlotSpace = Record<string, unknown>;
+
+/** @deprecated Use {@link SlotSpace}. */
+export type StateModel = SlotSpace;
 
 /**
- * Runtime handle passed to function implementations and used by the engine to
- * read/write the shared state. `state` is the same object the pointers address.
+ * A business function injected via FuncRegistry.
+ * Bare functions are pure. Object form may declare params, sideEffect, rollback.
  */
-export interface RunContext {
-  get(pointer: string): unknown;
-  set(pointer: string, value: unknown): void;
-  state: StateModel;
+export type Func =
+  | ((args: Record<string, unknown>) => unknown)
+  | {
+      run: (args: Record<string, unknown>) => unknown;
+      params?: z.ZodType;
+      sideEffect?: boolean;
+      rollback?: (args: Record<string, unknown>, result: unknown) => unknown;
+    };
+
+/** Per-`run` / `validate` value — not a global register(). */
+export type FuncRegistry = Readonly<Record<string, Func>>;
+
+/** Normalized Func used by the runner. */
+export interface NormalizedFunc {
+  run: (args: Record<string, unknown>) => unknown;
+  params?: z.ZodType;
+  sideEffect: boolean;
+  rollback?: (args: Record<string, unknown>, result: unknown) => unknown;
 }
 
-/** Result of executing a spec: the final shared state and the root result. */
+export function normalizeFunc(fn: Func): NormalizedFunc {
+  if (typeof fn === "function") {
+    return { run: fn, sideEffect: false };
+  }
+  return {
+    run: fn.run,
+    params: fn.params,
+    sideEffect: fn.sideEffect === true,
+    rollback: fn.rollback,
+  };
+}
+
+/** v1 NodeTypes (settlement subset). Horizon types are rejected until batch 2. */
+export type NodeType = "then" | "if" | "set" | "callFunc";
+
+export interface NodeSpec {
+  type: NodeType;
+  params: Record<string, unknown>;
+  outputTo?: string;
+}
+
+/** Root must be a single node; sequences use `type: "then"`. */
+export type FlowSpec = NodeSpec;
+
 export interface RunResult {
-  state: StateModel;
+  state: SlotSpace;
   result: unknown;
 }
 
-/**
- * A registered function. When `params` is provided, the engine validates the
- * resolved arguments with it before calling `run`, and the `args` type is
- * inferred from the schema.
- */
-export interface FunctionDef<S extends z.ZodType = z.ZodType> {
-  params?: S;
-  run: (args: z.infer<S>, ctx: RunContext) => unknown;
-}
+/** @deprecated Prefer {@link Func}. */
+export type FunctionDef = Extract<Func, { run: unknown }>;
 
-/** Bare function implementation (no argument schema, no validation). */
-export type FnImpl = (args: any, ctx: RunContext) => unknown;
+/** @deprecated Prefer bare Func. */
+export type FnImpl = (args: Record<string, unknown>) => unknown;
 
-/** A catalog maps function names to a {@link FunctionDef} or bare {@link FnImpl}. */
-export type Catalog = Record<string, FunctionDef | FnImpl>;
+/** @deprecated Prefer {@link FuncRegistry}. */
+export type Catalog = FuncRegistry;

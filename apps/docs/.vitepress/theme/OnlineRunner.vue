@@ -14,7 +14,7 @@ interface Success {
 }
 interface Failure {
   ok: false;
-  error: { message: string; kind?: string; path?: string; fnName?: string };
+  error: { message: string; phase?: string; path?: string; funcKey?: string };
 }
 
 const problem = computed(() => getProblem(props.slug));
@@ -34,16 +34,21 @@ async function handleRun(): Promise<void> {
   output.value = null;
   try {
     const spec: unknown = JSON.parse(specText.value);
-    const initialState: Record<string, unknown> = inputText.value.trim()
-      ? (JSON.parse(inputText.value) as Record<string, unknown>)
-      : {};
-    const { result, state } = await run(spec, { catalog: standardCatalog, initialState });
+    const input: unknown = inputText.value.trim()
+      ? (JSON.parse(inputText.value) as unknown)
+      : undefined;
+    const { result, state } = await run(spec, { funcs: standardCatalog, input });
     output.value = { ok: true, result, state };
   } catch (error) {
     if (error instanceof FunctionRenderError) {
       output.value = {
         ok: false,
-        error: { message: error.message, kind: error.kind, path: error.path, fnName: error.fnName },
+        error: {
+          message: error.message,
+          phase: error.phase,
+          path: error.path,
+          funcKey: error.funcKey,
+        },
       };
     } else {
       output.value = {

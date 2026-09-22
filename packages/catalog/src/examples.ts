@@ -1,80 +1,119 @@
-// oxlint-disable unicorn/no-thenable -- `then` is an `if`-node spec field name in these fixtures
-import type { Node } from "@logic-renderer/core";
+// oxlint-disable unicorn/no-thenable -- `then` is a NodeType in these fixtures
+import type { FlowSpec } from "@logic-renderer/core";
 
 export interface ExampleSpec {
   description: string;
-  spec: Node;
-  initialState?: Record<string, unknown>;
+  spec: FlowSpec;
+  /** Becomes `options.input` for `run`. */
+  input?: unknown;
 }
 
 /**
- * Shared example specs used by every demo app (node-service / react / vue) so
- * the three frameworks demonstrate identical behaviour. Each only references
- * functions in `standardCatalog`.
+ * Shared example specs for demo apps. Arithmetic uses ExprAtom; business
+ * calls use `callFunc`. All use v1 NodeTypes only.
  */
 export const examples = {
   "math-pipeline": {
-    description: "Multiply two inputs then add a constant (seq + $state + out).",
-    initialState: { a: 6, b: 7 },
+    description: "Multiply two inputs then add a constant (then + $mul/$add + set).",
+    input: { a: 6, b: 7 },
     spec: {
-      seq: [
-        { call: "mul", args: { a: { $state: "/a" }, b: { $state: "/b" } }, out: "/product" },
-        { call: "add", args: { a: { $state: "/product" }, b: 100 }, out: "/total" },
-      ],
+      type: "then",
+      params: {
+        nodes: [
+          {
+            type: "set",
+            params: { path: "$.product", value: { $mul: ["$.input.a", "$.input.b"] } },
+          },
+          {
+            type: "set",
+            params: { path: "$.total", value: { $add: ["$.product", 100] } },
+          },
+        ],
+      },
     },
   },
   greeting: {
-    description: "Uppercase a name and build a greeting (string functions).",
-    initialState: { name: "ada" },
+    description: "Uppercase a name and build a greeting (callFunc).",
+    input: { name: "ada" },
     spec: {
-      seq: [
-        { call: "upper", args: { value: { $state: "/name" } }, out: "/upper" },
-        {
-          call: "concat",
-          args: { values: ["Hello, ", { $state: "/upper" }, "!"] },
-          out: "/greeting",
-        },
-      ],
+      type: "then",
+      params: {
+        nodes: [
+          {
+            type: "callFunc",
+            params: { funcKey: "upper", args: { value: "$.input.name" } },
+            outputTo: "$.upper",
+          },
+          {
+            type: "callFunc",
+            params: {
+              funcKey: "concat",
+              args: { values: ["Hello, ", "$.upper", "!"] },
+            },
+            outputTo: "$.greeting",
+          },
+        ],
+      },
     },
   },
   conditional: {
-    description: "Branch on a score threshold (if / then / else).",
-    initialState: { score: 75 },
+    description: "Branch on a score threshold (if + $gt).",
+    input: { score: 75 },
     spec: {
-      if: { $state: "/score", gte: 60 },
-      then: { call: "concat", args: { values: ["pass"] } },
-      else: { call: "concat", args: { values: ["fail"] } },
-    },
-  },
-  "parallel-demo": {
-    description: "Run two independent computations concurrently (parallel).",
-    initialState: { x: 5 },
-    spec: {
-      parallel: [
-        { call: "mul", args: { a: { $state: "/x" }, b: 2 } },
-        { call: "add", args: { a: { $state: "/x" }, b: 10 } },
-      ],
-    },
-  },
-  "switch-demo": {
-    description: "Pick a branch by a state key (switch / cases / default).",
-    initialState: { op: "double", x: 7 },
-    spec: {
-      switch: { $state: "/op" },
-      cases: {
-        double: { call: "mul", args: { a: { $state: "/x" }, b: 2 } },
-        square: { call: "mul", args: { a: { $state: "/x" }, b: { $state: "/x" } } },
+      type: "if",
+      params: {
+        condition: { $gt: ["$.input.score", 59] },
+        trueBranch: {
+          type: "callFunc",
+          params: { funcKey: "concat", args: { values: ["pass"] } },
+        },
+        falseBranch: {
+          type: "callFunc",
+          params: { funcKey: "concat", args: { values: ["fail"] } },
+        },
       },
-      default: { call: "add", args: { a: { $state: "/x" }, b: 0 } },
     },
   },
-  "for-demo": {
-    description: "Iterate over an array and collect results (for / body).",
-    initialState: { items: [1, 2, 3] },
+  settlement: {
+    description: "Tax + total + conditional deductBalance (v1 settlement demo).",
+    input: { orderAmount: 2000, merchantId: "m1" },
     spec: {
-      for: { $state: "/items" },
-      as: "/n",
-      body: { call: "mul", args: { a: { $state: "/n" }, b: 10 } },
+      type: "then",
+      params: {
+        nodes: [
+          {
+            type: "set",
+            params: {
+              path: "$.tax",
+              value: { $mul: ["$.input.orderAmount", 0.06] },
+            },
+          },
+          {
+            type: "set",
+            params: {
+              path: "$.totalAmount",
+              value: { $add: ["$.input.orderAmount", "$.tax"] },
+            },
+          },
+          {
+            type: "if",
+            params: {
+              condition: { $gt: ["$.totalAmount", 1000] },
+              trueBranch: {
+                type: "callFunc",
+                params: {
+                  funcKey: "deductBalance",
+                  args: {
+                    merchantId: "$.input.merchantId",
+                    amount: "$.totalAmount",
+                  },
+                },
+                outputTo: "$.receipt",
+              },
+            },
+          },
+        ],
+      },
     },
   },
 } satisfies Record<string, ExampleSpec>;

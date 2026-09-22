@@ -2,147 +2,225 @@ import {
   evaluate,
   evaluateCondition,
   FunctionRenderError,
-  getByPath,
+  normalizeFunc,
+  normalizeSlotPath,
   resolveArgs,
-  setByPath,
+  setSlot,
   validate,
-  type Catalog,
-  type FunctionDef,
-  type Node,
-  type RunContext,
+  type FlowSpec,
+  type FuncRegistry,
+  type NormalizedFunc,
+  type NodeSpec,
   type RunResult,
-  type StateModel,
+  type SlotSpace,
 } from "@logic-renderer/core";
 
 export interface RunOptions {
-  catalog: Catalog;
-  initialState?: StateModel;
+  input: unknown;
+  funcs: FuncRegistry;
+  preview?: boolean;
 }
 
-type NormalizedCatalog = Record<string, FunctionDef>;
-
-function normalizeCatalog(catalog: Catalog): NormalizedCatalog {
-  const normalized: NormalizedCatalog = {};
-  for (const [name, def] of Object.entries(catalog)) {
-    normalized[name] = typeof def === "function" ? { run: def } : def;
-  }
-  return normalized;
+interface RollbackFrame {
+  funcKey: string;
+  args: Record<string, unknown>;
+  result: unknown;
+  rollback?: NormalizedFunc["rollback"];
+  path: string;
 }
 
 function describe(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-async function exec(
-  node: Node,
+function writeOutput(
+  state: SlotSpace,
+  outputTo: string | undefined,
+  value: unknown,
   path: string,
-  catalog: NormalizedCatalog,
-  ctx: RunContext,
+): void {
+  if (outputTo === undefined) return;
+  const slotPath = normalizeSlotPath(outputTo, `${path}/outputTo`);
+  setSlot(state, slotPath, value, path);
+}
+
+async function walk(
+  node: NodeSpec,
+  path: string,
+  funcs: Record<string, NormalizedFunc>,
+  state: SlotSpace,
+  preview: boolean,
+  stack: RollbackFrame[],
 ): Promise<unknown> {
-  if ("call" in node) {
-    const def = catalog[node.call]!;
-    const args = resolveArgs(node.args ?? {}, ctx);
+  const ctx = { state };
 
-    let finalArgs: unknown = args;
-    if (def.params) {
-      const parsed = def.params.safeParse(args);
-      if (!parsed.success) {
-        throw new FunctionRenderError(
-          "validation",
-          path,
-          `invalid arguments for "${node.call}": ${parsed.error.issues[0]?.message ?? "invalid"}`,
-          { fnName: node.call, cause: parsed.error },
-        );
+  let result: unknown;
+
+  switch (node.type) {
+    case "then": {
+      const nodes = (node.params as { nodes: NodeSpec[] }).nodes;
+      let last: unknown;
+      for (let i = 0; i < nodes.length; i++) {
+        last = await walk(nodes[i]!, `${path}/params/nodes/${i}`, funcs, state, preview, stack);
       }
-      finalArgs = parsed.data;
+      result = last;
+      break;
     }
+    case "if": {
+      const params = node.params as {
+        condition: unknown;
+        trueBranch: NodeSpec;
+        falseBranch?: NodeSpec;
+      };
+      if (evaluateCondition(params.condition, ctx, `${path}/params/condition`)) {
+        result = await walk(
+          params.trueBranch,
+          `${path}/params/trueBranch`,
+          funcs,
+          state,
+          preview,
+          stack,
+        );
+      } else if (params.falseBranch) {
+        result = await walk(
+          params.falseBranch,
+          `${path}/params/falseBranch`,
+          funcs,
+          state,
+          preview,
+          stack,
+        );
+      } else {
+        result = undefined;
+      }
+      break;
+    }
+    case "set": {
+      const params = node.params as { path: string; value: unknown };
+      const value = evaluate(params.value, ctx, `${path}/params/value`);
+      const slotPath = normalizeSlotPath(params.path, `${path}/params/path`);
+      setSlot(state, slotPath, value, path);
+      result = value;
+      break;
+    }
+    case "callFunc": {
+      const params = node.params as { funcKey: string; args?: Record<string, unknown> };
+      const def = funcs[params.funcKey]!;
+      const args = resolveArgs(params.args, ctx, `${path}/params/args`);
 
-    let result: unknown;
-    try {
-      result = await def.run(finalArgs, ctx);
-    } catch (error) {
-      if (error instanceof FunctionRenderError) throw error;
-      throw new FunctionRenderError(
-        "call",
-        path,
-        `function "${node.call}" threw: ${describe(error)}`,
-        {
-          fnName: node.call,
+      let finalArgs: Record<string, unknown> = args;
+      if (def.params) {
+        const parsed = def.params.safeParse(args);
+        if (!parsed.success) {
+          throw new FunctionRenderError({
+            phase: "run",
+            path,
+            message: `invalid arguments for "${params.funcKey}": ${parsed.error.issues[0]?.message ?? "invalid"}`,
+            funcKey: params.funcKey,
+            cause: parsed.error,
+          });
+        }
+        finalArgs = parsed.data as Record<string, unknown>;
+      }
+
+      // preview safety guarantee: never call Func.run
+      if (preview) {
+        result = undefined;
+        break;
+      }
+
+      try {
+        result = await def.run(finalArgs);
+      } catch (error) {
+        if (error instanceof FunctionRenderError) throw error;
+        throw new FunctionRenderError({
+          phase: "run",
+          path,
+          message: `function "${params.funcKey}" threw: ${describe(error)}`,
+          funcKey: params.funcKey,
           cause: error,
-        },
-      );
+        });
+      }
+
+      if (def.sideEffect) {
+        stack.push({
+          funcKey: params.funcKey,
+          args: finalArgs,
+          result,
+          rollback: def.rollback,
+          path,
+        });
+      }
+      break;
     }
-
-    if (node.out !== undefined) ctx.set(node.out, result);
-    return result;
-  }
-
-  if ("seq" in node) {
-    let last: unknown;
-    for (let i = 0; i < node.seq.length; i++) {
-      last = await exec(node.seq[i]!, `${path}/seq/${i}`, catalog, ctx);
+    default: {
+      throw new FunctionRenderError({
+        phase: "run",
+        path,
+        message: `unknown NodeType: ${String((node as NodeSpec).type)}`,
+      });
     }
-    return last;
   }
 
-  if ("parallel" in node) {
-    return Promise.all(
-      node.parallel.map((child: Node, i: number) =>
-        exec(child, `${path}/parallel/${i}`, catalog, ctx),
-      ),
-    );
+  // preview callFunc never runs → do not materialize outputTo with undefined
+  if (!(preview && node.type === "callFunc")) {
+    writeOutput(state, node.outputTo, result, path);
   }
+  return result;
+}
 
-  if ("switch" in node) {
-    const key = String(evaluate(node.switch, ctx));
-    if (Object.prototype.hasOwnProperty.call(node.cases, key)) {
-      return exec(node.cases[key]!, `${path}/switch/cases/${key}`, catalog, ctx);
+async function runRollback(stack: RollbackFrame[], originalError: unknown): Promise<never> {
+  let rollbackError: unknown;
+  for (let i = stack.length - 1; i >= 0; i--) {
+    const frame = stack[i]!;
+    if (!frame.rollback) continue;
+    try {
+      await frame.rollback(frame.args, frame.result);
+    } catch (error) {
+      if (!rollbackError) {
+        rollbackError = new FunctionRenderError({
+          phase: "rollback",
+          path: frame.path,
+          message: `rollback for "${frame.funcKey}" failed: ${describe(error)}`,
+          funcKey: frame.funcKey,
+          cause: originalError,
+        });
+      }
     }
-    return node.default ? exec(node.default, `${path}/switch/default`, catalog, ctx) : undefined;
   }
-
-  if ("set" in node) {
-    const value = evaluate(node.value, ctx);
-    ctx.set(node.set, value);
-    return value;
-  }
-
-  if ("for" in node) {
-    const source = evaluate(node.for, ctx);
-    const items: unknown[] = Array.isArray(source)
-      ? source
-      : typeof source === "number"
-        ? Array.from({ length: Math.max(0, Math.floor(source)) }, (_unused, i) => i)
-        : [];
-    const results: unknown[] = [];
-    for (let i = 0; i < items.length; i++) {
-      if (node.as !== undefined) ctx.set(node.as, items[i]);
-      if (node.indexAs !== undefined) ctx.set(node.indexAs, i);
-      results.push(await exec(node.body, `${path}/for/body`, catalog, ctx));
-    }
-    return results;
-  }
-
-  if (evaluateCondition(node.if, ctx)) {
-    return exec(node.then, `${path}/then`, catalog, ctx);
-  }
-  return node.else ? exec(node.else, `${path}/else`, catalog, ctx) : undefined;
+  if (rollbackError) throw rollbackError;
+  throw originalError;
 }
 
 /**
- * Validate and execute an orchestration spec against a catalog of functions.
- * Returns the final shared state and the root node's result. Fail-fast: the
- * first function error (or a `parallel` branch failure) aborts the run.
+ * Validate then walk a FlowSpec. On failure (non-preview), reverse-order
+ * rollback of sideEffect frames, then rethrow.
  */
 export async function run(spec: unknown, options: RunOptions): Promise<RunResult> {
-  const catalog = normalizeCatalog(options.catalog);
-  const node = validate(spec, Object.keys(catalog));
-  const state: StateModel = structuredClone(options.initialState ?? {});
-  const ctx: RunContext = {
-    state,
-    get: (pointer) => getByPath(state, pointer),
-    set: (pointer, value) => setByPath(state, pointer, value),
-  };
-  const result = await exec(node, "", catalog, ctx);
-  return { state, result };
+  if (
+    options === null ||
+    typeof options !== "object" ||
+    !("funcs" in options) ||
+    options.funcs === null ||
+    typeof options.funcs !== "object"
+  ) {
+    throw new TypeError("run options must be an object with funcs");
+  }
+  const preview = options.preview === true;
+  const funcs: Record<string, NormalizedFunc> = {};
+  for (const [key, fn] of Object.entries(options.funcs)) {
+    funcs[key] = normalizeFunc(fn);
+  }
+
+  const flow: FlowSpec = validate(spec, { funcs: options.funcs });
+  const state: SlotSpace = { input: structuredClone(options.input) };
+  const stack: RollbackFrame[] = [];
+
+  try {
+    const result = await walk(flow, "", funcs, state, preview, stack);
+    return { state, result };
+  } catch (error) {
+    if (preview || stack.length === 0) throw error;
+    return await runRollback(stack, error);
+  }
 }

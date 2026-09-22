@@ -1,86 +1,71 @@
 import { z } from "zod";
 
-import { isJsonPointer } from "./state.ts";
+import type { FlowSpec, NodeSpec, NodeType } from "./types.ts";
 
-// ---------------------------------------------------------------------------
-// Value expressions
-// ---------------------------------------------------------------------------
+/** A JSON value that may contain ExprAtom objects or Slot path strings. */
+export type Expr = string | number | boolean | null | Expr[] | { [key: string]: Expr };
 
-/**
- * A value expression: a JSON value that may contain operator objects such as
- * `{ "$state": "/ptr" }`, `{ "$add": [a, b] }`, `{ "$if": [c, t, e] }`.
- * Operator validity is checked at evaluation time (see `evaluate`).
- */
-export type Value = string | number | boolean | null | Value[] | { [key: string]: Value };
+/** v1 ExprAtoms (settlement subset). `$lit` is the forced-literal escape. */
+export const V1_EXPR_ATOMS = new Set(["$add", "$mul", "$gt", "$lit"]);
 
-/** Back-compat aliases (value expressions supersede the old dynamic/condition types). */
-export type DynamicValue = Value;
-export type Condition = Value;
-export interface Comparison {
-  eq?: unknown;
-  neq?: unknown;
-  gt?: number;
-  gte?: number;
-  lt?: number;
-  lte?: number;
-  not?: true;
-}
+/** v1 NodeTypes. */
+export const V1_NODE_TYPES = new Set<NodeType>(["then", "if", "set", "callFunc"]);
 
-/** An orchestration node. Exactly one discriminant key per node. */
-export type Node =
-  | { call: string; args?: Record<string, Value>; out?: string }
-  | { seq: Node[] }
-  | { parallel: Node[] }
-  | { if: Value; then: Node; else?: Node }
-  | { switch: Value; cases: Record<string, Node>; default?: Node }
-  | { for: Value; as?: string; indexAs?: string; body: Node }
-  | { set: string; value: Value };
-
-// ---------------------------------------------------------------------------
-// Zod schemas
-// ---------------------------------------------------------------------------
-
-const JsonPointer = z
-  .string()
-  .refine(isJsonPointer, { message: "invalid JSON Pointer (must be empty or start with '/')" });
-
-export const ValueSchema: z.ZodType<Value> = z.lazy(() =>
+export const ExprSchema: z.ZodType<Expr> = z.lazy(() =>
   z.union([
     z.string(),
     z.number(),
     z.boolean(),
     z.null(),
-    z.array(ValueSchema),
-    z.record(z.string(), ValueSchema),
+    z.array(ExprSchema),
+    z.record(z.string(), ExprSchema),
   ]),
-);
+) as z.ZodType<Expr>;
 
-/** Back-compat aliases. */
-export const DynamicValueSchema = ValueSchema;
-export const ConditionSchema = ValueSchema;
+const ThenParams = z.strictObject({
+  nodes: z.array(z.lazy(() => NodeSpecSchema)),
+});
 
-export const NodeSchema = z.lazy(() =>
-  z.union([
+const IfParams = z.strictObject({
+  condition: ExprSchema,
+  trueBranch: z.lazy(() => NodeSpecSchema),
+  falseBranch: z.lazy(() => NodeSpecSchema).optional(),
+});
+
+const SetParams = z.strictObject({
+  path: z.string(),
+  value: ExprSchema,
+});
+
+const CallFuncParams = z.strictObject({
+  funcKey: z.string(),
+  args: z.record(z.string(), ExprSchema).default({}),
+});
+
+export const NodeSpecSchema: z.ZodType<NodeSpec> = z.lazy(() =>
+  z.discriminatedUnion("type", [
+    // oxlint-disable-next-line unicorn/no-thenable -- `then` is a NodeType, not a Promise callback
     z.strictObject({
-      call: z.string(),
-      args: z.record(z.string(), ValueSchema).optional(),
-      out: JsonPointer.optional(),
-    }),
-    z.strictObject({ seq: z.array(NodeSchema) }),
-    z.strictObject({ parallel: z.array(NodeSchema) }),
-    // oxlint-disable-next-line unicorn/no-thenable -- `then` is a spec field name, not a Promise callback
-    z.strictObject({ if: ValueSchema, then: NodeSchema, else: NodeSchema.optional() }),
-    z.strictObject({
-      switch: ValueSchema,
-      cases: z.record(z.string(), NodeSchema),
-      default: NodeSchema.optional(),
+      type: z.literal("then"),
+      params: ThenParams,
+      outputTo: z.string().optional(),
     }),
     z.strictObject({
-      for: ValueSchema,
-      as: JsonPointer.optional(),
-      indexAs: JsonPointer.optional(),
-      body: NodeSchema,
+      type: z.literal("if"),
+      params: IfParams,
+      outputTo: z.string().optional(),
     }),
-    z.strictObject({ set: JsonPointer, value: ValueSchema }),
+    z.strictObject({
+      type: z.literal("set"),
+      params: SetParams,
+      outputTo: z.string().optional(),
+    }),
+    z.strictObject({
+      type: z.literal("callFunc"),
+      params: CallFuncParams,
+      outputTo: z.string().optional(),
+    }),
   ]),
-) as z.ZodType<Node>;
+) as z.ZodType<NodeSpec>;
+
+export type { FlowSpec, NodeSpec, NodeType };

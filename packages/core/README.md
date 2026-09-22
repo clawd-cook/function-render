@@ -1,53 +1,17 @@
 # @logic-renderer/core
 
-Parsing layer for the function renderer. Framework-agnostic, pure logic — no
-execution engine and no UI. It provides the shared building blocks consumed by
-`@logic-renderer/runner`, `@logic-renderer/catalog`, and the demo apps.
+Parsing / validation layer for the function renderer.
 
-## What's inside
+## Surface
 
-- **Schema & types** (`schema.ts`) — zod schemas and inferred types for the
-  orchestration spec: `DynamicValue`, `Condition`, and `Node`
-  (`call` / `seq` / `parallel` / `if`).
-- **State** (`state.ts`) — a single shared, mutable state addressed by JSON
-  Pointer: `getByPath`, `setByPath`, `parsePointer`, `isJsonPointer`.
-- **Expressions** (`expr.ts`) — `resolveArgs` (resolves `{ $state }` inside
-  call arguments) and `evaluateCondition` (`$state` + comparisons, `$and`,
-  `$or`, implicit AND).
-- **Validation** (`validate.ts`) — `validate(spec, fnNames?)` checks the spec
-  structure and (optionally) that every `call` targets a known function.
-- **Errors** (`errors.ts`) — `FunctionRenderError` with `kind`, `path`, `fnName`.
-
-## Spec at a glance
-
-```jsonc
-{
-  "seq": [
-    { "call": "fetchUser", "args": { "id": { "$state": "/input/id" } }, "out": "/user" },
-    {
-      "if": { "$state": "/user/active" },
-      "then": {
-        "parallel": [
-          { "call": "loadOrders", "args": { "uid": { "$state": "/user/id" } } },
-          { "call": "loadProfile", "args": { "uid": { "$state": "/user/id" } } },
-        ],
-      },
-    },
-  ],
-}
-```
-
-## Example
+- **Schema** — `{ type, params, outputTo? }` NodeSpec; ExprAtom objects; Slot `$.path`
+- **Slot** — `getSlot` / `setSlot`; `$.input` is readonly
+- **Expressions** — `evaluate` / `resolveArgs` / `evaluateCondition` (v1: `$add` `$mul` `$gt` `$lit`)
+- **Validation** — `validate(spec, { funcs })` (does not execute Funcs)
+- **Errors** — `FunctionRenderError` with `phase: "validate" | "run" | "rollback"`
 
 ```ts
-import { validate, resolveArgs, getByPath, setByPath } from "@logic-renderer/core";
+import { validate } from "@logic-renderer/core";
 
-const node = validate({ call: "add", args: { a: { $state: "/x" }, b: 2 } }, ["add"]);
-
-const state = { x: 40 };
-const ctx = { get: (p: string) => getByPath(state, p) };
-resolveArgs((node as { args: any }).args, ctx); // { a: 40, b: 2 }
+const flow = validate(spec, { funcs: { deductBalance } });
 ```
-
-Execution (running a validated `Node` against a catalog) lives in
-`@logic-renderer/runner`.

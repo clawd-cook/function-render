@@ -12,7 +12,7 @@ interface Success {
 }
 interface Failure {
   ok: false;
-  error: { message: string; kind?: string; path?: string; fnName?: string };
+  error: { message: string; phase?: string; path?: string; funcKey?: string };
 }
 type Output = Success | Failure;
 
@@ -21,7 +21,7 @@ const catalogNames = Object.keys(standardCatalog).sort();
 
 const name = ref<ExampleName>(exampleNames[0]!);
 const specText = ref(JSON.stringify(examples[name.value].spec, null, 2));
-const stateText = ref(JSON.stringify(examples[name.value].initialState ?? {}, null, 2));
+const inputText = ref(JSON.stringify(examples[name.value].input ?? null, null, 2));
 const output = ref<Output | null>(null);
 const running = ref(false);
 
@@ -30,7 +30,7 @@ const description = computed(() => examples[name.value].description);
 function loadExample(): void {
   const next = name.value;
   specText.value = JSON.stringify(examples[next].spec, null, 2);
-  stateText.value = JSON.stringify(examples[next].initialState ?? {}, null, 2);
+  inputText.value = JSON.stringify(examples[next].input ?? null, null, 2);
   output.value = null;
 }
 
@@ -39,16 +39,19 @@ async function handleRun(): Promise<void> {
   output.value = null;
   try {
     const spec: unknown = JSON.parse(specText.value);
-    const initialState: Record<string, unknown> = stateText.value.trim()
-      ? JSON.parse(stateText.value)
-      : {};
-    const { result, state } = await run(spec, { catalog: standardCatalog, initialState });
+    const input: unknown = inputText.value.trim() ? JSON.parse(inputText.value) : undefined;
+    const { result, state } = await run(spec, { funcs: standardCatalog, input });
     output.value = { ok: true, result, state };
   } catch (error) {
     if (error instanceof FunctionRenderError) {
       output.value = {
         ok: false,
-        error: { message: error.message, kind: error.kind, path: error.path, fnName: error.fnName },
+        error: {
+          message: error.message,
+          phase: error.phase,
+          path: error.path,
+          funcKey: error.funcKey,
+        },
       };
     } else {
       output.value = {
@@ -85,8 +88,8 @@ async function handleRun(): Promise<void> {
         <textarea v-model="specText" spellcheck="false"></textarea>
       </label>
       <label class="field">
-        Initial state (JSON)
-        <textarea v-model="stateText" spellcheck="false"></textarea>
+        Input (JSON)
+        <textarea v-model="inputText" spellcheck="false"></textarea>
       </label>
     </section>
 

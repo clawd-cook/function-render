@@ -1,30 +1,14 @@
 # @logic-renderer/catalog
 
-Catalog helpers, a standard function library, and shared example specs for the
-function renderer. The demo apps (`node-service`, `react`, `vue`) all import the
-same `standardCatalog` and `examples` so they behave identically.
-
-## Helpers
-
-- `defineFunction({ params, run })` — define a function whose `args` type is
-  inferred from its zod `params` schema.
-- `defineCatalog(catalog)` — identity helper that preserves the literal catalog
-  type for key autocomplete.
-
-## Standard functions (`standardCatalog`)
-
-`add`, `sub`, `mul`, `div`, `concat`, `upper`, `lower`, `length`, `delay`, `now`
-— each with a zod `params` schema.
-
-## Examples
+Demo FuncRegistry helpers and shared example FlowSpecs.
 
 ```ts
-import { standardCatalog, examples } from "@logic-renderer/catalog";
+import { examples, standardCatalog } from "@logic-renderer/catalog";
 import { run } from "@logic-renderer/runner";
 
-const { spec, initialState } = examples["math-pipeline"];
-const { state, result } = await run(spec, { catalog: standardCatalog, initialState });
-// state.total === 142, result === 142
+const { spec, input } = examples["math-pipeline"];
+const { state, result } = await run(spec, { funcs: standardCatalog, input });
 ```
 
-Available examples: `math-pipeline`, `greeting`, `conditional`, `parallel-demo`.
+Arithmetic is **not** in the catalog — use ExprAtom `$add` / `$mul` / `$gt`.
+`add` / `sub` / `mul` / `div` / `delay` were removed.

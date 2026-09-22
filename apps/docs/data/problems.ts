@@ -1,13 +1,11 @@
-// oxlint-disable unicorn/no-thenable -- `then` is an `if`-node spec field name in these protocols
-import type { Node } from "@logic-renderer/runner";
+import type { FlowSpec } from "@logic-renderer/runner";
 
 export type Difficulty = "简单" | "中等" | "困难";
 
 /**
- * A LeetCode problem expressed directly as a logic-renderer **protocol**
- * (spec). The protocol is shown in the docs and executed in the browser — no
- * per-problem solution function. Most use only atomic operators + orchestration;
- * some `call` a registered complex operator (e.g. `sort`).
+ * A LeetCode-style problem expressed as a logic-renderer FlowSpec.
+ * v1 runtime has no `for`/`arrayMap`, so algorithmic problems call registered
+ * Funcs; sort still uses catalog `sort`.
  */
 export interface Problem {
   num: number;
@@ -18,12 +16,12 @@ export interface Problem {
   category: string;
   description: string;
   /** logic-renderer protocol that solves the problem. */
-  spec: Node;
-  /** Default input (initial shared state). */
-  input: Record<string, unknown>;
+  spec: FlowSpec;
+  /** Default `run` input (becomes `$.input`). */
+  input: unknown;
   /** Expected `result` of running the protocol. */
   expected: unknown;
-  /** Whether the protocol uses only built-in atomic operators (no `call`). */
+  /** Whether the protocol uses only ExprAtom + control (no callFunc). */
   pureProtocol: boolean;
 }
 
@@ -40,45 +38,17 @@ const twoSum: Problem = {
   difficulty: "简单",
   category: "数组",
   description:
-    "给定一个整数数组 nums 和目标值 target,返回和为 target 的两个下标。这里完全用原子算子表达(嵌套遍历 + 取值/相加/比较 + 赋值),无需专门的解法函数。",
-  pureProtocol: true,
+    "给定整数数组与目标值,返回和为目标的两个下标。v1 无 for/arrayMap,解法登记为 Func `twoSum`,协议用 callFunc 调用。",
+  pureProtocol: false,
   input: { nums: [2, 7, 11, 15], target: 9 },
   expected: [0, 1],
   spec: {
-    seq: [
-      { set: "/result", value: null },
-      {
-        for: { $state: "/nums" },
-        as: "/x",
-        indexAs: "/i",
-        body: {
-          for: { $state: "/nums" },
-          as: "/y",
-          indexAs: "/j",
-          body: {
-            if: {
-              $and: [
-                { $gt: [{ $state: "/j" }, { $state: "/i" }] },
-                { $not: { $state: "/result" } },
-                {
-                  $eq: [
-                    {
-                      $add: [
-                        { $at: [{ $state: "/nums" }, { $state: "/i" }] },
-                        { $at: [{ $state: "/nums" }, { $state: "/j" }] },
-                      ],
-                    },
-                    { $state: "/target" },
-                  ],
-                },
-              ],
-            },
-            then: { set: "/result", value: [{ $state: "/i" }, { $state: "/j" }] },
-          },
-        },
-      },
-      { set: "/result", value: { $state: "/result" } },
-    ],
+    type: "callFunc",
+    params: {
+      funcKey: "twoSum",
+      args: { nums: "$.input.nums", target: "$.input.target" },
+    },
+    outputTo: "$.result",
   },
 };
 
@@ -88,34 +58,15 @@ const moveZeroes: Problem = {
   slug: "move-zeroes",
   url: "https://leetcode.cn/problems/move-zeroes/",
   difficulty: "简单",
-  category: "双指针",
-  description:
-    "将数组中的 0 移到末尾,保持非零元素相对顺序。协议先收集非零元素,再补齐 0,最后拼接 —— 全部用原子算子。",
-  pureProtocol: true,
+  category: "数组",
+  description: "将数组中的 0 移到末尾并保持非零相对顺序。登记为 Func `moveZeroes`。",
+  pureProtocol: false,
   input: { nums: [0, 1, 0, 3, 12] },
   expected: [1, 3, 12, 0, 0],
   spec: {
-    seq: [
-      { set: "/nz", value: [] },
-      {
-        for: { $state: "/nums" },
-        as: "/x",
-        body: {
-          if: { $ne: [{ $state: "/x" }, 0] },
-          then: { set: "/nz", value: { $push: [{ $state: "/nz" }, { $state: "/x" }] } },
-        },
-      },
-      { set: "/zeros", value: [] },
-      {
-        for: { $state: "/nums" },
-        as: "/y",
-        body: {
-          if: { $eq: [{ $state: "/y" }, 0] },
-          then: { set: "/zeros", value: { $push: [{ $state: "/zeros" }, 0] } },
-        },
-      },
-      { set: "/result", value: { $concat: [{ $state: "/nz" }, { $state: "/zeros" }] } },
-    ],
+    type: "callFunc",
+    params: { funcKey: "moveZeroes", args: { nums: "$.input.nums" } },
+    outputTo: "$.result",
   },
 };
 
@@ -126,36 +77,14 @@ const maxSubarray: Problem = {
   url: "https://leetcode.cn/problems/maximum-subarray/",
   difficulty: "中等",
   category: "动态规划",
-  description:
-    "求具有最大和的连续子数组的和(Kadane)。协议用共享状态做累加器,配合 $max/$add 原子算子,无需解法函数。",
-  pureProtocol: true,
+  description: "求连续子数组最大和。登记为 Func `maxSubarray`。",
+  pureProtocol: false,
   input: { nums: [-2, 1, -3, 4, -1, 2, 1, -5, 4] },
   expected: 6,
   spec: {
-    seq: [
-      { set: "/best", value: { $at: [{ $state: "/nums" }, 0] } },
-      { set: "/cur", value: { $at: [{ $state: "/nums" }, 0] } },
-      {
-        for: { $state: "/nums" },
-        as: "/num",
-        indexAs: "/k",
-        body: {
-          if: { $gt: [{ $state: "/k" }, 0] },
-          then: {
-            seq: [
-              {
-                set: "/cur",
-                value: {
-                  $max: [{ $state: "/num" }, { $add: [{ $state: "/cur" }, { $state: "/num" }] }],
-                },
-              },
-              { set: "/best", value: { $max: [{ $state: "/best" }, { $state: "/cur" }] } },
-            ],
-          },
-        },
-      },
-      { set: "/best", value: { $state: "/best" } },
-    ],
+    type: "callFunc",
+    params: { funcKey: "maxSubarray", args: { nums: "$.input.nums" } },
+    outputTo: "$.result",
   },
 };
 
@@ -166,12 +95,15 @@ const sortArray: Problem = {
   url: "https://leetcode.cn/problems/sort-an-array/",
   difficulty: "中等",
   category: "排序",
-  description:
-    "对数组排序。排序属于复杂算子,登记为 catalog 中的 sort,协议用 call 调用它 —— 展示「编排算子 + 已登记的复杂算子」的组合。",
+  description: "对数组排序。用 catalog 中的 sort Func + callFunc。",
   pureProtocol: false,
   input: { nums: [5, 2, 3, 1, 4] },
   expected: [1, 2, 3, 4, 5],
-  spec: { call: "sort", args: { items: { $state: "/nums" } }, out: "/result" },
+  spec: {
+    type: "callFunc",
+    params: { funcKey: "sort", args: { items: "$.input.nums" } },
+    outputTo: "$.result",
+  },
 };
 
 export const problems: Problem[] = [twoSum, moveZeroes, maxSubarray, sortArray];

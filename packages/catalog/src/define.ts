@@ -1,19 +1,19 @@
-import type { Catalog, FunctionDef, RunContext } from "@logic-renderer/core";
+import type { Func, FuncRegistry } from "@logic-renderer/core";
 import type { z } from "zod";
 
 /**
- * Define a typed function whose argument type is inferred from its zod schema.
- * Prefer this over a bare `{ params, run }` literal so `run`'s `args` are typed
- * (a plain `Catalog` annotation widens `args` to `unknown`).
+ * Define a typed Func whose argument type is inferred from its zod schema.
  */
 export function defineFunction<S extends z.ZodType>(def: {
   params: S;
-  run: (args: z.infer<S>, ctx: RunContext) => unknown;
-}): FunctionDef<S> {
-  return def;
+  run: (args: z.infer<S>) => unknown;
+  sideEffect?: boolean;
+  rollback?: (args: z.infer<S>, result: unknown) => unknown;
+}): Func {
+  return def as unknown as Func;
 }
 
-/** Identity helper that preserves the literal catalog type (key autocomplete). */
-export function defineCatalog<C extends Catalog>(catalog: C): C {
+/** Identity helper that preserves the literal registry type (key autocomplete). */
+export function defineCatalog<C extends FuncRegistry>(catalog: C): C {
   return catalog;
 }

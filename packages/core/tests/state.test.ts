@@ -1,34 +1,31 @@
 import { expect, test } from "vite-plus/test";
 
-import { getByPath, parsePointer, setByPath } from "../src/state.ts";
+import { getSlot, normalizeSlotPath, parseSlotSegments, setSlot } from "../src/state.ts";
 
-test("parsePointer decodes tokens and empty pointer", () => {
-  expect(parsePointer("")).toEqual([]);
-  expect(parsePointer("/a/b")).toEqual(["a", "b"]);
-  expect(parsePointer("/a~1b/c~0d")).toEqual(["a/b", "c~d"]);
+test("normalizeSlotPath accepts $.path and shorthand", () => {
+  expect(normalizeSlotPath("$.tax")).toBe("$.tax");
+  expect(normalizeSlotPath("tax")).toBe("$.tax");
+  expect(normalizeSlotPath("a.b")).toBe("$.a.b");
 });
 
-test("getByPath reads nested objects and arrays", () => {
-  const state = { user: { name: "Ada", tags: ["x", "y"] } };
-  expect(getByPath(state, "")).toBe(state);
-  expect(getByPath(state, "/user/name")).toBe("Ada");
-  expect(getByPath(state, "/user/tags/1")).toBe("y");
-  expect(getByPath(state, "/user/missing")).toBeUndefined();
-  expect(getByPath(state, "/user/name/nope")).toBeUndefined();
+test("parseSlotSegments splits dotted paths", () => {
+  expect(parseSlotSegments("$.a.b")).toEqual(["a", "b"]);
+  expect(parseSlotSegments("input.orderAmount")).toEqual(["input", "orderAmount"]);
 });
 
-test("setByPath writes in place and creates missing containers", () => {
-  const state: Record<string, unknown> = {};
-  setByPath(state, "/a/b", 1);
-  expect(state).toEqual({ a: { b: 1 } });
-
-  setByPath(state, "/list/0", "first");
-  expect((state as any).list).toEqual(["first"]);
-
-  setByPath(state, "/list/-", "second");
-  expect((state as any).list).toEqual(["first", "second"]);
+test("getSlot reads nested objects", () => {
+  const state = { input: { name: "Ada" }, tax: 120 };
+  expect(getSlot(state, "$.input.name")).toBe("Ada");
+  expect(getSlot(state, "$.tax")).toBe(120);
+  expect(getSlot(state, "$.missing")).toBeUndefined();
 });
 
-test("setByPath rejects the root pointer", () => {
-  expect(() => setByPath({}, "", 1)).toThrow();
+test("setSlot writes and creates intermediate objects", () => {
+  const state: Record<string, unknown> = { input: {} };
+  setSlot(state, "$.a.b", 1);
+  expect(state).toEqual({ input: {}, a: { b: 1 } });
+});
+
+test("setSlot rejects writes under $.input", () => {
+  expect(() => setSlot({ input: {} }, "$.input.x", 1)).toThrow(/readonly/);
 });

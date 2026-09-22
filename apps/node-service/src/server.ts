@@ -8,7 +8,8 @@ const PORT = Number(process.env.PORT ?? 8787);
 interface RunPayload {
   spec?: unknown;
   example?: string;
-  initialState?: Record<string, unknown>;
+  input?: unknown;
+  preview?: boolean;
 }
 
 function send(res: ServerResponse, status: number, body: unknown): void {
@@ -36,7 +37,7 @@ async function handleRun(req: IncomingMessage, res: ServerResponse): Promise<voi
   }
 
   let spec = payload.spec;
-  let initialState = payload.initialState;
+  let input = payload.input;
   if (payload.example !== undefined) {
     const example = (examples as Record<string, (typeof examples)[keyof typeof examples]>)[
       payload.example
@@ -46,7 +47,7 @@ async function handleRun(req: IncomingMessage, res: ServerResponse): Promise<voi
       return;
     }
     spec = example.spec;
-    initialState = initialState ?? example.initialState;
+    input = input ?? example.input;
   }
 
   if (spec === undefined) {
@@ -55,13 +56,22 @@ async function handleRun(req: IncomingMessage, res: ServerResponse): Promise<voi
   }
 
   try {
-    const { result, state } = await run(spec, { catalog: standardCatalog, initialState });
+    const { result, state } = await run(spec, {
+      funcs: standardCatalog,
+      input,
+      preview: payload.preview,
+    });
     send(res, 200, { ok: true, result, state });
   } catch (error) {
     if (error instanceof FunctionRenderError) {
       send(res, 400, {
         ok: false,
-        error: { message: error.message, kind: error.kind, path: error.path, fnName: error.fnName },
+        error: {
+          message: error.message,
+          phase: error.phase,
+          path: error.path,
+          funcKey: error.funcKey,
+        },
       });
     } else {
       send(res, 500, {

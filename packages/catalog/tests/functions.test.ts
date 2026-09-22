@@ -1,40 +1,63 @@
-import type { RunContext } from "@logic-renderer/core";
 import { expect, test } from "vite-plus/test";
 import { z } from "zod";
 
 import { defineFunction, standardCatalog } from "../src/index.ts";
 
-const ctx: RunContext = { state: {}, get: () => undefined, set: () => {} };
-
-test("standard math functions compute correctly", () => {
-  expect(standardCatalog.add.run({ a: 2, b: 3 }, ctx)).toBe(5);
-  expect(standardCatalog.sub.run({ a: 5, b: 3 }, ctx)).toBe(2);
-  expect(standardCatalog.mul.run({ a: 6, b: 7 }, ctx)).toBe(42);
-  expect(standardCatalog.div.run({ a: 9, b: 3 }, ctx)).toBe(3);
+test("standard catalog has no arithmetic funcs (ExprAtom owns them)", () => {
+  expect("add" in standardCatalog).toBe(false);
+  expect("sub" in standardCatalog).toBe(false);
+  expect("mul" in standardCatalog).toBe(false);
+  expect("div" in standardCatalog).toBe(false);
+  expect("delay" in standardCatalog).toBe(false);
 });
 
 test("standard string functions compute correctly", () => {
-  expect(standardCatalog.concat.run({ values: ["a", "b", "c"] }, ctx)).toBe("abc");
-  expect(standardCatalog.upper.run({ value: "ada" }, ctx)).toBe("ADA");
-  expect(standardCatalog.lower.run({ value: "ADA" }, ctx)).toBe("ada");
-  expect(standardCatalog.length.run({ value: "abcd" }, ctx)).toBe(4);
-  expect(standardCatalog.length.run({ value: [1, 2, 3] }, ctx)).toBe(3);
-});
-
-test("delay resolves to its value asynchronously", async () => {
-  const result = await standardCatalog.delay.run({ ms: 1, value: "done" }, ctx);
-  expect(result).toBe("done");
+  const concat = standardCatalog.concat as {
+    run: (args: { values: string[] }) => string;
+  };
+  const upper = standardCatalog.upper as { run: (args: { value: string }) => string };
+  const lower = standardCatalog.lower as { run: (args: { value: string }) => string };
+  const length = standardCatalog.length as {
+    run: (args: { value: string | unknown[] }) => number;
+  };
+  expect(concat.run({ values: ["a", "b", "c"] })).toBe("abc");
+  expect(upper.run({ value: "ada" })).toBe("ADA");
+  expect(lower.run({ value: "ADA" })).toBe("ada");
+  expect(length.run({ value: "abcd" })).toBe(4);
+  expect(length.run({ value: [1, 2, 3] })).toBe(3);
 });
 
 test("sort returns a sorted copy (asc and desc)", () => {
-  expect(standardCatalog.sort.run({ items: [3, 1, 2] }, ctx)).toEqual([1, 2, 3]);
-  expect(standardCatalog.sort.run({ items: [3, 1, 2], order: "desc" }, ctx)).toEqual([3, 2, 1]);
+  const sort = standardCatalog.sort as {
+    run: (args: { items: number[]; order?: "asc" | "desc" }) => number[];
+  };
+  expect(sort.run({ items: [3, 1, 2] })).toEqual([1, 2, 3]);
+  expect(sort.run({ items: [3, 1, 2], order: "desc" })).toEqual([3, 2, 1]);
+});
+
+test("deductBalance is a sideEffect func with rollback", () => {
+  const fn = standardCatalog.deductBalance as {
+    sideEffect?: boolean;
+    run: (args: { merchantId: string; amount: number }) => unknown;
+    rollback?: (args: { merchantId: string; amount: number }, result: unknown) => unknown;
+  };
+  expect(fn.sideEffect).toBe(true);
+  expect(fn.run({ merchantId: "m1", amount: 10 })).toEqual({
+    merchantId: "m1",
+    amount: 10,
+    status: "debited",
+  });
+  expect(fn.rollback?.({ merchantId: "m1", amount: 10 }, null)).toEqual({
+    merchantId: "m1",
+    amount: 10,
+    status: "credited",
+  });
 });
 
 test("defineFunction infers args from the params schema", () => {
   const triple = defineFunction({
     params: z.object({ n: z.number() }),
     run: ({ n }) => n * 3,
-  });
-  expect(triple.run({ n: 4 }, ctx)).toBe(12);
+  }) as { run: (args: { n: number }) => number };
+  expect(triple.run({ n: 4 })).toBe(12);
 });

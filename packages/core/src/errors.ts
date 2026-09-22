@@ -1,33 +1,29 @@
 /**
  * Error thrown by the function renderer.
  *
- * `kind` distinguishes a static/structural problem found before or during
- * argument preparation (`"validation"`) from an error raised while a
- * registered function was executing (`"call"`). `path` locates the offending
- * node inside the spec tree (a JSON-Pointer-like string, e.g. `/seq/1/then`).
+ * `phase` distinguishes structural rejection (`"validate"`), walk-time
+ * failures (`"run"`), and compensation failures (`"rollback"`).
  */
-export type FunctionRenderErrorKind = "validation" | "call";
+export type FunctionRenderErrorPhase = "validate" | "run" | "rollback";
 
 export interface FunctionRenderErrorOptions {
-  fnName?: string;
+  phase: FunctionRenderErrorPhase;
+  path: string;
+  message: string;
+  funcKey?: string;
   cause?: unknown;
 }
 
 export class FunctionRenderError extends Error {
-  readonly kind: FunctionRenderErrorKind;
+  readonly phase: FunctionRenderErrorPhase;
   readonly path: string;
-  readonly fnName?: string;
+  readonly funcKey?: string;
 
-  constructor(
-    kind: FunctionRenderErrorKind,
-    path: string,
-    message: string,
-    options: FunctionRenderErrorOptions = {},
-  ) {
-    super(message, { cause: options.cause });
+  constructor(options: FunctionRenderErrorOptions) {
+    super(options.message, { cause: options.cause });
     this.name = "FunctionRenderError";
-    this.kind = kind;
-    this.path = path;
-    this.fnName = options.fnName;
+    this.phase = options.phase;
+    this.path = options.path;
+    this.funcKey = options.funcKey;
   }
 }

@@ -1,17 +1,16 @@
 export { defineFunction, defineCatalog } from "./define.ts";
 
 export {
-  add,
-  sub,
-  mul,
-  div,
   concat,
   upper,
   lower,
   length,
-  delay,
   now,
   sort,
+  twoSum,
+  moveZeroes,
+  maxSubarray,
+  deductBalance,
   standardCatalog,
 } from "./functions.ts";
 

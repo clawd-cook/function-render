@@ -1,14 +1,29 @@
 export { FunctionRenderError } from "./errors.ts";
-export type { FunctionRenderErrorKind, FunctionRenderErrorOptions } from "./errors.ts";
+export type { FunctionRenderErrorPhase, FunctionRenderErrorOptions } from "./errors.ts";
 
-export type { StateModel, RunContext, RunResult, FunctionDef, FnImpl, Catalog } from "./types.ts";
+export type {
+  SlotSpace,
+  StateModel,
+  Func,
+  FuncRegistry,
+  NormalizedFunc,
+  NodeType,
+  NodeSpec,
+  FlowSpec,
+  RunResult,
+  FunctionDef,
+  FnImpl,
+  Catalog,
+} from "./types.ts";
+export { normalizeFunc } from "./types.ts";
 
-export { isJsonPointer, parsePointer, getByPath, setByPath } from "./state.ts";
+export { isSlotPath, normalizeSlotPath, parseSlotSegments, getSlot, setSlot } from "./state.ts";
 
-export { ValueSchema, DynamicValueSchema, ConditionSchema, NodeSchema } from "./schema.ts";
-export type { Value, DynamicValue, Condition, Comparison, Node } from "./schema.ts";
+export { ExprSchema, NodeSpecSchema, V1_EXPR_ATOMS, V1_NODE_TYPES } from "./schema.ts";
+export type { Expr } from "./schema.ts";
 
 export { evaluate, resolveArgs, evaluateCondition } from "./expr.ts";
 export type { ExprContext } from "./expr.ts";
 
 export { validate } from "./validate.ts";
+export type { ValidateOptions } from "./validate.ts";

@@ -13,7 +13,7 @@ interface Success {
 }
 interface Failure {
   ok: false;
-  error: { message: string; kind?: string; path?: string; fnName?: string };
+  error: { message: string; phase?: string; path?: string; funcKey?: string };
 }
 type Output = Success | Failure;
 
@@ -24,9 +24,7 @@ function App() {
   const example = examples[name];
 
   const [specText, setSpecText] = useState(() => JSON.stringify(example.spec, null, 2));
-  const [stateText, setStateText] = useState(() =>
-    JSON.stringify(example.initialState ?? {}, null, 2),
-  );
+  const [inputText, setInputText] = useState(() => JSON.stringify(example.input ?? null, null, 2));
   const [output, setOutput] = useState<Output | null>(null);
   const [running, setRunning] = useState(false);
 
@@ -35,7 +33,7 @@ function App() {
   function loadExample(next: ExampleName) {
     setName(next);
     setSpecText(JSON.stringify(examples[next].spec, null, 2));
-    setStateText(JSON.stringify(examples[next].initialState ?? {}, null, 2));
+    setInputText(JSON.stringify(examples[next].input ?? null, null, 2));
     setOutput(null);
   }
 
@@ -44,8 +42,8 @@ function App() {
     setOutput(null);
     try {
       const spec: unknown = JSON.parse(specText);
-      const initialState: Record<string, unknown> = stateText.trim() ? JSON.parse(stateText) : {};
-      const { result, state } = await run(spec, { catalog: standardCatalog, initialState });
+      const input: unknown = inputText.trim() ? JSON.parse(inputText) : undefined;
+      const { result, state } = await run(spec, { funcs: standardCatalog, input });
       setOutput({ ok: true, result, state });
     } catch (error) {
       if (error instanceof FunctionRenderError) {
@@ -53,9 +51,9 @@ function App() {
           ok: false,
           error: {
             message: error.message,
-            kind: error.kind,
+            phase: error.phase,
             path: error.path,
-            fnName: error.fnName,
+            funcKey: error.funcKey,
           },
         });
       } else {
@@ -100,11 +98,11 @@ function App() {
           />
         </label>
         <label className="field">
-          Initial state (JSON)
+          Input (JSON)
           <textarea
-            value={stateText}
+            value={inputText}
             spellCheck={false}
-            onChange={(event) => setStateText(event.target.value)}
+            onChange={(event) => setInputText(event.target.value)}
           />
         </label>
       </section>
