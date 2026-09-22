@@ -1,0 +1,28 @@
+{
+  "name": "logic-render",
+  "install": "bash .cursor/cloud-install.sh",
+  "terminals": [
+    {
+      "name": "node-service",
+      "command": "source /workspace/.cursor/cloud-env.sh && cd /workspace/apps/node-service && pnpm start"
+    },
+    {
+      "name": "react-dev",
+      "command": "source /workspace/.cursor/cloud-env.sh && cd /workspace/apps/react && vp dev --host --port 5173"
+    },
+    {
+      "name": "vue-dev",
+      "command": "source /workspace/.cursor/cloud-env.sh && cd /workspace/apps/vue && vp dev --host --port 5174"
+    },
+    {
+      "name": "docs-dev",
+      "command": "source /workspace/.cursor/cloud-env.sh && cd /workspace/apps/docs && pnpm run docs:dev --port 5175"
+    }
+  ],
+  "ports": [
+    { "name": "react", "port": 5173 },
+    { "name": "vue", "port": 5174 },
+    { "name": "docs", "port": 5175 },
+    { "name": "node-service", "port": 8787 }
+  ]
+}
