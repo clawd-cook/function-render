@@ -12,6 +12,6 @@ const { state, result } = await run(spec, {
 });
 ```
 
-- Validates via `@logic-renderer/core`, then walks v1 NodeTypes (`then` / `if` / `set` / `callFunc`).
-- `preview: true` never calls `Func.run` (safety guarantee).
+- Validates via `@logic-renderer/core`, then walks the closed NodeType set (control / data / utility + `callFunc`).
+- `preview: true` never calls `Func.run` and skips `sleep` (safety guarantee).
 - Successful `sideEffect` callFuncs push rollback frames; on failure they run in reverse order.

@@ -19,7 +19,14 @@ export { normalizeFunc } from "./types.ts";
 
 export { isSlotPath, normalizeSlotPath, parseSlotSegments, getSlot, setSlot } from "./state.ts";
 
-export { ExprSchema, NodeSpecSchema, V1_EXPR_ATOMS, V1_NODE_TYPES } from "./schema.ts";
+export {
+  ExprSchema,
+  NodeSpecSchema,
+  EXPR_ATOMS,
+  NODE_TYPES,
+  V1_EXPR_ATOMS,
+  V1_NODE_TYPES,
+} from "./schema.ts";
 export type { Expr } from "./schema.ts";
 
 export { evaluate, resolveArgs, evaluateCondition } from "./expr.ts";

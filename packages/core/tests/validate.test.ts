@@ -3,7 +3,15 @@ import { expect, test } from "vite-plus/test";
 import { FunctionRenderError } from "../src/errors.ts";
 import { validate } from "../src/validate.ts";
 
-const funcs = { fetchUser: () => ({}), greet: () => "hi" };
+const funcs = {
+  fetchUser: () => ({}),
+  greet: () => "hi",
+  debit: {
+    sideEffect: true as const,
+    run: () => ({ ok: true }),
+  },
+  pure: () => 1,
+};
 
 test("validate accepts a well-formed nested FlowSpec", () => {
   const spec = {
@@ -50,20 +58,91 @@ test("validate rejects an unknown funcKey with phase validate", () => {
 });
 
 test("validate rejects an unknown NodeType", () => {
-  expect(() =>
-    validate({ type: "while", params: { condition: true, body: {}, maxIter: 1 } }, { funcs }),
-  ).toThrow(FunctionRenderError);
+  expect(() => validate({ type: "notARealType", params: {} } as unknown, { funcs })).toThrow(
+    FunctionRenderError,
+  );
 });
 
 test("validate rejects an unknown ExprAtom", () => {
   try {
-    validate({ type: "set", params: { path: "$.x", value: { $len: [1, 2] } } }, { funcs });
+    validate({ type: "set", params: { path: "$.x", value: { $map: [1, 2] } } }, { funcs });
     throw new Error("expected throw");
   } catch (err) {
     expect(err).toBeInstanceOf(FunctionRenderError);
     expect((err as FunctionRenderError).phase).toBe("validate");
     expect((err as FunctionRenderError).message).toMatch(/unknown ExprAtom/);
   }
+});
+
+test("validate rejects while/for without maxIter", () => {
+  try {
+    validate(
+      {
+        type: "while",
+        params: {
+          condition: true,
+          body: { type: "constant", params: { value: 1 } },
+        },
+      } as unknown,
+      { funcs },
+    );
+    throw new Error("expected throw");
+  } catch (err) {
+    expect(err).toBeInstanceOf(FunctionRenderError);
+    expect((err as FunctionRenderError).phase).toBe("validate");
+  }
+
+  try {
+    validate(
+      {
+        type: "for",
+        params: {
+          items: [1],
+          itemKey: "n",
+          body: { type: "constant", params: { value: 1 } },
+        },
+      } as unknown,
+      { funcs },
+    );
+    throw new Error("expected throw");
+  } catch (err) {
+    expect(err).toBeInstanceOf(FunctionRenderError);
+    expect((err as FunctionRenderError).phase).toBe("validate");
+  }
+});
+
+test("validate rejects tryCatch.body sideEffect callFunc", () => {
+  try {
+    validate(
+      {
+        type: "tryCatch",
+        params: {
+          body: {
+            type: "callFunc",
+            params: { funcKey: "debit", args: {} },
+          },
+          catch: { type: "constant", params: { value: "caught" } },
+        },
+      },
+      { funcs },
+    );
+    throw new Error("expected throw");
+  } catch (err) {
+    expect(err).toBeInstanceOf(FunctionRenderError);
+    expect((err as FunctionRenderError).phase).toBe("validate");
+    expect((err as FunctionRenderError).message).toMatch(/sideEffect/);
+  }
+});
+
+test("validate allows tryCatch.body pure callFunc and catch sideEffect", () => {
+  const spec = {
+    type: "tryCatch",
+    params: {
+      body: { type: "callFunc", params: { funcKey: "pure", args: {} } },
+      catch: { type: "callFunc", params: { funcKey: "debit", args: {} } },
+    },
+  };
+  expect(validate(spec, { funcs })).toEqual(spec);
 });
 
 test("validate rejects an if without trueBranch", () => {
@@ -111,4 +190,48 @@ test("validate rejects non-object funcs with TypeError", () => {
   expect(() =>
     validate({ type: "set", params: { path: "$.x", value: 1 } }, { funcs: null as never }),
   ).toThrow(TypeError);
+});
+
+test("validate accepts horizon NodeTypes with required params", () => {
+  const spec = {
+    type: "then",
+    params: {
+      nodes: [
+        {
+          type: "for",
+          params: {
+            items: [1, 2],
+            itemKey: "n",
+            maxIter: 10,
+            body: { type: "get", params: { path: "$.n" } },
+          },
+        },
+        {
+          type: "when",
+          params: {
+            nodes: [
+              { type: "constant", params: { value: 1 } },
+              { type: "expr", params: { value: { $add: [1, 2] } } },
+            ],
+          },
+        },
+        {
+          type: "switch",
+          params: {
+            input: 1,
+            cases: [{ match: 1, node: { type: "constant", params: { value: "one" } } }],
+          },
+        },
+        {
+          type: "arrayMap",
+          params: {
+            items: [1],
+            itemKey: "x",
+            body: { type: "expr", params: { value: { $mul: ["$.x", 2] } } },
+          },
+        },
+      ],
+    },
+  };
+  expect(validate(spec, { funcs })).toEqual(spec);
 });

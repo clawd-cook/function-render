@@ -41,3 +41,27 @@ test("settlement demo taxes and deducts", async () => {
   expect(state.totalAmount).toBe(2120);
   expect(result).toEqual({ merchantId: "m1", amount: 2120, status: "debited" });
 });
+
+test("sum-for accumulates with for", async () => {
+  const { spec, input } = examples["sum-for"];
+  const { result } = await run(spec, { funcs: standardCatalog, input });
+  expect(result).toBe(10);
+});
+
+test("parallel-when returns both branch results", async () => {
+  const { spec, input } = examples["parallel-when"];
+  const { result } = await run(spec, { funcs: standardCatalog, input });
+  expect(result).toEqual(["left", 30]);
+});
+
+test("status-switch picks the matching case", async () => {
+  const { spec, input } = examples["status-switch"];
+  const { result } = await run(spec, { funcs: standardCatalog, input });
+  expect(result).toBe("ok");
+});
+
+test("double-arrayMap doubles each element", async () => {
+  const { spec, input } = examples["double-arrayMap"];
+  const { result } = await run(spec, { funcs: standardCatalog, input });
+  expect(result).toEqual([2, 4, 6]);
+});

@@ -6,7 +6,7 @@ Parsing / validation layer for the function renderer.
 
 - **Schema** — `{ type, params, outputTo? }` NodeSpec; ExprAtom objects; Slot `$.path`
 - **Slot** — `getSlot` / `setSlot`; `$.input` is readonly
-- **Expressions** — `evaluate` / `resolveArgs` / `evaluateCondition` (v1: `$add` `$mul` `$gt` `$lit`)
+- **Expressions** — `evaluate` / `resolveArgs` / `evaluateCondition` (closed ExprAtom set)
 - **Validation** — `validate(spec, { funcs })` (does not execute Funcs)
 - **Errors** — `FunctionRenderError` with `phase: "validate" | "run" | "rollback"`
 

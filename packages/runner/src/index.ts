@@ -1,5 +1,5 @@
-export { run } from "./engine.ts";
-export type { RunOptions } from "./engine.ts";
+export { run, setLogSink } from "./engine.ts";
+export type { RunOptions, LogEntry } from "./engine.ts";
 
 export type {
   Func,

@@ -27,7 +27,7 @@ export const sort = defineFunction({
   },
 });
 
-/** Docs / demo algorithmic Funcs (horizon NodeTypes like `for` are not in v1). */
+/** Docs / demo algorithmic Funcs (protocol may also use horizon NodeTypes). */
 export const twoSum = defineFunction({
   params: z.object({ nums: z.array(z.number()), target: z.number() }),
   run: ({ nums, target }) => {

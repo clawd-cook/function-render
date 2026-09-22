@@ -42,8 +42,26 @@ export function normalizeFunc(fn: Func): NormalizedFunc {
   };
 }
 
-/** v1 NodeTypes (settlement subset). Horizon types are rejected until batch 2. */
-export type NodeType = "then" | "if" | "set" | "callFunc";
+/** Closed NodeType set for the current engine (v1 + horizon). */
+export type NodeType =
+  | "then"
+  | "when"
+  | "if"
+  | "switch"
+  | "while"
+  | "for"
+  | "tryCatch"
+  | "callFunc"
+  | "get"
+  | "set"
+  | "arrayMap"
+  | "arrayFilter"
+  | "arrayReduce"
+  | "log"
+  | "assert"
+  | "sleep"
+  | "constant"
+  | "expr";
 
 export interface NodeSpec {
   type: NodeType;

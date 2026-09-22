@@ -10,7 +10,7 @@ export interface ExampleSpec {
 
 /**
  * Shared example specs for demo apps. Arithmetic uses ExprAtom; business
- * calls use `callFunc`. All use v1 NodeTypes only.
+ * calls use `callFunc`. Includes horizon NodeTypes (`for` / `when` / `switch` / `arrayMap`).
  */
 export const examples = {
   "math-pipeline": {
@@ -75,7 +75,7 @@ export const examples = {
     },
   },
   settlement: {
-    description: "Tax + total + conditional deductBalance (v1 settlement demo).",
+    description: "Tax + total + conditional deductBalance (settlement demo).",
     input: { orderAmount: 2000, merchantId: "m1" },
     spec: {
       type: "then",
@@ -113,6 +113,71 @@ export const examples = {
             },
           },
         ],
+      },
+    },
+  },
+  "sum-for": {
+    description: "Sum an array with for + itemKey binding.",
+    input: { nums: [1, 2, 3, 4] },
+    spec: {
+      type: "then",
+      params: {
+        nodes: [
+          { type: "set", params: { path: "$.sum", value: 0 } },
+          {
+            type: "for",
+            params: {
+              items: "$.input.nums",
+              itemKey: "n",
+              maxIter: 100,
+              body: {
+                type: "set",
+                params: { path: "$.sum", value: { $add: ["$.sum", "$.n"] } },
+              },
+            },
+          },
+          { type: "get", params: { path: "$.sum" } },
+        ],
+      },
+    },
+  },
+  "parallel-when": {
+    description: "Run two constant/expr nodes in parallel with when.",
+    input: {},
+    spec: {
+      type: "when",
+      params: {
+        nodes: [
+          { type: "constant", params: { value: "left" } },
+          { type: "expr", params: { value: { $add: [10, 20] } } },
+        ],
+      },
+    },
+  },
+  "status-switch": {
+    description: "Dispatch on a status code with switch.",
+    input: { status: 200 },
+    spec: {
+      type: "switch",
+      params: {
+        input: "$.input.status",
+        cases: [
+          { match: 200, node: { type: "constant", params: { value: "ok" } } },
+          { match: 404, node: { type: "constant", params: { value: "missing" } } },
+        ],
+        default: { type: "constant", params: { value: "other" } },
+      },
+    },
+  },
+  "double-arrayMap": {
+    description: "Double each number with arrayMap + $mul.",
+    input: { nums: [1, 2, 3] },
+    spec: {
+      type: "arrayMap",
+      params: {
+        items: "$.input.nums",
+        itemKey: "n",
+        body: { type: "expr", params: { value: { $mul: ["$.n", 2] } } },
       },
     },
   },
