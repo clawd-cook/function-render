@@ -1,1 +1,2 @@
-{"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".trellis/tasks/09-22-function-renderer/design.md", "reason": "三端复用同一逻辑的一致性"}
+{"file": ".trellis/spec/guides/viteplus-ts-package-conventions.md", "reason": "包/校验约定"}
