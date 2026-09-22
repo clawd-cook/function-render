@@ -1,0 +1,6 @@
+[submodule "submodules/liteflow"]
+	path = submodules/liteflow
+	url = git@github.com:dromara/liteflow.git
+[submodule "submodules/json-render"]
+	path = submodules/json-render
+	url = git@github.com:vercel-labs/json-render.git
