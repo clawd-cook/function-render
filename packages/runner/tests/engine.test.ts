@@ -138,3 +138,56 @@ test("unknown function is rejected during validation", async () => {
     FunctionRenderError,
   );
 });
+
+test("switch selects a matching case, else the default", async () => {
+  const spec = {
+    switch: { $state: "/op" },
+    cases: {
+      double: { call: "add", args: { a: { $state: "/x" }, b: { $state: "/x" } } },
+    },
+    default: { call: "add", args: { a: 0, b: 0 } },
+  };
+  expect(
+    (await run(spec, { catalog: baseCatalog, initialState: { op: "double", x: 4 } })).result,
+  ).toBe(8);
+  expect(
+    (await run(spec, { catalog: baseCatalog, initialState: { op: "other", x: 4 } })).result,
+  ).toBe(0);
+});
+
+test("switch without a matching case and no default returns undefined", async () => {
+  const spec = { switch: { $state: "/op" }, cases: { a: { call: "add", args: { a: 1, b: 1 } } } };
+  expect(
+    (await run(spec, { catalog: baseCatalog, initialState: { op: "z" } })).result,
+  ).toBeUndefined();
+});
+
+test("for iterates an array, writes as/indexAs, and collects results", async () => {
+  const spec = {
+    for: { $state: "/items" },
+    as: "/n",
+    indexAs: "/i",
+    body: { call: "add", args: { a: { $state: "/n" }, b: { $state: "/i" } } },
+  };
+  const { state, result } = await run(spec, {
+    catalog: baseCatalog,
+    initialState: { items: [10, 20, 30] },
+  });
+  expect(result).toEqual([10, 21, 32]);
+  expect(state.n).toBe(30);
+  expect(state.i).toBe(2);
+});
+
+test("for accepts a number as a range", async () => {
+  const spec = {
+    for: 3,
+    as: "/n",
+    body: { call: "add", args: { a: { $state: "/n" }, b: 1 } },
+  };
+  expect((await run(spec, { catalog: baseCatalog })).result).toEqual([1, 2, 3]);
+});
+
+test("for is fail-fast when a body iteration throws", async () => {
+  const spec = { for: [1, 2], as: "/n", body: { call: "boom" } };
+  await expect(run(spec, { catalog: baseCatalog })).rejects.toBeInstanceOf(FunctionRenderError);
+});
