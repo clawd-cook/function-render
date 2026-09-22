@@ -1,0 +1,29 @@
+{
+  "id": "fr-docs-pure-protocol",
+  "name": "fr-docs-pure-protocol",
+  "title": "Docs pure-protocol demos: rewrite problems off algorithm Funcs",
+  "description": "Rewrite remaining docs LeetCode-style problems to pure horizon protocol where feasible; keep Func only when identity rules require it",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": "website",
+  "priority": "P2",
+  "creator": "heyongqi10",
+  "assignee": "heyongqi10",
+  "createdAt": "2026-09-22",
+  "completedAt": "2026-09-22",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "CANCELLED 2026-09-22: user aborted before start; prefer closing engine mainline instead of docs pure-protocol demos.",
+  "meta": {
+    "cancelled": true,
+    "reason": "user-abort-prefer-engine-mainline-closure"
+  }
+}
