@@ -1,0 +1,35 @@
+{
+  "commit": "58a5c299993206edcc5b466b6bc3c27472ed3b4f",
+  "test262Commit": "045bf6f9966ce3291b8fbc1e0403cd97b9201b00",
+  "node": "v22.22.2",
+  "generatedAt": "2026-09-22T16:29:17.116Z",
+  "conformance": {
+    "total": 44,
+    "passed": 44,
+    "failed": 0,
+    "passRate": 1,
+    "coverage": {
+      "covered": 44,
+      "denominator": 23726,
+      "ratio": 0.001855
+    }
+  },
+  "performance": {
+    "samples": 5,
+    "p50Ms": 0.021,
+    "p95Ms": 0.0917,
+    "totalMs": 1.3616,
+    "casesPerSec": 32314.3
+  },
+  "byCategory": {
+    "expressions": {
+      "total": 32,
+      "passed": 32
+    },
+    "statements": {
+      "total": 12,
+      "passed": 12
+    }
+  },
+  "failures": []
+}

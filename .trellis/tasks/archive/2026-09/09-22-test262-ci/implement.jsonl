@@ -1,0 +1,2 @@
+{"file": ".trellis/tasks/09-22-test262-conformance-dashboard/design.md", "reason": "CI wiring + write-back + gate policy."}
+{"file": ".trellis/spec/guides/index.md", "reason": "Shared conventions."}

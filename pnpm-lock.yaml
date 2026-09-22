@@ -363,6 +363,28 @@ importers:
         specifier: 'catalog:'
         version: 4.6.5
 
+  packages/test262:
+    dependencies:
+      '@logic-renderer/catalog':
+        specifier: workspace:*
+        version: link:../catalog
+      '@logic-renderer/runner':
+        specifier: workspace:*
+        version: link:../runner
+    devDependencies:
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.6.2
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+      vite:
+        specifier: 'catalog:'
+        version: '@voidzero-dev/vite-plus-core@0.3.3(@types/node@26.6.2)(esbuild@0.25.12)(typescript@7.0.2)'
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.3.3(@types/node@26.6.2)(typescript@7.0.2)
+
 packages:
 
   '@algolia/abtesting@1.25.0':

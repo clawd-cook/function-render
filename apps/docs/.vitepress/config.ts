@@ -13,14 +13,14 @@ const leetcodeGroups = categories.map((category) => ({
 
 export default defineConfig({
   title: "Function Renderer",
-  description:
-    "声明式函数执行引擎 — 封闭 NodeType/ExprAtom + 注入 Func，浏览器在线运行协议",
+  description: "声明式函数执行引擎 — 封闭 NodeType/ExprAtom + 注入 Func，浏览器在线运行协议",
   base: "/logic-render/",
   lang: "zh-CN",
   themeConfig: {
     nav: [
       { text: "指南", link: "/guide/overview" },
       { text: "LeetCode", link: "/leetcode/" },
+      { text: "test262", link: "/test262/" },
       { text: "GitHub", link: "https://github.com/clawd-cook/logic-render" },
     ],
     sidebar: {
