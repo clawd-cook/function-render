@@ -4,3 +4,6 @@
 [submodule "submodules/json-render"]
 	path = submodules/json-render
 	url = git@github.com:vercel-labs/json-render.git
+[submodule "submodules/test262"]
+	path = submodules/test262
+	url = git@github.com:tc39/test262.git
