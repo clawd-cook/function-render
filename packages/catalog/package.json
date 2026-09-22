@@ -1,0 +1,34 @@
+{
+  "name": "@function-renderer/catalog",
+  "version": "0.0.0",
+  "description": "Catalog helpers, a standard function library, and shared example specs for the function renderer.",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack",
+    "dev": "vp pack --watch",
+    "test": "vp test",
+    "check": "vp check"
+  },
+  "dependencies": {
+    "@function-renderer/core": "workspace:*",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@function-renderer/runner": "workspace:*",
+    "@types/node": "^26.1.1",
+    "typescript": "^7.0.2",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
