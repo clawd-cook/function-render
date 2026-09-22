@@ -1,0 +1,3 @@
+{"file": ".trellis/tasks/09-22-fr-core/design.md", "reason": "core schema/validate/expr 现状"}
+{"file": ".trellis/tasks/09-22-fr-runner/design.md", "reason": "runner exec 现状"}
+{"file": ".trellis/spec/guides/viteplus-ts-package-conventions.md", "reason": "Vite+ TS 包约定(递归 schema/回调类型/.ts)"}
