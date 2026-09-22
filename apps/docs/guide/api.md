@@ -25,7 +25,7 @@ import {
 
 - `defineFunction({ params, run, sideEffect?, rollback? })`。
 - `standardCatalog`:字符串/`sort`/结算 `deductBalance` 等;**不含** `add`/`mul`(算术是 ExprAtom)。
-- `examples`:`math-pipeline` / `greeting` / `conditional` / `settlement`。
+- `examples`:`math-pipeline` / `greeting` / `conditional` / `settlement` / `sum-for` / `parallel-when` / `status-switch` / `double-arrayMap`。
 
 ## `@logic-renderer/core`
 
@@ -44,10 +44,11 @@ import {
 - `getSlot` / `setSlot`:Slot `$.path` 读写(`$.input` 只读)。
 - `FunctionRenderError`:`{ phase: "validate" | "run" | "rollback", path, funcKey?, cause? }`。
 
-## 原子计算(ExprAtom,v1)
+## 原子计算(ExprAtom)
 
-- 算术:`$add` `$mul`
-- 比较:`$gt`
+- 算术:`$add` `$mul` `$sub` `$div` `$mod` `$pow` `$abs` `$ceil` `$floor` `$round`
+- 比较/逻辑:`$gt` `$gte` `$lt` `$lte` `$eq` `$neq` `$and` `$or` `$not`
+- 一阶数据:`$len` `$at` `$concat` `$pick` `$omit` `$merge`
 - 强制字面量:`$lit`
 - Slot 读:字符串 `$.path`(其它字符串是字面量,中缀不算)
 

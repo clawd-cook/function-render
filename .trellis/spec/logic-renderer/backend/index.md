@@ -6,7 +6,7 @@
 
 - [ ] Read [operator-runtime-api.md](./operator-runtime-api.md) before changing `validate` / `run`, NodeSpec, ExprAtom, Slot, preview, or rollback
 - [ ] Do not restore old dialect (`call`/`seq`/`$state`/JSON Pointer/`initialState`/`catalog` option)
-- [ ] Arithmetic belongs in ExprAtom, never as Func or NodeType
+- [ ] Arithmetic / first-order data belong in ExprAtom, never as Func or NodeType
 - [ ] New NodeType / ExprAtom = engine version bump + changelog; projects inject only `funcs`
 
 ## Quality Check
@@ -21,4 +21,4 @@
 
 | Guide | Description | Status |
 |-------|-------------|--------|
-| [Operator Runtime API](./operator-runtime-api.md) | `validate`/`run` signatures, dialect, preview, rollback | Filled (2026-09-22) |
+| [Operator Runtime API](./operator-runtime-api.md) | `validate`/`run` signatures, dialect, preview, rollback, horizon catalog | Filled (2026-09-22) |

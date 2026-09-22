@@ -1,11 +1,11 @@
 # Operator Runtime API
 
-## Scenario: Hard-cut dialect + v1 settlement runtime
+## Scenario: Closed dialect + settlement + horizon catalog
 
 ### 1. Scope / Trigger
 
-- Trigger: `fr-operator-runtime` replaced the public Interface of `@logic-renderer/core` + `@logic-renderer/runner` and slimmed `@logic-renderer/catalog`.
-- Cross-layer: hosts (`apps/node-service|react|vue|docs`) and fixtures must use the new dialect; no adapters.
+- Trigger: `fr-operator-runtime` replaced the public Interface; `fr-operator-horizon` expanded the sealed Operator / Expr catalogs.
+- Cross-layer: hosts (`apps/node-service|react|vue|docs`) and fixtures use `{ type, params }` + `funcs`; no adapters / no `registerOperator`.
 
 ### 2. Signatures
 
@@ -34,8 +34,23 @@ type Func =
     };
 ```
 
-**v1 NodeType**: `then` | `if` | `set` | `callFunc`  
-**v1 ExprAtom**: `$add` | `$mul` | `$gt` | `$lit`
+**NodeType (engine closed set)**
+
+| Group | types |
+|-------|--------|
+| Control | `then` `when` `if` `switch` `while` `for` `tryCatch` |
+| Invocation | `callFunc` |
+| Data | `get` `set` `arrayMap` `arrayFilter` `arrayReduce` |
+| Utility | `log` `assert` `sleep` `constant` `expr` |
+
+**ExprAtom (engine closed set)**
+
+| Group | atoms |
+|-------|--------|
+| Arithmetic | `$add` `$mul` `$sub` `$div` `$mod` `$pow` `$abs` `$ceil` `$floor` `$round` |
+| Compare / logic | `$gt` `$gte` `$lt` `$lte` `$eq` `$neq` `$and` `$or` `$not` |
+| First-order data | `$len` `$at` `$concat` `$pick` `$omit` `$merge` |
+| Literal escape | `$lit` |
 
 ### 3. Contracts
 
@@ -43,12 +58,18 @@ type Func =
 |-------|-------|-------|
 | `funcs` | validate + run | Required value object (not global `register()`). Non-object / null → `TypeError`. |
 | `input` | run | Cloned into `state.input` (`$.input` readonly). |
-| `preview` | run | Default `false`. When `true`: never call `Func.run`; skip `sleep` if present; still validate `funcKey` + params schema. |
+| `preview` | run | Default `false`. When `true`: never call `Func.run`; skip `sleep`; still validate `funcKey` + params schema. |
 | Slot path | dialect | `$.path` or bare `tax` → `$.tax`. Reject writes under `$.input` at validate. |
 | Expr string | dialect | Matching `/^\$\.[A-Za-z_][\w.]*$/` is Slot read; other strings are literals (no infix eval). |
 | Catalog arithmetic | catalog | Must not export `add`/`sub`/`mul`/`div` as Func. Use ExprAtom. |
+| `while` / `for` | validate | Missing `maxIter` → `phase: "validate"`. |
+| `for` / `arrayMap` / `arrayReduce` | run | `items.length > maxIter` → `phase: "run"` (`arrayMap`/`arrayReduce` default `maxIter = length`). |
+| `tryCatch.body` | validate | Any `callFunc` whose Func has `sideEffect: true` → `phase: "validate"`. catch/finally may use sideEffect. |
+| `itemKey` / `accumKey` | run | Bound before iteration body; previous Slot value restored after. |
+| `$div` zero | run | `phase: "run"`. |
+| `$map` | dialect | Never an ExprAtom; use NodeType `arrayMap`. |
 
-**Deleted Interface (do not revive)**: discriminant nodes (`call`/`seq`/…), `{ $state: "/ptr" }`, `run(spec, { catalog, initialState })`.
+**Deleted Interface (do not revive)**: discriminant nodes (`call`/`seq`/…), `{ $state: "/ptr" }`, `run(spec, { catalog, initialState })`, project-level `registerOperator`.
 
 ### 4. Validation & Error Matrix
 
@@ -56,29 +77,33 @@ type Func =
 |-----------|-------|
 | `options.funcs` missing / not object | `TypeError` |
 | Zod NodeSpec fail / unknown `type` | `FunctionRenderError` `phase: "validate"` |
-| Unknown `$atom` (except allowed v1 set) | `phase: "validate"` |
+| Unknown `$atom` (except allowed closed set) | `phase: "validate"` |
 | `funcKey` ∉ `funcs` | `phase: "validate"`, `funcKey` set |
 | Invalid / `$.input` write path (`set.path` / `outputTo`) | `phase: "validate"` |
-| Expr type mismatch / `$div` zero (horizon) / Func throw | `phase: "run"` |
+| Missing `maxIter` on `while`/`for` | `phase: "validate"` |
+| `tryCatch.body` sideEffect `callFunc` | `phase: "validate"` |
+| Expr type mismatch / `$div` zero / Func throw / loop maxIter | `phase: "run"` |
 | Rollback hook throws | `phase: "rollback"`, `cause` = original; remaining frames still attempted |
 
 ### 5. Good / Base / Bad Cases
 
-- **Good**: settlement `then` + `set` + `$mul`/`$add` + `callFunc: deductBalance` with `sideEffect` + `rollback`.
-- **Base**: `preview: true` on same spec → Slot tax/total computed; `Func.run` never called; `callFunc` `outputTo` not written as `undefined`.
-- **Bad**: `{ call: "add", args: … }` / `{ $state: "/input/x" }` / `"$.a + 1"` as arithmetic / registering `mul` as Func.
+- **Good**: settlement `then` + `set` + `$mul`/`$add` + `callFunc: deductBalance` with `sideEffect` + `rollback`; horizon `for`/`when`/`switch`/`arrayMap`.
+- **Base**: `preview: true` on same spec → Slot tax/total computed; `Func.run` never called; `sleep` skipped; `callFunc` `outputTo` not written as `undefined`.
+- **Bad**: `{ call: "add", args: … }` / `{ $state: "/input/x" }` / `"$.a + 1"` as arithmetic / registering `mul` as Func / `$map` as ExprAtom.
 
 ### 6. Tests Required
 
 | Assertion | Where |
 |-----------|--------|
 | `orderAmount=2000` → tax 120, total 2120, `deductBalance` called | `packages/runner/tests/engine.test.ts` |
-| `preview: true` → no `Func.run` | same |
+| `preview: true` → no `Func.run`; sleep skipped | same |
 | Successful sideEffect then later failure → `rollback` once | same |
 | `callFunc.run` itself throws → no rollback frame | same |
-| Unknown type / `$atom` / `funcKey` → `phase: "validate"` | `packages/core/tests/validate.test.ts` + runner |
-| Infix string stays literal | `packages/core/tests/expr.test.ts` |
-| Hosts/examples use `{ type, params }` + `funcs` | catalog examples + apps spot-check |
+| Control/Data/Utility main paths + tryCatch / maxIter | same |
+| Unknown type / `$atom` / `funcKey` / tryCatch body sideEffect → `phase: "validate"` | `packages/core/tests/validate.test.ts` + runner |
+| Horizon ExprAtoms (`$div` zero, `$eq`, `$len`/…) | `packages/core/tests/expr.test.ts` |
+| Infix string stays literal | same |
+| Hosts/examples use `{ type, params }` + `funcs`; examples cover for/when/switch/arrayMap | catalog examples + apps spot-check |
 
 ### 7. Wrong vs Correct
 
@@ -102,7 +127,7 @@ await run(spec, { input: x, funcs: { deductBalance }, preview: false });
 
 **Decision**: Operator Catalog + Expr Catalog sealed per engine version; only `FuncRegistry` is injectable per `run`. Placement: I/O or project semantics → Func; control/subgraph → NodeType; pure sync value→value → ExprAtom.
 
-**Extensibility**: Horizon NodeTypes (`when`/`for`/`tryCatch`/…) and ExprAtoms (`$len`/`$at`/…) land in later engine versions, not via project `registerOperator`.
+**Extensibility**: New NodeTypes / ExprAtoms land in later engine versions (changelog), not via project `registerOperator`. Horizon catalog is now in the closed set.
 
 ### Common Mistake: Expecting rollback when Func.run throws
 
@@ -111,3 +136,7 @@ await run(spec, { input: x, funcs: { deductBalance }, preview: false });
 **Cause**: Frames push only after successful `run` with `sideEffect: true`.
 
 **Fix**: Test “later sibling fails after successful sideEffect” for rollback; test “run throws → no rollback”.
+
+### Gotcha: `when` with `waitAll: false`
+
+Loser branches may still mutate Slot / push rollback frames after the race winner settles. Prefer `waitAll: true` (default) when side effects or shared Slot writes matter. Implementation attaches `.catch()` on losers to avoid unhandled rejections; that does not make loser side effects disappear.

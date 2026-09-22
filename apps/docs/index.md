@@ -3,7 +3,7 @@ layout: home
 hero:
   name: Function Renderer
   text: 声明式函数执行引擎
-  tagline: 用一份 JSON spec 编排已注册函数 —— call / seq / parallel / if / switch / for
+  tagline: 用一份 JSON spec 编排业务 Func —— then / if / for / when / switch / callFunc
   actions:
     - theme: brand
       text: 快速开始

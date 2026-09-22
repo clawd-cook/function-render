@@ -4,8 +4,7 @@ export type Difficulty = "简单" | "中等" | "困难";
 
 /**
  * A LeetCode-style problem expressed as a logic-renderer FlowSpec.
- * v1 runtime has no `for`/`arrayMap`, so algorithmic problems call registered
- * Funcs; sort still uses catalog `sort`.
+ * Algorithmic problems may use pure protocol (for / ExprAtom) or registered Funcs.
  */
 export interface Problem {
   num: number;
@@ -38,7 +37,7 @@ const twoSum: Problem = {
   difficulty: "简单",
   category: "数组",
   description:
-    "给定整数数组与目标值,返回和为目标的两个下标。v1 无 for/arrayMap,解法登记为 Func `twoSum`,协议用 callFunc 调用。",
+    "给定整数数组与目标值,返回和为目标的两个下标。解法登记为 Func `twoSum`,协议用 callFunc 调用。",
   pureProtocol: false,
   input: { nums: [2, 7, 11, 15], target: 9 },
   expected: [0, 1],
@@ -70,6 +69,7 @@ const moveZeroes: Problem = {
   },
 };
 
+/** Kadane via for + if + $add/$gt/$at (no callFunc). */
 const maxSubarray: Problem = {
   num: 53,
   title: "最大子数组和",
@@ -77,14 +77,76 @@ const maxSubarray: Problem = {
   url: "https://leetcode.cn/problems/maximum-subarray/",
   difficulty: "中等",
   category: "动态规划",
-  description: "求连续子数组最大和。登记为 Func `maxSubarray`。",
-  pureProtocol: false,
+  description:
+    "求连续子数组最大和。纯协议:for 遍历 + if 选 max(num, cur+num) / max(best, cur),无 callFunc。",
+  pureProtocol: true,
   input: { nums: [-2, 1, -3, 4, -1, 2, 1, -5, 4] },
   expected: 6,
   spec: {
-    type: "callFunc",
-    params: { funcKey: "maxSubarray", args: { nums: "$.input.nums" } },
-    outputTo: "$.result",
+    type: "then",
+    params: {
+      nodes: [
+        {
+          type: "set",
+          params: { path: "$.best", value: { $at: ["$.input.nums", 0] } },
+        },
+        { type: "set", params: { path: "$.cur", value: "$.best" } },
+        {
+          type: "for",
+          params: {
+            items: "$.input.nums",
+            itemKey: "n",
+            indexKey: "i",
+            maxIter: 10000,
+            body: {
+              type: "if",
+              params: {
+                condition: { $gt: ["$.i", 0] },
+                trueBranch: {
+                  type: "then",
+                  params: {
+                    nodes: [
+                      {
+                        type: "set",
+                        params: {
+                          path: "$.sum",
+                          value: { $add: ["$.cur", "$.n"] },
+                        },
+                      },
+                      {
+                        type: "if",
+                        params: {
+                          condition: { $gt: ["$.n", "$.sum"] },
+                          trueBranch: {
+                            type: "set",
+                            params: { path: "$.cur", value: "$.n" },
+                          },
+                          falseBranch: {
+                            type: "set",
+                            params: { path: "$.cur", value: "$.sum" },
+                          },
+                        },
+                      },
+                      {
+                        type: "if",
+                        params: {
+                          condition: { $gt: ["$.cur", "$.best"] },
+                          trueBranch: {
+                            type: "set",
+                            params: { path: "$.best", value: "$.cur" },
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        },
+        { type: "get", params: { path: "$.best" }, outputTo: "$.result" },
+      ],
+    },
   },
 };
 

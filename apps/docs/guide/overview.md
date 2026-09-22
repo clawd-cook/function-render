@@ -20,7 +20,7 @@
 - **FlowSpec**:`{ type, params, outputTo? }` 节点树(见[编排算子](/guide/operators))。
 - **funcs**:本次 `run` 注入的 FuncRegistry(不是全局 `register`)。
 - **Slot**:`$.input` 为入参(只读);`set` / `outputTo` 写入其它路径。
-- **ExprAtom**:`$add` / `$mul` / `$gt` 等封闭原子(不是 NodeType,不是 Func)。
+- **ExprAtom**:`$add` / `$mul` / `$gt` / `$len` 等封闭原子(不是 NodeType,不是 Func)。见[编排算子](/guide/operators)。
 
 ## 一个例子
 
