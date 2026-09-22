@@ -6,6 +6,12 @@
       "sourceType": "github",
       "skillPath": "skills/engineering/codebase-design/SKILL.md",
       "computedHash": "5a17552cc1482f1a40124bf4e6c9dbd90ac0dbb47e71c07d47369f9e5f2ae3b5"
+    },
+    "critical-thinking-logical-reasoning": {
+      "source": "sammcj/agentic-coding",
+      "sourceType": "github",
+      "skillPath": "skills/critical-thinking-logical-reasoning/SKILL.md",
+      "computedHash": "6aaa421d1d8a091d8064e7e67c8008aaebf50fe45d2969d8d1317692dc1e57b7"
     }
   }
 }
