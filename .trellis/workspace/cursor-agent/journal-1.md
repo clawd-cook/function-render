@@ -39,3 +39,37 @@ Route C curated config corpus: ingest (HTTPS submodule + language index), packag
 ### Next Steps
 
 - None - task complete
+
+
+## Session 2: Expand test262 corpus to 85
+
+**Date**: 2026-09-22
+**Task**: Expand test262 corpus to 85
+**Package**: website
+**Branch**: `cursor/test262-conformance-dashboard-bf4b`
+
+### Summary
+
+Added ternary(conditional), block, and more operator/control-flow entries; corpus 44->85, coverage 0.19%->0.36%, all pass; docs rebuilt. PR #7.
+
+### Main Changes
+
+- Detailed change bullets were not supplied; see the summary above.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a794057` | (see git log) |
+
+### Testing
+
+- Validation was not recorded for this session.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
