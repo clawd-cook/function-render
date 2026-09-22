@@ -9,6 +9,7 @@
     "types": [],
     "strict": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "skipLibCheck": true
@@ -17,6 +18,7 @@
     "env.d.ts",
     ".vitepress/config.ts",
     ".vitepress/theme/index.ts",
-    ".vitepress/**/*.paths.ts"
+    ".vitepress/**/*.paths.ts",
+    "data/**/*.ts"
   ]
 }

@@ -44,13 +44,19 @@ import {
 - `getByPath` / `setByPath`:JSON Pointer 读写共享 state。
 - `FunctionRenderError`:`{ kind: "validation" | "call", path, fnName?, cause? }`。
 
-## `@function-renderer/leetcode`
+## 原子计算算子(值表达式)
 
-```ts
-import { problems, getProblem, categories } from "@function-renderer/leetcode";
+`args`、`if`/`switch`/`for` 的判别、`set` 的值都是**值表达式**,由 `evaluate` 求值,支持:
 
-const p = getProblem("two-sum")!;
-const { result } = await run(p.spec, { catalog: p.catalog, initialState: p.sample.input });
-```
+- 读取:`{ "$state": "/ptr" }`
+- 算术:`$add` `$sub` `$mul` `$div` `$mod` `$neg`
+- 比较:`$eq` `$ne` `$lt` `$le` `$gt` `$ge`
+- 逻辑:`$and` `$or` `$not`
+- 集合:`$len` `$at` `$slice` `$concat` `$push`
+- 其它:`$min` `$max` `$if`(三元,惰性)
 
-每个 `Problem` 含 `num/title/slug/url/difficulty/category/description/python/solution/spec/catalog/sample`。
+配合 `set` 赋值节点与 `for`/`if`,简单算法(如两数之和)可**完全用协议表达**,无需专门的解法函数;排序/哈希等复杂算子仍登记在 catalog 里用 `call` 调用。
+
+## LeetCode 协议
+
+LeetCode 题解不再单独成包,而是作为**协议**直接放在文档站(`apps/docs/data/problems.ts`),在浏览器用 `@function-renderer/runner` + `@function-renderer/catalog` 在线运行。见 [LeetCode](/leetcode/)。

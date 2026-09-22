@@ -9,7 +9,7 @@
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
-    "@function-renderer/leetcode": "workspace:*",
+    "@function-renderer/catalog": "workspace:*",
     "@function-renderer/runner": "workspace:*"
   },
   "devDependencies": {

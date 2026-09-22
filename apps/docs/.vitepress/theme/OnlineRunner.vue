@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { getProblem } from "@function-renderer/leetcode";
+import { standardCatalog } from "@function-renderer/catalog";
 import { FunctionRenderError, run } from "@function-renderer/runner";
 import { computed, ref } from "vue";
+
+import { getProblem } from "../../data/problems.ts";
 
 const props = defineProps<{ slug: string }>();
 
@@ -16,25 +18,26 @@ interface Failure {
 }
 
 const problem = computed(() => getProblem(props.slug));
-const inputText = ref(JSON.stringify(problem.value?.sample.input ?? {}, null, 2));
+const specText = ref(JSON.stringify(problem.value?.spec ?? {}, null, 2));
+const inputText = ref(JSON.stringify(problem.value?.input ?? {}, null, 2));
 const output = ref<Success | Failure | null>(null);
 const running = ref(false);
 
 function reset(): void {
-  inputText.value = JSON.stringify(problem.value?.sample.input ?? {}, null, 2);
+  specText.value = JSON.stringify(problem.value?.spec ?? {}, null, 2);
+  inputText.value = JSON.stringify(problem.value?.input ?? {}, null, 2);
   output.value = null;
 }
 
 async function handleRun(): Promise<void> {
-  const current = problem.value;
-  if (!current) return;
   running.value = true;
   output.value = null;
   try {
-    const initialState = inputText.value.trim()
+    const spec: unknown = JSON.parse(specText.value);
+    const initialState: Record<string, unknown> = inputText.value.trim()
       ? (JSON.parse(inputText.value) as Record<string, unknown>)
       : {};
-    const { result, state } = await run(current.spec, { catalog: current.catalog, initialState });
+    const { result, state } = await run(spec, { catalog: standardCatalog, initialState });
     output.value = { ok: true, result, state };
   } catch (error) {
     if (error instanceof FunctionRenderError) {
@@ -55,9 +58,11 @@ async function handleRun(): Promise<void> {
 </script>
 
 <template>
-  <div class="runner" v-if="problem">
-    <label class="lbl">输入(JSON)</label>
-    <textarea v-model="inputText" spellcheck="false" rows="6"></textarea>
+  <div v-if="problem" class="runner">
+    <label class="lbl">协议(spec,可编辑)</label>
+    <textarea v-model="specText" spellcheck="false" rows="16" class="code"></textarea>
+    <label class="lbl">输入(JSON,可编辑)</label>
+    <textarea v-model="inputText" spellcheck="false" rows="4" class="code"></textarea>
     <div class="actions">
       <button type="button" class="run" :disabled="running" @click="handleRun">
         {{ running ? "运行中…" : "运行" }}
@@ -88,10 +93,12 @@ async function handleRun(): Promise<void> {
   background: var(--vp-c-bg-soft);
 }
 .lbl {
+  display: block;
   font-weight: 600;
   font-size: 0.85rem;
+  margin-top: 0.5rem;
 }
-.runner textarea {
+.runner textarea.code {
   width: 100%;
   margin-top: 0.35rem;
   padding: 0.6rem;
@@ -100,7 +107,7 @@ async function handleRun(): Promise<void> {
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
   font-family: var(--vp-font-family-mono);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   line-height: 1.5;
   resize: vertical;
 }
@@ -154,6 +161,6 @@ async function handleRun(): Promise<void> {
   border-radius: 6px;
   background: var(--vp-c-bg);
   overflow-x: auto;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 }
 </style>

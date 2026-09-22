@@ -1,4 +1,4 @@
-import { problems } from "@function-renderer/leetcode";
+import { problems } from "../data/problems.ts";
 
 export default {
   paths() {
