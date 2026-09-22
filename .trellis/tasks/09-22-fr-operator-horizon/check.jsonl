@@ -1,0 +1,4 @@
+{"file": ".trellis/spec/logic-renderer/backend/operator-runtime-api.md", "reason": "Verify against runtime contracts"}
+{"file": ".trellis/spec/logic-renderer/backend/index.md", "reason": "Quality check list"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Cross-layer host consistency"}
+{"file": ".trellis/tasks/archive/2026-09/09-22-fr-operator-system/design.md", "reason": "Horizon semantics acceptance"}

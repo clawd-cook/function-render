@@ -1,0 +1,5 @@
+{"file": ".trellis/spec/logic-renderer/backend/operator-runtime-api.md", "reason": "Current runtime API contracts to extend"}
+{"file": ".trellis/spec/logic-renderer/backend/index.md", "reason": "Pre-dev checklist for logic-renderer"}
+{"file": ".trellis/spec/guides/viteplus-ts-package-conventions.md", "reason": "TS package check/test conventions"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Hosts/core/runner boundary"}
+{"file": ".trellis/tasks/archive/2026-09/09-22-fr-operator-system/design.md", "reason": "Authoritative horizon NodeType/ExprAtom semantics"}
