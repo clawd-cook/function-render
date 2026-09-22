@@ -41,3 +41,39 @@ Implemented v1 operator runtime (then/if/set/callFunc + ExprAtoms), hard-cut hos
 ### Next Steps
 
 - None - task complete
+
+
+## Session 2: Func-Render horizon catalog batch-2
+
+**Date**: 2026-09-22
+**Task**: Func-Render horizon catalog batch-2
+**Package**: logic-renderer
+**Branch**: `main`
+
+### Summary
+
+Expanded sealed NodeType/ExprAtom catalogs (control/data/utility + first-order atoms); D1 docs/examples; archived fr-operator-horizon.
+
+### Main Changes
+
+- Detailed change bullets were not supplied; see the summary above.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `223698d` | (see git log) |
+| `5217c22` | (see git log) |
+| `4d95690` | (see git log) |
+
+### Testing
+
+- Validation was not recorded for this session.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
