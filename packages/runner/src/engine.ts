@@ -1,4 +1,5 @@
 import {
+  evaluate,
   evaluateCondition,
   FunctionRenderError,
   getByPath,
@@ -93,15 +94,21 @@ async function exec(
   }
 
   if ("switch" in node) {
-    const key = String(resolveArgs(node.switch, ctx));
+    const key = String(evaluate(node.switch, ctx));
     if (Object.prototype.hasOwnProperty.call(node.cases, key)) {
       return exec(node.cases[key]!, `${path}/switch/cases/${key}`, catalog, ctx);
     }
     return node.default ? exec(node.default, `${path}/switch/default`, catalog, ctx) : undefined;
   }
 
+  if ("set" in node) {
+    const value = evaluate(node.value, ctx);
+    ctx.set(node.set, value);
+    return value;
+  }
+
   if ("for" in node) {
-    const source = resolveArgs(node.for, ctx);
+    const source = evaluate(node.for, ctx);
     const items: unknown[] = Array.isArray(source)
       ? source
       : typeof source === "number"

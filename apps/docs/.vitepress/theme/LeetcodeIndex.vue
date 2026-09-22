@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { categories } from "@function-renderer/leetcode";
 import { withBase } from "vitepress";
+
+import { categories } from "../../data/problems.ts";
 </script>
 
 <template>

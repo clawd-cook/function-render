@@ -3,21 +3,19 @@ import { z } from "zod";
 import { isJsonPointer } from "./state.ts";
 
 // ---------------------------------------------------------------------------
-// Public spec types (hand-written; the zod schemas below are annotated to them
-// to keep recursive `z.lazy` unions inferable and stable).
+// Value expressions
 // ---------------------------------------------------------------------------
 
-/** A prop/arg value that may read from shared state via `{ $state }`. */
-export type DynamicValue =
-  | string
-  | number
-  | boolean
-  | null
-  | { $state: string }
-  | DynamicValue[]
-  | { [key: string]: DynamicValue };
+/**
+ * A value expression: a JSON value that may contain operator objects such as
+ * `{ "$state": "/ptr" }`, `{ "$add": [a, b] }`, `{ "$if": [c, t, e] }`.
+ * Operator validity is checked at evaluation time (see `evaluate`).
+ */
+export type Value = string | number | boolean | null | Value[] | { [key: string]: Value };
 
-/** Comparison operators shared by `$state` conditions. */
+/** Back-compat aliases (value expressions supersede the old dynamic/condition types). */
+export type DynamicValue = Value;
+export type Condition = Value;
 export interface Comparison {
   eq?: unknown;
   neq?: unknown;
@@ -28,22 +26,15 @@ export interface Comparison {
   not?: true;
 }
 
-/** A boolean condition evaluated against shared state. */
-export type Condition =
-  | boolean
-  | ({ $state: string } & Comparison)
-  | Condition[]
-  | { $and: Condition[] }
-  | { $or: Condition[] };
-
 /** An orchestration node. Exactly one discriminant key per node. */
 export type Node =
-  | { call: string; args?: Record<string, DynamicValue>; out?: string }
+  | { call: string; args?: Record<string, Value>; out?: string }
   | { seq: Node[] }
   | { parallel: Node[] }
-  | { if: Condition; then: Node; else?: Node }
-  | { switch: DynamicValue; cases: Record<string, Node>; default?: Node }
-  | { for: DynamicValue; as?: string; indexAs?: string; body: Node };
+  | { if: Value; then: Node; else?: Node }
+  | { switch: Value; cases: Record<string, Node>; default?: Node }
+  | { for: Value; as?: string; indexAs?: string; body: Node }
+  | { set: string; value: Value };
 
 // ---------------------------------------------------------------------------
 // Zod schemas
@@ -53,59 +44,43 @@ const JsonPointer = z
   .string()
   .refine(isJsonPointer, { message: "invalid JSON Pointer (must be empty or start with '/')" });
 
-export const DynamicValueSchema = z.lazy(() =>
+export const ValueSchema: z.ZodType<Value> = z.lazy(() =>
   z.union([
     z.string(),
     z.number(),
     z.boolean(),
     z.null(),
-    z.strictObject({ $state: JsonPointer }),
-    z.array(DynamicValueSchema),
-    z.record(z.string(), DynamicValueSchema),
+    z.array(ValueSchema),
+    z.record(z.string(), ValueSchema),
   ]),
-) as z.ZodType<DynamicValue>;
+);
 
-const comparison = {
-  eq: z.unknown().optional(),
-  neq: z.unknown().optional(),
-  gt: z.number().optional(),
-  gte: z.number().optional(),
-  lt: z.number().optional(),
-  lte: z.number().optional(),
-  not: z.literal(true).optional(),
-};
-
-export const ConditionSchema = z.lazy(() =>
-  z.union([
-    z.boolean(),
-    z.strictObject({ $state: JsonPointer, ...comparison }),
-    z.array(ConditionSchema),
-    z.strictObject({ $and: z.array(ConditionSchema) }),
-    z.strictObject({ $or: z.array(ConditionSchema) }),
-  ]),
-) as z.ZodType<Condition>;
+/** Back-compat aliases. */
+export const DynamicValueSchema = ValueSchema;
+export const ConditionSchema = ValueSchema;
 
 export const NodeSchema = z.lazy(() =>
   z.union([
     z.strictObject({
       call: z.string(),
-      args: z.record(z.string(), DynamicValueSchema).optional(),
+      args: z.record(z.string(), ValueSchema).optional(),
       out: JsonPointer.optional(),
     }),
     z.strictObject({ seq: z.array(NodeSchema) }),
     z.strictObject({ parallel: z.array(NodeSchema) }),
     // oxlint-disable-next-line unicorn/no-thenable -- `then` is a spec field name, not a Promise callback
-    z.strictObject({ if: ConditionSchema, then: NodeSchema, else: NodeSchema.optional() }),
+    z.strictObject({ if: ValueSchema, then: NodeSchema, else: NodeSchema.optional() }),
     z.strictObject({
-      switch: DynamicValueSchema,
+      switch: ValueSchema,
       cases: z.record(z.string(), NodeSchema),
       default: NodeSchema.optional(),
     }),
     z.strictObject({
-      for: DynamicValueSchema,
+      for: ValueSchema,
       as: JsonPointer.optional(),
       indexAs: JsonPointer.optional(),
       body: NodeSchema,
     }),
+    z.strictObject({ set: JsonPointer, value: ValueSchema }),
   ]),
 ) as z.ZodType<Node>;

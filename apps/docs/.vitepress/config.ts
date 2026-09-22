@@ -1,5 +1,6 @@
-import { categories } from "@function-renderer/leetcode";
 import { defineConfig } from "vitepress";
+
+import { categories } from "../data/problems.ts";
 
 const leetcodeGroups = categories.map((category) => ({
   text: category.name,
