@@ -1,0 +1,27 @@
+{
+  "name": "@logic-renderer/test262",
+  "version": "0.0.0",
+  "private": true,
+  "description": "test262 language conformance corpus: model cases as FlowSpec config and render via @logic-renderer/runner.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "vp test",
+    "check": "vp check",
+    "report": "node --experimental-strip-types bin/run.ts"
+  },
+  "dependencies": {
+    "@logic-renderer/catalog": "workspace:*",
+    "@logic-renderer/runner": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "typescript": "^7.0.2",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
