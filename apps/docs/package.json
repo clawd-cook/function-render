@@ -1,0 +1,20 @@
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "dependencies": {
+    "@function-renderer/leetcode": "workspace:*",
+    "@function-renderer/runner": "workspace:*"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.9",
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.42"
+  }
+}

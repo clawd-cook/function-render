@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["es2023", "dom", "dom.iterable"],
+    "moduleDetection": "force",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
+    "types": [],
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "env.d.ts",
+    ".vitepress/config.ts",
+    ".vitepress/theme/index.ts",
+    ".vitepress/**/*.paths.ts"
+  ]
+}
