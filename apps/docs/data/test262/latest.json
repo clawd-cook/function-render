@@ -1,34 +1,34 @@
 {
-  "commit": "58a5c299993206edcc5b466b6bc3c27472ed3b4f",
+  "commit": "bff0e4cc3accfb0c08ab26c12f09b9f97d6076a6",
   "test262Commit": "045bf6f9966ce3291b8fbc1e0403cd97b9201b00",
   "node": "v22.22.2",
-  "generatedAt": "2026-09-22T16:29:17.116Z",
+  "generatedAt": "2026-09-22T16:57:08.513Z",
   "conformance": {
-    "total": 44,
-    "passed": 44,
+    "total": 85,
+    "passed": 85,
     "failed": 0,
     "passRate": 1,
     "coverage": {
-      "covered": 44,
+      "covered": 85,
       "denominator": 23726,
-      "ratio": 0.001855
+      "ratio": 0.003583
     }
   },
   "performance": {
     "samples": 5,
-    "p50Ms": 0.021,
-    "p95Ms": 0.0917,
-    "totalMs": 1.3616,
-    "casesPerSec": 32314.3
+    "p50Ms": 0.0206,
+    "p95Ms": 0.0778,
+    "totalMs": 2.3673,
+    "casesPerSec": 35906.3
   },
   "byCategory": {
     "expressions": {
-      "total": 32,
-      "passed": 32
+      "total": 54,
+      "passed": 54
     },
     "statements": {
-      "total": 12,
-      "passed": 12
+      "total": 31,
+      "passed": 31
     }
   },
   "failures": []
