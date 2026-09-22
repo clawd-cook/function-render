@@ -1066,6 +1066,338 @@
     }
   },
   {
+    "id": "expressions-grouping-S11.1.6_A1",
+    "test262Path": "test/language/expressions/grouping/S11.1.6_A1.js",
+    "esid": "sec-grouping-operator",
+    "category": "expressions",
+    "description": "(1 + 2) * 3 === 9",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$mul": [
+            {
+              "$add": [
+                1,
+                2
+              ]
+            },
+            3
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 9
+    }
+  },
+  {
+    "id": "expressions-grouping-S11.1.6_A2_T1",
+    "test262Path": "test/language/expressions/grouping/S11.1.6_A2_T1.js",
+    "category": "expressions",
+    "description": "2 * (3 + 4) === 14",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$mul": [
+            2,
+            {
+              "$add": [
+                3,
+                4
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 14
+    }
+  },
+  {
+    "id": "expressions-grouping-S11.1.6_A2_T2",
+    "test262Path": "test/language/expressions/grouping/S11.1.6_A2_T2.js",
+    "category": "expressions",
+    "description": "(2 + 3) * (4 - 1) === 15",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$mul": [
+            {
+              "$add": [
+                2,
+                3
+              ]
+            },
+            {
+              "$sub": [
+                4,
+                1
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 15
+    }
+  },
+  {
+    "id": "expressions-grouping-S11.1.6_A3_T1",
+    "test262Path": "test/language/expressions/grouping/S11.1.6_A3_T1.js",
+    "category": "expressions",
+    "description": "(10 - 2) / 4 === 2",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$div": [
+            {
+              "$sub": [
+                10,
+                2
+              ]
+            },
+            4
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 2
+    }
+  },
+  {
+    "id": "expressions-grouping-S11.1.6_A3_T2",
+    "test262Path": "test/language/expressions/grouping/S11.1.6_A3_T2.js",
+    "category": "expressions",
+    "description": "(1 + 1) * (2 + 2) === 8",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$mul": [
+            {
+              "$add": [
+                1,
+                1
+              ]
+            },
+            {
+              "$add": [
+                2,
+                2
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 8
+    }
+  },
+  {
+    "id": "expressions-grouping-S11.1.6_A3_T3",
+    "test262Path": "test/language/expressions/grouping/S11.1.6_A3_T3.js",
+    "category": "expressions",
+    "description": "1 + 2 * 3 === 7 (mul before add)",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$add": [
+            1,
+            {
+              "$mul": [
+                2,
+                3
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 7
+    }
+  },
+  {
+    "id": "expressions-exponentiation-A10",
+    "test262Path": "test/language/expressions/exponentiation/applying-the-exp-operator_A10.js",
+    "esid": "sec-exp-operator",
+    "category": "expressions",
+    "description": "2 ** 3 === 8",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$pow": [
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 8
+    }
+  },
+  {
+    "id": "expressions-exponentiation-A11",
+    "test262Path": "test/language/expressions/exponentiation/applying-the-exp-operator_A11.js",
+    "category": "expressions",
+    "description": "3 ** 2 === 9",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$pow": [
+            3,
+            2
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 9
+    }
+  },
+  {
+    "id": "expressions-exponentiation-A12",
+    "test262Path": "test/language/expressions/exponentiation/applying-the-exp-operator_A12.js",
+    "category": "expressions",
+    "description": "5 ** 0 === 1",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$pow": [
+            5,
+            0
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 1
+    }
+  },
+  {
+    "id": "expressions-exponentiation-A13",
+    "test262Path": "test/language/expressions/exponentiation/applying-the-exp-operator_A13.js",
+    "category": "expressions",
+    "description": "2 ** 10 === 1024",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$pow": [
+            2,
+            10
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 1024
+    }
+  },
+  {
+    "id": "expressions-unary-plus-S11.4.6_A1",
+    "test262Path": "test/language/expressions/unary-plus/S11.4.6_A1.js",
+    "esid": "sec-unary-plus-operator",
+    "category": "expressions",
+    "description": "+5 === 5",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$add": [
+            0,
+            5
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 5
+    },
+    "notes": "unary plus modeled as 0 + x"
+  },
+  {
+    "id": "expressions-unary-plus-S11.4.6_A2.1_T1",
+    "test262Path": "test/language/expressions/unary-plus/S11.4.6_A2.1_T1.js",
+    "category": "expressions",
+    "description": "+(-3) === -3",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$add": [
+            0,
+            -3
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": -3
+    },
+    "notes": "unary plus modeled as 0 + x"
+  },
+  {
+    "id": "expressions-unary-plus-S11.4.6_A2.2_T1",
+    "test262Path": "test/language/expressions/unary-plus/S11.4.6_A2.2_T1.js",
+    "category": "expressions",
+    "description": "+0 === 0",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$add": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 0
+    },
+    "notes": "unary plus modeled as 0 + x"
+  },
+  {
     "id": "expressions-conditional-S11.12_A1",
     "test262Path": "test/language/expressions/conditional/S11.12_A1.js",
     "esid": "sec-conditional-operator",
@@ -2674,6 +3006,401 @@
     "expectation": {
       "kind": "value",
       "expected": "done"
+    }
+  },
+  {
+    "id": "statements-if-S12.5_A1.1_T1",
+    "test262Path": "test/language/statements/if/S12.5_A1.1_T1.js",
+    "esid": "sec-if-statement",
+    "category": "statements",
+    "description": "if (true) 1 else 2 === 1",
+    "spec": {
+      "type": "if",
+      "params": {
+        "condition": true,
+        "trueBranch": {
+          "type": "constant",
+          "params": {
+            "value": 1
+          }
+        },
+        "falseBranch": {
+          "type": "constant",
+          "params": {
+            "value": 2
+          }
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 1
+    }
+  },
+  {
+    "id": "statements-if-S12.5_A1.2_T1",
+    "test262Path": "test/language/statements/if/S12.5_A1.2_T1.js",
+    "category": "statements",
+    "description": "if (false) 1 else 2 === 2",
+    "spec": {
+      "type": "if",
+      "params": {
+        "condition": false,
+        "trueBranch": {
+          "type": "constant",
+          "params": {
+            "value": 1
+          }
+        },
+        "falseBranch": {
+          "type": "constant",
+          "params": {
+            "value": 2
+          }
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 2
+    }
+  },
+  {
+    "id": "statements-if-S12.5_A10_T1",
+    "test262Path": "test/language/statements/if/S12.5_A10_T1.js",
+    "category": "statements",
+    "description": "else-if chain: x=5 → 'small' (>10 big / >0 small / else neg)",
+    "spec": {
+      "type": "if",
+      "params": {
+        "condition": {
+          "$gt": [
+            "$.input.x",
+            10
+          ]
+        },
+        "trueBranch": {
+          "type": "constant",
+          "params": {
+            "value": "big"
+          }
+        },
+        "falseBranch": {
+          "type": "if",
+          "params": {
+            "condition": {
+              "$gt": [
+                "$.input.x",
+                0
+              ]
+            },
+            "trueBranch": {
+              "type": "constant",
+              "params": {
+                "value": "small"
+              }
+            },
+            "falseBranch": {
+              "type": "constant",
+              "params": {
+                "value": "neg"
+              }
+            }
+          }
+        }
+      }
+    },
+    "input": {
+      "x": 5
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": "small"
+    }
+  },
+  {
+    "id": "statements-for-S12.6.3_A11_T1",
+    "test262Path": "test/language/statements/for/S12.6.3_A11_T1.js",
+    "category": "statements",
+    "description": "for sum([1,2,3,4,5]) === 15",
+    "spec": {
+      "type": "then",
+      "params": {
+        "nodes": [
+          {
+            "type": "set",
+            "params": {
+              "path": "$.sum",
+              "value": 0
+            }
+          },
+          {
+            "type": "for",
+            "params": {
+              "items": "$.input.nums",
+              "itemKey": "n",
+              "maxIter": 1000,
+              "body": {
+                "type": "set",
+                "params": {
+                  "path": "$.sum",
+                  "value": {
+                    "$add": [
+                      "$.sum",
+                      "$.n"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "get",
+            "params": {
+              "path": "$.sum"
+            }
+          }
+        ]
+      }
+    },
+    "input": {
+      "nums": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": 15
+    }
+  },
+  {
+    "id": "statements-for-S12.6.3_A11_T2",
+    "test262Path": "test/language/statements/for/S12.6.3_A11_T2.js",
+    "category": "statements",
+    "description": "for sum([2,4,6]) === 12",
+    "spec": {
+      "type": "then",
+      "params": {
+        "nodes": [
+          {
+            "type": "set",
+            "params": {
+              "path": "$.sum",
+              "value": 0
+            }
+          },
+          {
+            "type": "for",
+            "params": {
+              "items": "$.input.nums",
+              "itemKey": "n",
+              "maxIter": 1000,
+              "body": {
+                "type": "set",
+                "params": {
+                  "path": "$.sum",
+                  "value": {
+                    "$add": [
+                      "$.sum",
+                      "$.n"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "get",
+            "params": {
+              "path": "$.sum"
+            }
+          }
+        ]
+      }
+    },
+    "input": {
+      "nums": [
+        2,
+        4,
+        6
+      ]
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": 12
+    }
+  },
+  {
+    "id": "statements-for-S12.6.3_A11_T3",
+    "test262Path": "test/language/statements/for/S12.6.3_A11_T3.js",
+    "category": "statements",
+    "description": "for sum([7]) === 7",
+    "spec": {
+      "type": "then",
+      "params": {
+        "nodes": [
+          {
+            "type": "set",
+            "params": {
+              "path": "$.sum",
+              "value": 0
+            }
+          },
+          {
+            "type": "for",
+            "params": {
+              "items": "$.input.nums",
+              "itemKey": "n",
+              "maxIter": 1000,
+              "body": {
+                "type": "set",
+                "params": {
+                  "path": "$.sum",
+                  "value": {
+                    "$add": [
+                      "$.sum",
+                      "$.n"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "get",
+            "params": {
+              "path": "$.sum"
+            }
+          }
+        ]
+      }
+    },
+    "input": {
+      "nums": [
+        7
+      ]
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": 7
+    }
+  },
+  {
+    "id": "statements-for-S12.6.3_A10.1_T1",
+    "test262Path": "test/language/statements/for/S12.6.3_A10.1_T1.js",
+    "category": "statements",
+    "description": "for sum([0,0,0]) === 0",
+    "spec": {
+      "type": "then",
+      "params": {
+        "nodes": [
+          {
+            "type": "set",
+            "params": {
+              "path": "$.sum",
+              "value": 0
+            }
+          },
+          {
+            "type": "for",
+            "params": {
+              "items": "$.input.nums",
+              "itemKey": "n",
+              "maxIter": 1000,
+              "body": {
+                "type": "set",
+                "params": {
+                  "path": "$.sum",
+                  "value": {
+                    "$add": [
+                      "$.sum",
+                      "$.n"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "get",
+            "params": {
+              "path": "$.sum"
+            }
+          }
+        ]
+      }
+    },
+    "input": {
+      "nums": [
+        0,
+        0,
+        0
+      ]
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": 0
+    }
+  },
+  {
+    "id": "statements-for-S12.6.3_A10.1_T2",
+    "test262Path": "test/language/statements/for/S12.6.3_A10.1_T2.js",
+    "category": "statements",
+    "description": "for sum([100]) === 100",
+    "spec": {
+      "type": "then",
+      "params": {
+        "nodes": [
+          {
+            "type": "set",
+            "params": {
+              "path": "$.sum",
+              "value": 0
+            }
+          },
+          {
+            "type": "for",
+            "params": {
+              "items": "$.input.nums",
+              "itemKey": "n",
+              "maxIter": 1000,
+              "body": {
+                "type": "set",
+                "params": {
+                  "path": "$.sum",
+                  "value": {
+                    "$add": [
+                      "$.sum",
+                      "$.n"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "get",
+            "params": {
+              "path": "$.sum"
+            }
+          }
+        ]
+      }
+    },
+    "input": {
+      "nums": [
+        100
+      ]
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": 100
     }
   },
   {
