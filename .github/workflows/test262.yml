@@ -1,0 +1,86 @@
+name: test262 conformance
+
+on:
+  schedule:
+    # Daily at 04:17 UTC — refresh the conformance report + benchmark trend.
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "packages/**"
+      - "scripts/test262/**"
+      - "apps/docs/data/test262/**"
+      - ".github/workflows/test262.yml"
+
+# No `push` trigger: the write-back commit below cannot re-trigger this workflow,
+# so no [skip ci] is needed. Pushing to main lets deploy-docs.yml republish the site.
+permissions:
+  contents: write
+
+concurrency:
+  group: test262-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with test262 submodule)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Vite+ (vp)
+        run: |
+          curl -fsSL https://vite.plus | bash
+          echo "$HOME/.local/share/vite-plus/bin" >> "$GITHUB_PATH"
+
+      - name: Install dependencies
+        run: vp install
+
+      - name: Build workspace libraries
+        run: vp run -r build
+
+      - name: Capture baseline coverage
+        id: baseline
+        run: |
+          base=$(git show HEAD:apps/docs/data/test262/latest.json 2>/dev/null \
+            | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{try{console.log(JSON.parse(d).conformance.coverage.covered)}catch{console.log(0)}})')
+          echo "covered=${base:-0}" >> "$GITHUB_OUTPUT"
+
+      - name: Build test/language index
+        run: node --experimental-strip-types scripts/test262/build-index.ts
+
+      - name: Run conformance corpus (gates seed regression + path drift)
+        run: node --experimental-strip-types packages/test262/bin/run.ts
+
+      - name: Harness unit tests
+        run: vp run -F @logic-renderer/test262 test
+
+      - name: Coverage gate (no decrease)
+        run: |
+          cur=$(node -e 'console.log(require("./apps/docs/data/test262/latest.json").conformance.coverage.covered)')
+          base="${{ steps.baseline.outputs.covered }}"
+          echo "baseline covered=$base, current covered=$cur"
+          if [ "$cur" -lt "$base" ]; then
+            echo "::error::coverage decreased ($cur < $base)"
+            exit 1
+          fi
+
+      - name: Commit refreshed report (schedule/dispatch only)
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add apps/docs/data/test262
+          if git diff --cached --quiet; then
+            echo "no report changes to commit"
+          else
+            git commit -m "chore(test262): update conformance report"
+            git push
+          fi
