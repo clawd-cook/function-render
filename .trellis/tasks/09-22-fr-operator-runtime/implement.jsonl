@@ -1,0 +1,5 @@
+{"file": ".trellis/spec/guides/viteplus-ts-package-conventions.md", "reason": "TS package conventions for core/runner/catalog"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Cross-layer contracts between core runner catalog apps"}
+{"file": ".trellis/tasks/09-22-fr-operator-system/design.md", "reason": "Authoritative operator system design"}
+{"file": ".trellis/tasks/09-22-fr-operator-system/prd.md", "reason": "Authoritative requirements and placement rules"}
+{"file": ".trellis/tasks/09-22-fr-operator-system/research/hard-cut-inventory.md", "reason": "In-repo hard-cut breakage inventory"}

@@ -1,0 +1,4 @@
+{"file": ".trellis/spec/guides/viteplus-ts-package-conventions.md", "reason": "Package quality conventions"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Cross-layer consistency checks"}
+{"file": ".trellis/tasks/09-22-fr-operator-system/design.md", "reason": "Verify implementation against design contracts"}
+{"file": ".trellis/tasks/09-22-fr-operator-system/research/hard-cut-inventory.md", "reason": "Verify hard-cut hosts and fixtures rewritten"}
