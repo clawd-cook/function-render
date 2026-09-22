@@ -115,6 +115,8 @@ packages:
     path: apps/website
   utils:
     path: packages/utils
+  logic-renderer:
+    path: packages/core
   submodules/liteflow:
     path: submodules/liteflow
     type: submodule

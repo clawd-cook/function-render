@@ -23,6 +23,11 @@ These guides help you **ask the right questions before coding**.
 |-------|---------|-------------|
 | [Code Reuse Thinking Guide](./code-reuse-thinking-guide.md) | Identify patterns and reduce duplication | When you notice repeated patterns |
 | [Cross-Layer Thinking Guide](./cross-layer-thinking-guide.md) | Think through data flow across layers | Features spanning multiple layers |
+| [Vite+ TS package conventions](./viteplus-ts-package-conventions.md) | `packages/*` check/test/pack conventions | Editing `@logic-renderer/*` or new TS libs |
+
+Operator runtime contracts (signatures / preview / rollback) live in code-spec, not this index:
+
+→ `.trellis/spec/logic-renderer/backend/operator-runtime-api.md`
 
 ---
 
@@ -36,8 +41,10 @@ These guides help you **ask the right questions before coding**.
 - [ ] You're not sure where to put some logic
 - [ ] You are adding an event kind, JSONL record, RPC payload, or config field
 - [ ] UI / command code starts casting raw payload fields directly
+- [ ] Changing `@logic-renderer` `validate`/`run`, NodeSpec, ExprAtom, Slot, preview, or rollback
 
-→ Read [Cross-Layer Thinking Guide](./cross-layer-thinking-guide.md)
+→ Read [Cross-Layer Thinking Guide](./cross-layer-thinking-guide.md)  
+→ Operator runtime: `.trellis/spec/logic-renderer/backend/operator-runtime-api.md`
 
 ### When to Think About Code Reuse
 

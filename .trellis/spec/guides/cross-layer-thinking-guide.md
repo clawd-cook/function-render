@@ -299,6 +299,21 @@ Create detailed flow docs when:
 
 ---
 
+## Logic-Renderer Operator Boundary
+
+`validate` / `run` are the only public seams between core, runner, catalog, and apps.
+
+Checklist when touching that boundary:
+
+- [ ] Keep hosts on `{ type, params }` + `$.path` + `funcs` (no `$state` / `initialState` / discriminant `call`)
+- [ ] Arithmetic stays ExprAtom; do not reintroduce catalog `add`/`mul`
+- [ ] `preview: true` must never call `Func.run`
+- [ ] Tests assert only through `validate` / `run`
+
+Details: `.trellis/spec/logic-renderer/backend/operator-runtime-api.md`
+
+---
+
 ## Event Log / Projection Boundary
 
 Append-only logs are cross-layer contracts. A single event travels through:
