@@ -191,3 +191,59 @@ test("for is fail-fast when a body iteration throws", async () => {
   const spec = { for: [1, 2], as: "/n", body: { call: "boom" } };
   await expect(run(spec, { catalog: baseCatalog })).rejects.toBeInstanceOf(FunctionRenderError);
 });
+
+test("set node assigns evaluated value to state and returns it", async () => {
+  const spec = {
+    seq: [
+      { set: "/a", value: 40 },
+      { set: "/b", value: { $add: [{ $state: "/a" }, 2] } },
+    ],
+  };
+  const { state, result } = await run(spec, { catalog: {} });
+  expect(state).toEqual({ a: 40, b: 42 });
+  expect(result).toBe(42);
+});
+
+test("pure-protocol two-sum runs with only atomic operators (no solution function)", async () => {
+  const spec = {
+    seq: [
+      { set: "/result", value: null },
+      {
+        for: { $state: "/nums" },
+        as: "/x",
+        indexAs: "/i",
+        body: {
+          for: { $state: "/nums" },
+          as: "/y",
+          indexAs: "/j",
+          body: {
+            if: {
+              $and: [
+                { $gt: [{ $state: "/j" }, { $state: "/i" }] },
+                { $not: { $state: "/result" } },
+                {
+                  $eq: [
+                    {
+                      $add: [
+                        { $at: [{ $state: "/nums" }, { $state: "/i" }] },
+                        { $at: [{ $state: "/nums" }, { $state: "/j" }] },
+                      ],
+                    },
+                    { $state: "/target" },
+                  ],
+                },
+              ],
+            },
+            then: { set: "/result", value: [{ $state: "/i" }, { $state: "/j" }] },
+          },
+        },
+      },
+      { set: "/result", value: { $state: "/result" } },
+    ],
+  };
+  const { result } = await run(spec, {
+    catalog: {},
+    initialState: { nums: [2, 7, 11, 15], target: 9 },
+  });
+  expect(result).toEqual([0, 1]);
+});
