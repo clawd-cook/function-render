@@ -1,0 +1,1225 @@
+[
+  {
+    "id": "expressions-addition-S11.6.1_A1",
+    "test262Path": "test/language/expressions/addition/S11.6.1_A1.js",
+    "esid": "sec-addition-operator-plus",
+    "category": "expressions",
+    "description": "addition 1 + 1 === 2",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$add": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 2
+    }
+  },
+  {
+    "id": "expressions-addition-S11.6.1_A2.1_T1",
+    "test262Path": "test/language/expressions/addition/S11.6.1_A2.1_T1.js",
+    "category": "expressions",
+    "description": "addition 5 + 7 === 12",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$add": [
+            5,
+            7
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 12
+    }
+  },
+  {
+    "id": "expressions-addition-S11.6.1_A2.1_T2",
+    "test262Path": "test/language/expressions/addition/S11.6.1_A2.1_T2.js",
+    "category": "expressions",
+    "description": "addition 100 + 1 === 101",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$add": [
+            100,
+            1
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 101
+    }
+  },
+  {
+    "id": "expressions-subtraction-S11.6.2_A1",
+    "test262Path": "test/language/expressions/subtraction/S11.6.2_A1.js",
+    "esid": "sec-subtraction-operator-minus",
+    "category": "expressions",
+    "description": "subtraction 10 - 3 === 7",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$sub": [
+            10,
+            3
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 7
+    }
+  },
+  {
+    "id": "expressions-subtraction-S11.6.2_A2.1_T1",
+    "test262Path": "test/language/expressions/subtraction/S11.6.2_A2.1_T1.js",
+    "category": "expressions",
+    "description": "subtraction 0 - 5 === -5",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$sub": [
+            0,
+            5
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": -5
+    }
+  },
+  {
+    "id": "expressions-multiplication-S11.5.1_A1",
+    "test262Path": "test/language/expressions/multiplication/S11.5.1_A1.js",
+    "esid": "sec-multiplicative-operators",
+    "category": "expressions",
+    "description": "multiplication 6 * 7 === 42",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$mul": [
+            6,
+            7
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 42
+    }
+  },
+  {
+    "id": "expressions-multiplication-S11.5.1_A2.1_T1",
+    "test262Path": "test/language/expressions/multiplication/S11.5.1_A2.1_T1.js",
+    "category": "expressions",
+    "description": "multiplication 3 * 4 === 12",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$mul": [
+            3,
+            4
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 12
+    }
+  },
+  {
+    "id": "expressions-multiplication-S11.5.1_A2.1_T2",
+    "test262Path": "test/language/expressions/multiplication/S11.5.1_A2.1_T2.js",
+    "category": "expressions",
+    "description": "multiplication 9 * 9 === 81",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$mul": [
+            9,
+            9
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 81
+    }
+  },
+  {
+    "id": "expressions-division-S11.5.2_A1",
+    "test262Path": "test/language/expressions/division/S11.5.2_A1.js",
+    "esid": "sec-multiplicative-operators",
+    "category": "expressions",
+    "description": "division 20 / 4 === 5",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$div": [
+            20,
+            4
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 5
+    }
+  },
+  {
+    "id": "expressions-division-S11.5.2_A2.1_T1",
+    "test262Path": "test/language/expressions/division/S11.5.2_A2.1_T1.js",
+    "category": "expressions",
+    "description": "division 9 / 2 === 4.5",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$div": [
+            9,
+            2
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 4.5
+    }
+  },
+  {
+    "id": "expressions-division-S11.5.2_A2.1_T2",
+    "test262Path": "test/language/expressions/division/S11.5.2_A2.1_T2.js",
+    "category": "expressions",
+    "description": "division 100 / 10 === 10",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$div": [
+            100,
+            10
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 10
+    }
+  },
+  {
+    "id": "expressions-modulus-S11.5.3_A1",
+    "test262Path": "test/language/expressions/modulus/S11.5.3_A1.js",
+    "esid": "sec-multiplicative-operators",
+    "category": "expressions",
+    "description": "modulus 10 % 3 === 1",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$mod": [
+            10,
+            3
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 1
+    }
+  },
+  {
+    "id": "expressions-modulus-S11.5.3_A2.1_T1",
+    "test262Path": "test/language/expressions/modulus/S11.5.3_A2.1_T1.js",
+    "category": "expressions",
+    "description": "modulus 7 % 7 === 0",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$mod": [
+            7,
+            7
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 0
+    }
+  },
+  {
+    "id": "expressions-less-than-S11.8.1_A1",
+    "test262Path": "test/language/expressions/less-than/S11.8.1_A1.js",
+    "esid": "sec-less-than-operator",
+    "category": "expressions",
+    "description": "less-than 1 < 2 === true",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$lt": [
+            1,
+            2
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": true
+    }
+  },
+  {
+    "id": "expressions-less-than-S11.8.1_A2.1_T1",
+    "test262Path": "test/language/expressions/less-than/S11.8.1_A2.1_T1.js",
+    "category": "expressions",
+    "description": "less-than 2 < 1 === false",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$lt": [
+            2,
+            1
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": false
+    }
+  },
+  {
+    "id": "expressions-greater-than-S11.8.2_A1",
+    "test262Path": "test/language/expressions/greater-than/S11.8.2_A1.js",
+    "esid": "sec-greater-than-operator",
+    "category": "expressions",
+    "description": "greater-than 3 > 2 === true",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$gt": [
+            3,
+            2
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": true
+    }
+  },
+  {
+    "id": "expressions-greater-than-S11.8.2_A2.1_T1",
+    "test262Path": "test/language/expressions/greater-than/S11.8.2_A2.1_T1.js",
+    "category": "expressions",
+    "description": "greater-than 2 > 3 === false",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$gt": [
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": false
+    }
+  },
+  {
+    "id": "expressions-less-than-or-equal-S11.8.3_A1",
+    "test262Path": "test/language/expressions/less-than-or-equal/S11.8.3_A1.js",
+    "category": "expressions",
+    "description": "less-than-or-equal 2 <= 2 === true",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$lte": [
+            2,
+            2
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": true
+    }
+  },
+  {
+    "id": "expressions-less-than-or-equal-S11.8.3_A2.1_T1",
+    "test262Path": "test/language/expressions/less-than-or-equal/S11.8.3_A2.1_T1.js",
+    "category": "expressions",
+    "description": "less-than-or-equal 3 <= 2 === false",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$lte": [
+            3,
+            2
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": false
+    }
+  },
+  {
+    "id": "expressions-greater-than-or-equal-S11.8.4_A1",
+    "test262Path": "test/language/expressions/greater-than-or-equal/S11.8.4_A1.js",
+    "category": "expressions",
+    "description": "greater-than-or-equal 5 >= 5 === true",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$gte": [
+            5,
+            5
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": true
+    }
+  },
+  {
+    "id": "expressions-greater-than-or-equal-S11.8.4_A2.1_T1",
+    "test262Path": "test/language/expressions/greater-than-or-equal/S11.8.4_A2.1_T1.js",
+    "category": "expressions",
+    "description": "greater-than-or-equal 2 >= 5 === false",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$gte": [
+            2,
+            5
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": false
+    }
+  },
+  {
+    "id": "expressions-equals-S11.9.1_A1",
+    "test262Path": "test/language/expressions/equals/S11.9.1_A1.js",
+    "esid": "sec-equality-operators",
+    "category": "expressions",
+    "description": "equals 2 == 2 === true",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$eq": [
+            2,
+            2
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": true
+    },
+    "notes": "models abstract-equality identity for equal numbers"
+  },
+  {
+    "id": "expressions-equals-S11.9.1_A2.1_T1",
+    "test262Path": "test/language/expressions/equals/S11.9.1_A2.1_T1.js",
+    "category": "expressions",
+    "description": "equals 1 == 2 === false",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$eq": [
+            1,
+            2
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": false
+    }
+  },
+  {
+    "id": "expressions-does-not-equals-S11.9.2_A1",
+    "test262Path": "test/language/expressions/does-not-equals/S11.9.2_A1.js",
+    "category": "expressions",
+    "description": "does-not-equals 1 != 2 === true",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$neq": [
+            1,
+            2
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": true
+    }
+  },
+  {
+    "id": "expressions-does-not-equals-S11.9.2_A2.1_T1",
+    "test262Path": "test/language/expressions/does-not-equals/S11.9.2_A2.1_T1.js",
+    "category": "expressions",
+    "description": "does-not-equals 2 != 2 === false",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$neq": [
+            2,
+            2
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": false
+    }
+  },
+  {
+    "id": "expressions-logical-and-S11.11.1_A1",
+    "test262Path": "test/language/expressions/logical-and/S11.11.1_A1.js",
+    "esid": "sec-logical-and-operator",
+    "category": "expressions",
+    "description": "logical-and true && true === true",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$and": [
+            true,
+            true
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": true
+    }
+  },
+  {
+    "id": "expressions-logical-and-S11.11.1_A2.1_T1",
+    "test262Path": "test/language/expressions/logical-and/S11.11.1_A2.1_T1.js",
+    "category": "expressions",
+    "description": "logical-and true && false === false",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$and": [
+            true,
+            false
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": false
+    }
+  },
+  {
+    "id": "expressions-logical-or-S11.11.2_A1",
+    "test262Path": "test/language/expressions/logical-or/S11.11.2_A1.js",
+    "esid": "sec-logical-or-operator",
+    "category": "expressions",
+    "description": "logical-or false || true === true",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$or": [
+            false,
+            true
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": true
+    }
+  },
+  {
+    "id": "expressions-logical-or-S11.11.2_A2.1_T1",
+    "test262Path": "test/language/expressions/logical-or/S11.11.2_A2.1_T1.js",
+    "category": "expressions",
+    "description": "logical-or false || false === false",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$or": [
+            false,
+            false
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": false
+    }
+  },
+  {
+    "id": "expressions-logical-not-S11.4.9_A1",
+    "test262Path": "test/language/expressions/logical-not/S11.4.9_A1.js",
+    "esid": "sec-logical-not-operator",
+    "category": "expressions",
+    "description": "logical-not !true === false",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$not": true
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": false
+    }
+  },
+  {
+    "id": "expressions-logical-not-S11.4.9_A2.1_T1",
+    "test262Path": "test/language/expressions/logical-not/S11.4.9_A2.1_T1.js",
+    "category": "expressions",
+    "description": "logical-not !false === true",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$not": false
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": true
+    }
+  },
+  {
+    "id": "expressions-unary-minus-S11.4.7_A1",
+    "test262Path": "test/language/expressions/unary-minus/S11.4.7_A1.js",
+    "esid": "sec-unary-minus-operator",
+    "category": "expressions",
+    "description": "unary minus -(5) === -5",
+    "spec": {
+      "type": "expr",
+      "params": {
+        "value": {
+          "$sub": [
+            0,
+            5
+          ]
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": -5
+    },
+    "notes": "unary minus modeled as 0 - x (no dedicated $neg atom)"
+  },
+  {
+    "id": "statements-if-cptn-else-false-nrml",
+    "test262Path": "test/language/statements/if/cptn-else-false-nrml.js",
+    "esid": "sec-if-statement",
+    "category": "statements",
+    "description": "if (x > 0) → 'pos' else 'neg'; x=5 selects the true branch",
+    "spec": {
+      "type": "if",
+      "params": {
+        "condition": {
+          "$gt": [
+            "$.input.x",
+            0
+          ]
+        },
+        "trueBranch": {
+          "type": "constant",
+          "params": {
+            "value": "pos"
+          }
+        },
+        "falseBranch": {
+          "type": "constant",
+          "params": {
+            "value": "neg"
+          }
+        }
+      }
+    },
+    "input": {
+      "x": 5
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": "pos"
+    }
+  },
+  {
+    "id": "statements-if-cptn-else-true-abrupt-empty",
+    "test262Path": "test/language/statements/if/cptn-else-true-abrupt-empty.js",
+    "category": "statements",
+    "description": "if (x > 0) → 'pos' else 'neg'; x=-1 selects the else branch",
+    "spec": {
+      "type": "if",
+      "params": {
+        "condition": {
+          "$gt": [
+            "$.input.x",
+            0
+          ]
+        },
+        "trueBranch": {
+          "type": "constant",
+          "params": {
+            "value": "pos"
+          }
+        },
+        "falseBranch": {
+          "type": "constant",
+          "params": {
+            "value": "neg"
+          }
+        }
+      }
+    },
+    "input": {
+      "x": -1
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": "neg"
+    }
+  },
+  {
+    "id": "statements-for-12.6.3_2-3-a-ii-10",
+    "test262Path": "test/language/statements/for/12.6.3_2-3-a-ii-10.js",
+    "esid": "sec-for-statement",
+    "category": "statements",
+    "description": "for-loop accumulation: sum([1,2,3,4]) === 10",
+    "spec": {
+      "type": "then",
+      "params": {
+        "nodes": [
+          {
+            "type": "set",
+            "params": {
+              "path": "$.sum",
+              "value": 0
+            }
+          },
+          {
+            "type": "for",
+            "params": {
+              "items": "$.input.nums",
+              "itemKey": "n",
+              "maxIter": 1000,
+              "body": {
+                "type": "set",
+                "params": {
+                  "path": "$.sum",
+                  "value": {
+                    "$add": [
+                      "$.sum",
+                      "$.n"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "get",
+            "params": {
+              "path": "$.sum"
+            }
+          }
+        ]
+      }
+    },
+    "input": {
+      "nums": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": 10
+    }
+  },
+  {
+    "id": "statements-for-12.6.3_2-3-a-ii-11",
+    "test262Path": "test/language/statements/for/12.6.3_2-3-a-ii-11.js",
+    "category": "statements",
+    "description": "for-loop accumulation: sum([2,3,5]) === 10",
+    "spec": {
+      "type": "then",
+      "params": {
+        "nodes": [
+          {
+            "type": "set",
+            "params": {
+              "path": "$.sum",
+              "value": 0
+            }
+          },
+          {
+            "type": "for",
+            "params": {
+              "items": "$.input.nums",
+              "itemKey": "n",
+              "maxIter": 1000,
+              "body": {
+                "type": "set",
+                "params": {
+                  "path": "$.sum",
+                  "value": {
+                    "$add": [
+                      "$.sum",
+                      "$.n"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "get",
+            "params": {
+              "path": "$.sum"
+            }
+          }
+        ]
+      }
+    },
+    "input": {
+      "nums": [
+        2,
+        3,
+        5
+      ]
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": 10
+    }
+  },
+  {
+    "id": "statements-while-cptn-iter",
+    "test262Path": "test/language/statements/while/cptn-iter.js",
+    "esid": "sec-while-statement",
+    "category": "statements",
+    "description": "while (i < 3) { sum += i; i++ } → sum === 3",
+    "spec": {
+      "type": "then",
+      "params": {
+        "nodes": [
+          {
+            "type": "set",
+            "params": {
+              "path": "$.i",
+              "value": 0
+            }
+          },
+          {
+            "type": "set",
+            "params": {
+              "path": "$.sum",
+              "value": 0
+            }
+          },
+          {
+            "type": "while",
+            "params": {
+              "condition": {
+                "$lt": [
+                  "$.i",
+                  3
+                ]
+              },
+              "maxIter": 100,
+              "body": {
+                "type": "then",
+                "params": {
+                  "nodes": [
+                    {
+                      "type": "set",
+                      "params": {
+                        "path": "$.sum",
+                        "value": {
+                          "$add": [
+                            "$.sum",
+                            "$.i"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "set",
+                      "params": {
+                        "path": "$.i",
+                        "value": {
+                          "$add": [
+                            "$.i",
+                            1
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "type": "get",
+            "params": {
+              "path": "$.sum"
+            }
+          }
+        ]
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 3
+    }
+  },
+  {
+    "id": "statements-while-cptn-no-iter",
+    "test262Path": "test/language/statements/while/cptn-no-iter.js",
+    "category": "statements",
+    "description": "while (false) never runs the body → sum stays 0",
+    "spec": {
+      "type": "then",
+      "params": {
+        "nodes": [
+          {
+            "type": "set",
+            "params": {
+              "path": "$.sum",
+              "value": 0
+            }
+          },
+          {
+            "type": "while",
+            "params": {
+              "condition": {
+                "$lt": [
+                  1,
+                  0
+                ]
+              },
+              "maxIter": 100,
+              "body": {
+                "type": "set",
+                "params": {
+                  "path": "$.sum",
+                  "value": 999
+                }
+              }
+            }
+          },
+          {
+            "type": "get",
+            "params": {
+              "path": "$.sum"
+            }
+          }
+        ]
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": 0
+    }
+  },
+  {
+    "id": "statements-switch-cptn-abrupt-empty",
+    "test262Path": "test/language/statements/switch/cptn-abrupt-empty.js",
+    "esid": "sec-switch-statement",
+    "category": "statements",
+    "description": "switch(status) matches case 200 → 'ok'",
+    "spec": {
+      "type": "switch",
+      "params": {
+        "input": "$.input.status",
+        "cases": [
+          {
+            "match": 200,
+            "node": {
+              "type": "constant",
+              "params": {
+                "value": "ok"
+              }
+            }
+          },
+          {
+            "match": 404,
+            "node": {
+              "type": "constant",
+              "params": {
+                "value": "missing"
+              }
+            }
+          }
+        ],
+        "default": {
+          "type": "constant",
+          "params": {
+            "value": "other"
+          }
+        }
+      }
+    },
+    "input": {
+      "status": 200
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": "ok"
+    }
+  },
+  {
+    "id": "statements-switch-cptn-a-fall-thru-abrupt-empty",
+    "test262Path": "test/language/statements/switch/cptn-a-fall-thru-abrupt-empty.js",
+    "category": "statements",
+    "description": "switch(status) with no matching case → default 'other'",
+    "spec": {
+      "type": "switch",
+      "params": {
+        "input": "$.input.status",
+        "cases": [
+          {
+            "match": 200,
+            "node": {
+              "type": "constant",
+              "params": {
+                "value": "ok"
+              }
+            }
+          },
+          {
+            "match": 404,
+            "node": {
+              "type": "constant",
+              "params": {
+                "value": "missing"
+              }
+            }
+          }
+        ],
+        "default": {
+          "type": "constant",
+          "params": {
+            "value": "other"
+          }
+        }
+      }
+    },
+    "input": {
+      "status": 999
+    },
+    "expectation": {
+      "kind": "value",
+      "expected": "other"
+    }
+  },
+  {
+    "id": "statements-try-12.14-10",
+    "test262Path": "test/language/statements/try/12.14-10.js",
+    "esid": "sec-try-statement",
+    "category": "statements",
+    "description": "try throws (assert false) → catch yields 'caught'",
+    "spec": {
+      "type": "tryCatch",
+      "params": {
+        "body": {
+          "type": "assert",
+          "params": {
+            "condition": {
+              "$lt": [
+                1,
+                0
+              ]
+            },
+            "message": "boom"
+          }
+        },
+        "catch": {
+          "type": "constant",
+          "params": {
+            "value": "caught"
+          }
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": "caught"
+    }
+  },
+  {
+    "id": "statements-try-12.14-11",
+    "test262Path": "test/language/statements/try/12.14-11.js",
+    "category": "statements",
+    "description": "try body succeeds → 'ok' (catch not taken)",
+    "spec": {
+      "type": "tryCatch",
+      "params": {
+        "body": {
+          "type": "constant",
+          "params": {
+            "value": "ok"
+          }
+        },
+        "catch": {
+          "type": "constant",
+          "params": {
+            "value": "err"
+          }
+        }
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "value",
+      "expected": "ok"
+    }
+  },
+  {
+    "id": "statements-for-S12.6.3_A8_T2-invalid",
+    "test262Path": "test/language/statements/for/S12.6.3_A8_T2.js",
+    "esid": "sec-for-statement",
+    "category": "statements",
+    "description": "structurally invalid `for` (missing items/body) is rejected at validate",
+    "spec": {
+      "type": "for",
+      "params": {
+        "itemKey": "n",
+        "maxIter": 10
+      }
+    },
+    "input": {},
+    "expectation": {
+      "kind": "throws",
+      "phase": "validate"
+    },
+    "notes": "maps a parse-phase SyntaxError (invalid for-head) to validate-phase FlowSpec rejection"
+  },
+  {
+    "id": "statements-for-S12.6.3_A7.1_T2-unknown-node",
+    "test262Path": "test/language/statements/for/S12.6.3_A7.1_T2.js",
+    "category": "statements",
+    "description": "unknown NodeType is rejected at validate (analog of a parse SyntaxError)",
+    "spec": {
+      "type": "bogusNodeType",
+      "params": {}
+    },
+    "input": {},
+    "expectation": {
+      "kind": "throws",
+      "phase": "validate"
+    },
+    "notes": "maps a parse-phase SyntaxError to validate-phase rejection of an unknown NodeType"
+  }
+]

@@ -1,8 +1,8 @@
 {
-  "commit": "b3c45895aa7f155cc80f6257db61494ad1e69d49",
+  "commit": "58a5c299993206edcc5b466b6bc3c27472ed3b4f",
   "test262Commit": "045bf6f9966ce3291b8fbc1e0403cd97b9201b00",
   "node": "v22.22.2",
-  "generatedAt": "2026-09-22T16:27:18.753Z",
+  "generatedAt": "2026-09-22T16:29:17.116Z",
   "conformance": {
     "total": 44,
     "passed": 44,
@@ -16,10 +16,10 @@
   },
   "performance": {
     "samples": 5,
-    "p50Ms": 0.0312,
-    "p95Ms": 0.0992,
-    "totalMs": 1.7241,
-    "casesPerSec": 25520
+    "p50Ms": 0.021,
+    "p95Ms": 0.0917,
+    "totalMs": 1.3616,
+    "casesPerSec": 32314.3
   },
   "byCategory": {
     "expressions": {
