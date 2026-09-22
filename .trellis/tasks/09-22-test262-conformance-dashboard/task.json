@@ -1,0 +1,31 @@
+{
+  "id": "test262-conformance-dashboard",
+  "name": "test262-conformance-dashboard",
+  "title": "test262 language conformance & benchmark dashboard",
+  "description": "",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": "website",
+  "priority": "P2",
+  "creator": "cursor-agent",
+  "assignee": "cursor-agent",
+  "createdAt": "2026-09-22",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "cursor/test262-conformance-dashboard-bf4b",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "09-22-test262-ingest",
+    "09-22-test262-harness",
+    "09-22-test262-docs",
+    "09-22-test262-ci"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {}
+}
