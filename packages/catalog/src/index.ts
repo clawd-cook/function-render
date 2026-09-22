@@ -11,6 +11,7 @@ export {
   length,
   delay,
   now,
+  sort,
   standardCatalog,
 } from "./functions.ts";
 

@@ -33,6 +33,14 @@ export const delay = defineFunction({
 
 export const now = defineFunction({ params: z.object({}), run: () => Date.now() });
 
+export const sort = defineFunction({
+  params: z.object({ items: z.array(z.number()), order: z.enum(["asc", "desc"]).optional() }),
+  run: ({ items, order }) => {
+    const sorted = [...items].sort((a, b) => a - b);
+    return order === "desc" ? sorted.reverse() : sorted;
+  },
+});
+
 /** A ready-to-use standard function library shared across the demo apps. */
 export const standardCatalog = {
   add,
@@ -45,4 +53,5 @@ export const standardCatalog = {
   length,
   delay,
   now,
+  sort,
 } satisfies Catalog;

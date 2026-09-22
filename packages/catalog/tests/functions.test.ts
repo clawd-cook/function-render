@@ -26,6 +26,11 @@ test("delay resolves to its value asynchronously", async () => {
   expect(result).toBe("done");
 });
 
+test("sort returns a sorted copy (asc and desc)", () => {
+  expect(standardCatalog.sort.run({ items: [3, 1, 2] }, ctx)).toEqual([1, 2, 3]);
+  expect(standardCatalog.sort.run({ items: [3, 1, 2], order: "desc" }, ctx)).toEqual([3, 2, 1]);
+});
+
 test("defineFunction infers args from the params schema", () => {
   const triple = defineFunction({
     params: z.object({ n: z.number() }),
