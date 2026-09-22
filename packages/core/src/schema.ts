@@ -41,7 +41,9 @@ export type Node =
   | { call: string; args?: Record<string, DynamicValue>; out?: string }
   | { seq: Node[] }
   | { parallel: Node[] }
-  | { if: Condition; then: Node; else?: Node };
+  | { if: Condition; then: Node; else?: Node }
+  | { switch: DynamicValue; cases: Record<string, Node>; default?: Node }
+  | { for: DynamicValue; as?: string; indexAs?: string; body: Node };
 
 // ---------------------------------------------------------------------------
 // Zod schemas
@@ -94,5 +96,16 @@ export const NodeSchema = z.lazy(() =>
     z.strictObject({ parallel: z.array(NodeSchema) }),
     // oxlint-disable-next-line unicorn/no-thenable -- `then` is a spec field name, not a Promise callback
     z.strictObject({ if: ConditionSchema, then: NodeSchema, else: NodeSchema.optional() }),
+    z.strictObject({
+      switch: DynamicValueSchema,
+      cases: z.record(z.string(), NodeSchema),
+      default: NodeSchema.optional(),
+    }),
+    z.strictObject({
+      for: DynamicValueSchema,
+      as: JsonPointer.optional(),
+      indexAs: JsonPointer.optional(),
+      body: NodeSchema,
+    }),
   ]),
 ) as z.ZodType<Node>;

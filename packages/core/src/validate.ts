@@ -21,6 +21,13 @@ function checkCalls(node: Node, path: string, names: Set<string>): void {
     node.parallel.forEach((child: Node, i: number) =>
       checkCalls(child, `${path}/parallel/${i}`, names),
     );
+  } else if ("switch" in node) {
+    for (const [key, caseNode] of Object.entries(node.cases)) {
+      checkCalls(caseNode, `${path}/switch/cases/${key}`, names);
+    }
+    if (node.default) checkCalls(node.default, `${path}/switch/default`, names);
+  } else if ("for" in node) {
+    checkCalls(node.body, `${path}/for/body`, names);
   } else {
     checkCalls(node.then, `${path}/then`, names);
     if (node.else) checkCalls(node.else, `${path}/else`, names);
