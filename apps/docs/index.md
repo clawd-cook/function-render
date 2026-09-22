@@ -3,7 +3,7 @@ layout: home
 hero:
   name: Function Renderer
   text: 声明式函数执行引擎
-  tagline: 用一份 JSON spec 编排业务 Func —— then / if / for / when / switch / callFunc
+  tagline: 封闭 NodeType + ExprAtom，业务只经 callFunc 注入 —— then / if / for / when / switch / arrayMap…
   actions:
     - theme: brand
       text: 快速开始
@@ -15,10 +15,12 @@ hero:
       text: GitHub
       link: https://github.com/clawd-cook/logic-render
 features:
-  - title: 声明式编排
-    details: 用 JSON 描述函数的组合与控制流(串行/并行/条件/多路分支/循环),引擎解析、校验并执行。
+  - title: 三层身份
+    details: Operator（封闭 type）/ ExprAtom（$add、$len…）/ Func（每次 run 注入）。项目不能 registerOperator。
+  - title: 安全预览与补偿
+    details: preview 永不调用 Func.run；sideEffect Func 成功后可逆序 rollback。
   - title: 浏览器在线运行
-    details: 纯前端执行(@logic-renderer/runner),无需后端即可运行 LeetCode 题解。
+    details: 纯前端执行 @logic-renderer/runner，LeetCode 题解可改协议后直接跑。
   - title: 与框架无关
-    details: 同一套逻辑在 Node 服务、React、Vue 中一致运行 —— 逻辑全在库,框架只是外壳。
+    details: 同一套逻辑在 Node、React、Vue 中一致 —— 逻辑在库，框架只是外壳。
 ---

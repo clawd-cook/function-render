@@ -13,7 +13,8 @@ const leetcodeGroups = categories.map((category) => ({
 
 export default defineConfig({
   title: "Function Renderer",
-  description: "声明式函数执行引擎 — 用 JSON 编排已注册函数,浏览器在线运行 LeetCode",
+  description:
+    "声明式函数执行引擎 — 封闭 NodeType/ExprAtom + 注入 Func，浏览器在线运行协议",
   base: "/logic-render/",
   lang: "zh-CN",
   themeConfig: {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { standardCatalog } from "@logic-renderer/catalog";
 import { FunctionRenderError, run } from "@logic-renderer/runner";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { getProblem } from "../../data/problems.ts";
 
@@ -11,21 +11,35 @@ interface Success {
   ok: true;
   result: unknown;
   state: Record<string, unknown>;
+  preview: boolean;
 }
 interface Failure {
   ok: false;
   error: { message: string; phase?: string; path?: string; funcKey?: string };
+  preview: boolean;
 }
 
 const problem = computed(() => getProblem(props.slug));
 const specText = ref(JSON.stringify(problem.value?.spec ?? {}, null, 2));
 const inputText = ref(JSON.stringify(problem.value?.input ?? {}, null, 2));
+const preview = ref(false);
 const output = ref<Success | Failure | null>(null);
 const running = ref(false);
+
+watch(
+  () => props.slug,
+  () => {
+    specText.value = JSON.stringify(problem.value?.spec ?? {}, null, 2);
+    inputText.value = JSON.stringify(problem.value?.input ?? {}, null, 2);
+    preview.value = false;
+    output.value = null;
+  },
+);
 
 function reset(): void {
   specText.value = JSON.stringify(problem.value?.spec ?? {}, null, 2);
   inputText.value = JSON.stringify(problem.value?.input ?? {}, null, 2);
+  preview.value = false;
   output.value = null;
 }
 
@@ -37,12 +51,17 @@ async function handleRun(): Promise<void> {
     const input: unknown = inputText.value.trim()
       ? (JSON.parse(inputText.value) as unknown)
       : undefined;
-    const { result, state } = await run(spec, { funcs: standardCatalog, input });
-    output.value = { ok: true, result, state };
+    const { result, state } = await run(spec, {
+      funcs: standardCatalog,
+      input,
+      preview: preview.value,
+    });
+    output.value = { ok: true, result, state, preview: preview.value };
   } catch (error) {
     if (error instanceof FunctionRenderError) {
       output.value = {
         ok: false,
+        preview: preview.value,
         error: {
           message: error.message,
           phase: error.phase,
@@ -53,6 +72,7 @@ async function handleRun(): Promise<void> {
     } else {
       output.value = {
         ok: false,
+        preview: preview.value,
         error: { message: error instanceof Error ? error.message : String(error) },
       };
     }
@@ -68,21 +88,25 @@ async function handleRun(): Promise<void> {
     <textarea v-model="specText" spellcheck="false" rows="16" class="code"></textarea>
     <label class="lbl">输入(JSON,可编辑)</label>
     <textarea v-model="inputText" spellcheck="false" rows="4" class="code"></textarea>
+    <label class="preview">
+      <input v-model="preview" type="checkbox" />
+      preview（永不调用 Func.run / 跳过 sleep）
+    </label>
     <div class="actions">
       <button type="button" class="run" :disabled="running" @click="handleRun">
-        {{ running ? "运行中…" : "运行" }}
+        {{ running ? "运行中…" : preview ? "预览" : "运行" }}
       </button>
       <button type="button" class="reset" @click="reset">重置</button>
     </div>
     <div v-if="output" class="result" :class="output.ok ? 'ok' : 'err'">
       <template v-if="output.ok">
-        <div class="tag">结果</div>
+        <div class="tag">{{ output.preview ? "预览结果" : "结果" }}</div>
         <pre>{{ JSON.stringify(output.result, null, 2) }}</pre>
-        <div class="tag">最终状态</div>
+        <div class="tag">最终 Slot</div>
         <pre>{{ JSON.stringify(output.state, null, 2) }}</pre>
       </template>
       <template v-else>
-        <div class="tag">错误</div>
+        <div class="tag">错误{{ output.preview ? "（preview）" : "" }}</div>
         <pre>{{ JSON.stringify(output.error, null, 2) }}</pre>
       </template>
     </div>
@@ -102,6 +126,15 @@ async function handleRun(): Promise<void> {
   font-weight: 600;
   font-size: 0.85rem;
   margin-top: 0.5rem;
+}
+.preview {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+  font-size: 0.85rem;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
 }
 .runner textarea.code {
   width: 100%;

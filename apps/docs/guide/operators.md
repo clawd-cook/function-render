@@ -1,8 +1,10 @@
 # 编排算子
 
-spec 是一棵 JSON 树,每个节点形如 `{ "type", "params", "outputTo?" }`。
+spec 是一棵 JSON 树，每个节点形如 `{ "type", "params", "outputTo?" }`。
 
-当前引擎封闭 NodeType(v1 + 视界):`then` / `when` / `if` / `switch` / `while` / `for` / `tryCatch` / `callFunc` / `get` / `set` / `arrayMap` / `arrayFilter` / `arrayReduce` / `log` / `assert` / `sleep` / `constant` / `expr`。项目只能注入 `funcs`,不能 `registerOperator`。
+三层身份见 [概览](/guide/overview)：`type` 属于 **Operator Catalog**；`{ "$mul": … }` 属于 **Expr Catalog**；业务只经 **`callFunc` → funcs**。
+
+当前引擎封闭 NodeType（完整表）：`then` / `when` / `if` / `switch` / `while` / `for` / `tryCatch` / `callFunc` / `get` / `set` / `arrayMap` / `arrayFilter` / `arrayReduce` / `log` / `assert` / `sleep` / `constant` / `expr`。项目只能注入 `funcs`，不能 `registerOperator`。
 
 ## Control
 

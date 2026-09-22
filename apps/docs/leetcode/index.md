@@ -1,7 +1,10 @@
-# LeetCode Hot 100 · 在线运行
+# LeetCode · 在线运行
 
-用 **logic-render** 执行、可在浏览器**在线运行**的题解(首批)。每题把原 Python 解法移植成 TypeScript 函数,注册进 catalog,并用一段 logic-render spec 调用它 —— 点开任意题即可改输入、在线运行。
+用 **logic-render** 在浏览器里直接跑「可编辑协议」。每题一份 FlowSpec：
 
-解法来源:[realnghon/LeetCode_Hot100_Python](https://github.com/realnghon/LeetCode_Hot100_Python)。
+- **纯协议**：只用封闭 NodeType + ExprAtom（如 [最大子数组和](/leetcode/maximum-subarray)），无 `callFunc`。
+- **含 callFunc**：算法仍登记在 catalog Func（如两数之和、移动零、排序），协议只负责调用与 Slot。
+
+解法/题目来源：[realnghon/LeetCode_Hot100_Python](https://github.com/realnghon/LeetCode_Hot100_Python)。引擎能力见 [概览](/guide/overview) 与 [编排算子](/guide/operators)。
 
 <LeetcodeIndex />

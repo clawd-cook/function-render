@@ -14,6 +14,7 @@ import { categories } from "../../data/problems.ts";
             <th>题号</th>
             <th>题目</th>
             <th>难度</th>
+            <th>协议</th>
           </tr>
         </thead>
         <tbody>
@@ -23,6 +24,10 @@ import { categories } from "../../data/problems.ts";
               <a :href="withBase(`/leetcode/${problem.slug}`)">{{ problem.title }}</a>
             </td>
             <td>{{ problem.difficulty }}</td>
+            <td>
+              <span v-if="problem.pureProtocol" class="badge pure">纯协议</span>
+              <span v-else class="badge complex">callFunc</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -36,5 +41,19 @@ import { categories } from "../../data/problems.ts";
 }
 table {
   width: 100%;
+}
+.badge {
+  display: inline-block;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+}
+.badge.pure {
+  background: var(--vp-c-green-soft);
+  color: var(--vp-c-green-1);
+}
+.badge.complex {
+  background: var(--vp-c-yellow-soft);
+  color: var(--vp-c-yellow-1);
 }
 </style>

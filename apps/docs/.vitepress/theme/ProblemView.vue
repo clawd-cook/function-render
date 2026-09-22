@@ -14,8 +14,8 @@ const problem = computed(() => getProblem(props.slug));
       <a :href="problem.url" target="_blank" rel="noreferrer">LeetCode 原题 ↗</a>
       <span> · 难度:{{ problem.difficulty }}</span>
       <span> · 分类:{{ problem.category }}</span>
-      <span v-if="problem.pureProtocol" class="badge pure">纯原子协议</span>
-      <span v-else class="badge complex">含已登记复杂算子</span>
+      <span v-if="problem.pureProtocol" class="badge pure">纯协议</span>
+      <span v-else class="badge complex">含 callFunc</span>
     </p>
 
     <h2>题目描述</h2>
