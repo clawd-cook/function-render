@@ -1,0 +1,3 @@
+{"file": ".trellis/tasks/09-22-function-renderer/research/reference-mapping.md", "reason": "JSON Pointer/state、条件求值、脚手架样板的确切源文件位置"}
+{"file": ".trellis/tasks/09-22-function-renderer/design.md", "reason": "父级共享契约:core 需导出的跨模块类型与错误约定"}
+{"file": ".trellis/spec/utils/backend/index.md", "reason": "同类零依赖 TS 库的编码规范/质量清单"}
