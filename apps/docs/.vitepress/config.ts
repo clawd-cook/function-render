@@ -128,6 +128,7 @@ export default defineConfig({
       { text: "FlowSpec", link: "/guide/" },
       { text: "指南", link: "/guide/guide" },
       { text: "参考", link: "/reference/" },
+      { text: "博客", link: "/blog/" },
       { text: "LeetCode", link: "/leetcode/" },
       { text: "test262", link: "/test262/" },
       { text: "GitHub", link: "https://github.com/clawd-cook/logic-render" },
@@ -135,6 +136,18 @@ export default defineConfig({
     sidebar: {
       "/guide/": flowSpecSidebar,
       "/reference/": flowSpecSidebar,
+      "/blog/": [
+        {
+          text: "博客",
+          items: [
+            { text: "目录", link: "/blog/" },
+            {
+              text: "配置化的困境",
+              link: "/blog/configuration-dilemma",
+            },
+          ],
+        },
+      ],
       "/leetcode/": [
         { text: "LeetCode Hot 100", items: [{ text: "目录", link: "/leetcode/" }] },
         ...leetcodeGroups,
