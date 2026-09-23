@@ -19,6 +19,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: "指南", link: "/guide/overview" },
+      { text: "设计理念", link: "/guide/rationale" },
       { text: "LeetCode", link: "/leetcode/" },
       { text: "test262", link: "/test262/" },
       { text: "GitHub", link: "https://github.com/clawd-cook/logic-render" },
@@ -29,6 +30,7 @@ export default defineConfig({
           text: "指南",
           items: [
             { text: "概览", link: "/guide/overview" },
+            { text: "设计理念与理论依据", link: "/guide/rationale" },
             { text: "编排算子", link: "/guide/operators" },
             { text: "API", link: "/guide/api" },
           ],

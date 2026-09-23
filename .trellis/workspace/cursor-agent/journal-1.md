@@ -107,3 +107,37 @@ Round 2: grouping/precedence, exponentiation ($pow), unary-plus, more if/for. Co
 ### Next Steps
 
 - None - task complete
+
+
+## Session 4: Design rationale docs page
+
+**Date**: 2026-09-23
+**Task**: Design rationale docs page
+**Package**: website
+**Branch**: `cursor/docs-design-rationale-bf4b`
+
+### Summary
+
+New /guide/rationale page: each design decision -> intent + theoretical basis (Bohm-Jacopini, structured programming, total FP, catamorphism, initial algebra/free monad, Saga). Nav+sidebar wired; vitepress build green; verified in browser. PR #9.
+
+### Main Changes
+
+- Detailed change bullets were not supplied; see the summary above.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `92f9bf5` | (see git log) |
+
+### Testing
+
+- Validation was not recorded for this session.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- None - task complete
