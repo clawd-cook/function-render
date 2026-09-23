@@ -1,19 +1,19 @@
-# 概览
+# 语言概览
 
-**Function Renderer** 把逻辑编排写成 JSON **FlowSpec**：引擎按**封闭 NodeType** 走控制流与数据变换；算术等纯计算走**封闭 ExprAtom**；业务能力只经 **`callFunc` → 本次注入的 `funcs`**。
+> 中级。从其它语言或编排方案迁入时，先读本页建立地图；系统学习请走 [FlowSpec 指南](/guide/guide)。
 
-设计原则见 [设计理念](/guide/rationale)：**对齐 JS 语法规范，按复杂度渐进**。本页只给地图；细节按 Guide 章节往下读，查表用 [参考](/reference/)。
+**Function Renderer** 把逻辑编排写成 JSON **FlowSpec**：引擎按封闭 **NodeType** 解释执行；算术等纯计算走封闭 **ExprAtom**；业务只经 **`callFunc` → funcs`**。
 
-## 怎么读本文档站
+## 怎么读
 
 | 想… | 去 |
 | --- | --- |
+| 按章节学会写协议 | [FlowSpec 指南](/guide/guide) |
 | 理解为什么这么分层 | [设计理念](/guide/rationale) |
-| 从零学会写协议（渐进） | Guide：语法 → 控制流 → 循环 → 函数 → 表达式 → 集合 |
-| 查某个 `type` / `$atom` / API | [参考](/reference/) |
+| 查某个 `type` / `$atom` | [参考](/reference/) |
 | 在浏览器里改协议跑起来 | [LeetCode](/leetcode/) |
 
-## 复杂度阶梯（与 Guide 章节一一对应）
+## 复杂度阶梯（L0–L5）
 
 ```
 L0  then · if · set · callFunc · $add/$mul/$gt/$lit
@@ -24,13 +24,7 @@ L4  arrayMap · arrayFilter · arrayReduce
 L5  when · log · assert · sleep · constant · expr
 ```
 
-## 三层身份（不要混）
-
-| 层 | 是什么 | 谁能扩展 |
-|----|--------|----------|
-| **NodeType** | Spec 的 `type` | 仅引擎发版 |
-| **ExprAtom** | `{ "$mul": […] }` 等 | 仅引擎发版 |
-| **Func** | 业务函数 | 每次 `run` 的 `funcs` |
+详解见 [设计理念](/guide/rationale)；身份判定见 [三层身份](/guide/identities)。
 
 ## 分层包
 
@@ -85,4 +79,4 @@ L5  when · log · assert · sleep · constant · expr
 
 `input: { "orderAmount": 2000, "merchantId": "m1" }` → `tax = 120`、`totalAmount = 2120`，并调用 `deductBalance`。
 
-下一章：[语法与类型](/guide/grammar-and-types)。
+下一步：[FlowSpec 指南](/guide/guide) 或 [语法与类型](/guide/grammar-and-types)。

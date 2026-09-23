@@ -3,14 +3,14 @@ layout: home
 hero:
   name: Function Renderer
   text: 声明式函数执行引擎
-  tagline: 对齐 JS 语法、渐进加复杂 — L0 先跑通，再补循环 / 表达式 / 集合 / 并发
+  tagline: 文档结构对齐 MDN — 教程循序渐进，参考按语句 / 运算符查阅
   actions:
     - theme: brand
-      text: 快速开始
-      link: /guide/overview
+      text: FlowSpec 文档
+      link: /guide/
     - theme: alt
-      text: 设计理念
-      link: /guide/rationale
+      text: 指南
+      link: /guide/guide
     - theme: alt
       text: LeetCode 在线运行
       link: /leetcode/
@@ -18,12 +18,12 @@ hero:
       text: GitHub
       link: https://github.com/clawd-cook/logic-render
 features:
-  - title: 像学 JS 一样学 DSL
-    details: Guide 按 Grammar → Control → Loops → Functions → Expressions → Collections 递进，心智模型可平移。
+  - title: 教程 = 指南 · 中级 · 高级
+    details: 与 MDN JavaScript 侧栏同构：先走指南章节，再读中级专题与高级执行语义。
+  - title: 参考 = 语句 · 运算符 · 错误 · API
+    details: 按语法分类查表；每 NodeType / ExprAtom 独立一页。
   - title: 封闭算子 + 开放 Func
-    details: NodeType / ExprAtom 仅引擎发版；业务只经 callFunc 注入，Catalog 永远可穷举。
-  - title: Guide + Reference
-    details: 顺着读用指南，按名字查用参考 — 信息架构对齐 MDN。
+    details: NodeType / ExprAtom 仅引擎发版；业务只经 callFunc 注入。
   - title: 浏览器在线运行
     details: 纯前端执行 runner；LeetCode 题解可改协议后直接跑。
 ---

@@ -78,12 +78,14 @@ L5  并发与工具     when · log · assert · sleep · constant · expr
 
 直接照抄 MDN 的信息架构：
 
-| 轨道 | 用途 | 入口 |
-| --- | --- | --- |
-| **Guide** | 按复杂度**顺着读**，每章只引入当前层需要的原语 | 本站「指南」侧栏 |
-| **Reference** | 按名字**查表**：全部 NodeType / ExprAtom / 错误 / API | 「参考」侧栏 |
+Guide 讲「先学什么」；Reference 讲「这一项完整语义是什么」。文档站侧栏与 [MDN JavaScript](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript) 同构：
 
-Guide 讲「先学什么」；Reference 讲「这一项完整语义是什么」。设计理念（本页）只回答「为什么按 JS 分层」。
+| MDN | 本站 |
+| --- | --- |
+| 教程 → 指南 / 中级 / 高级 | [FlowSpec 落地页](/guide/) 侧栏同名分组 |
+| 参考 → 语句 / 运算符 / … | [参考](/reference/) |
+
+设计理念（本页）只回答「为什么按 JS 分层」。
 
 ---
 
@@ -98,4 +100,4 @@ Guide 讲「先学什么」；Reference 讲「这一项完整语义是什么」�
 2. **先 L0 后视界**——基础跑通再加循环、集合、并发。
 3. **业务永远走 `callFunc`**——算子表封闭可穷举，扩展面唯一。
 
-下一步：[概览](/guide/overview) → [语法与类型](/guide/grammar-and-types)。
+下一步：[FlowSpec](/guide/) → [指南目录](/guide/guide)。

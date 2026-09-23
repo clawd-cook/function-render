@@ -41,10 +41,7 @@ defineFunction({
 
 ## preview 与 rollback
 
-| 模式 | 行为 |
-| --- | --- |
-| `preview: true` | **永不**调用 `Func.run`；仍求值 args、做 schema 校验 |
-| live + `sideEffect: true` 且 `run` 成功 | 入 rollback 栈；后续失败**逆序**调 `rollback` |
+细则见高级专题 [preview、rollback 与副作用](/guide/preview-rollback)。一句话：`preview` 永不 `Func.run`；仅成功的 `sideEffect` `callFunc` 入补偿栈。
 
 纯计算请用 ExprAtom 或 `set`，不要做成 Func。算术已从 catalog 移除。
 
