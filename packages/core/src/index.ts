@@ -29,6 +29,9 @@ export {
 } from "./schema.ts";
 export type { Expr } from "./schema.ts";
 
+export { NODE_COMPLEXITY, EXPR_COMPLEXITY, COMPLEXITY_TIER_BLURB } from "./complexity.ts";
+export type { ComplexityTier } from "./complexity.ts";
+
 export { evaluate, resolveArgs, evaluateCondition } from "./expr.ts";
 export type { ExprContext } from "./expr.ts";
 

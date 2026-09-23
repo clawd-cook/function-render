@@ -5,9 +5,10 @@
 ## Pre-Development Checklist
 
 - [ ] Read [operator-runtime-api.md](./operator-runtime-api.md) before changing `validate` / `run`, NodeSpec, ExprAtom, Slot, preview, or rollback
+- [ ] Read [complexity-tiers.md](./complexity-tiers.md) before adding a NodeType / ExprAtom or reordering Guide chapters
 - [ ] Do not restore old dialect (`call`/`seq`/`$state`/JSON Pointer/`initialState`/`catalog` option)
 - [ ] Arithmetic / first-order data belong in ExprAtom, never as Func or NodeType
-- [ ] New NodeType / ExprAtom = engine version bump + changelog; projects inject only `funcs`
+- [ ] New NodeType / ExprAtom = engine version bump + changelog + a complexity tier (`NODE_COMPLEXITY` / `EXPR_COMPLEXITY`); projects inject only `funcs`
 
 ## Quality Check
 
@@ -22,3 +23,4 @@
 | Guide | Description | Status |
 |-------|-------------|--------|
 | [Operator Runtime API](./operator-runtime-api.md) | `validate`/`run` signatures, dialect, preview, rollback, horizon catalog | Filled (2026-09-22) |
+| [Complexity tiers L0–L5](./complexity-tiers.md) | JS-aligned progressive ladder for NodeType / ExprAtom / docs Guide | Filled (2026-09-23) |

@@ -34,23 +34,29 @@ type Func =
     };
 ```
 
-**NodeType (engine closed set)**
+**NodeType (engine closed set)** — tiers in [complexity-tiers.md](./complexity-tiers.md) / `NODE_COMPLEXITY`
 
-| Group | types |
-|-------|--------|
-| Control | `then` `when` `if` `switch` `while` `for` `tryCatch` |
-| Invocation | `callFunc` |
-| Data | `get` `set` `arrayMap` `arrayFilter` `arrayReduce` |
-| Utility | `log` `assert` `sleep` `constant` `expr` |
+| Group | types | Tier |
+|-------|--------|------|
+| Control | `then` `if` | L0 |
+| Control | `switch` `tryCatch` | L1 |
+| Control | `while` `for` | L2 |
+| Control | `when` | L5 |
+| Invocation | `callFunc` | L0 |
+| Data | `get` `set` | L0 |
+| Data | `arrayMap` `arrayFilter` `arrayReduce` | L4 |
+| Utility | `log` `assert` `sleep` `constant` `expr` | L5 |
 
-**ExprAtom (engine closed set)**
+**ExprAtom (engine closed set)** — `EXPR_COMPLEXITY`
 
-| Group | atoms |
-|-------|--------|
-| Arithmetic | `$add` `$mul` `$sub` `$div` `$mod` `$pow` `$abs` `$ceil` `$floor` `$round` |
-| Compare / logic | `$gt` `$gte` `$lt` `$lte` `$eq` `$neq` `$and` `$or` `$not` |
-| First-order data | `$len` `$at` `$concat` `$pick` `$omit` `$merge` |
-| Literal escape | `$lit` |
+| Group | atoms | Tier |
+|-------|--------|------|
+| Arithmetic (min) | `$add` `$mul` | L0 |
+| Compare (min) | `$gt` | L0 |
+| Literal escape | `$lit` | L0 |
+| Arithmetic (widen) | `$sub` `$div` `$mod` `$pow` `$abs` `$ceil` `$floor` `$round` | L3 |
+| Compare / logic | `$gte` `$lt` `$lte` `$eq` `$neq` `$and` `$or` `$not` | L3 |
+| First-order data | `$len` `$at` `$concat` `$pick` `$omit` `$merge` | L3 |
 
 ### 3. Contracts
 

@@ -5,7 +5,10 @@ import type { FlowSpec, NodeSpec, NodeType } from "./types.ts";
 /** A JSON value that may contain ExprAtom objects or Slot path strings. */
 export type Expr = string | number | boolean | null | Expr[] | { [key: string]: Expr };
 
-/** Closed ExprAtom set for the current engine (v1 + horizon). `$lit` is forced-literal. */
+/**
+ * Closed ExprAtom set for the current engine (v1 + horizon). `$lit` is forced-literal.
+ * Progressive tiers live in `complexity.ts` (`EXPR_COMPLEXITY`: L0 minimum + L3 widen).
+ */
 export const EXPR_ATOMS = new Set([
   "$add",
   "$mul",
@@ -38,7 +41,10 @@ export const EXPR_ATOMS = new Set([
 /** @deprecated Use {@link EXPR_ATOMS}. */
 export const V1_EXPR_ATOMS = EXPR_ATOMS;
 
-/** Closed NodeType set for the current engine. */
+/**
+ * Closed NodeType set for the current engine.
+ * Progressive tiers live in `complexity.ts` (`NODE_COMPLEXITY`: L0 → L5).
+ */
 export const NODE_TYPES = new Set<NodeType>([
   "then",
   "when",

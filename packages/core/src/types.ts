@@ -42,7 +42,10 @@ export function normalizeFunc(fn: Func): NormalizedFunc {
   };
 }
 
-/** Closed NodeType set for the current engine (v1 + horizon). */
+/**
+ * Closed NodeType set for the current engine (v1 + horizon).
+ * Learning / delivery order is L0→L5 — see `NODE_COMPLEXITY` in `./complexity.ts`.
+ */
 export type NodeType =
   | "then"
   | "when"
